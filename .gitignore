@@ -1,3 +1,11 @@
+# MSI data directories
+/Private/
+/Protected/
+/Public/
+
+# macOS directory metadata
+.DS_Store
+
 # History files
 .Rhistory
 .Rapp.history
