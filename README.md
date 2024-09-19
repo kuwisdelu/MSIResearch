@@ -10,6 +10,12 @@ The metadata is saved in `manifest.json` in JavaScript Object Notation (JSON) fo
 
 Before committing changes to this repository, please make sure the manifest can be parsed without errors using either `jsonlite::fromJSON` (in R) or `json.load` (in Python).
 
+Please consider using an existing field before adding new fields. Some fields including `contact`, `formats`, `keywords`, and `notes` allow multiple entries.
+
+If you are the contact person for a dataset within the lab, please add yourself to the `contact` field.
+
+If you analyze a dataset, please add to `notes` with your name and your observations.
+
 
 
 
