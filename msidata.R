@@ -2,9 +2,7 @@
 if ( !requireNamespace("jsonlite", quietly=TRUE) )
 	install.packages("jsonlite")
 
-.db <- structure(jsonlite::fromJSON("MSIData/manifest.json"), class="msi_db")
-
-.db <- "manifest.json" |>
+.db <- "MSIData/manifest.json" |>
 	jsonlite::fromJSON() |>
 	lapply(structure, class="msi_dataset") |>
 	structure(class="msi_db")
