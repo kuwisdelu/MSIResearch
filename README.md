@@ -4,7 +4,7 @@
 
 ## Overview
 
-This repository tracks experimental metadata for lab-curated MSI datasets stored on the imaging group's Magi servers.
+This repository tracks experimental metadata for lab-curated MSI datasets stored on the MSI group's Magi servers.
 
 The metadata is saved in `manifest.json` in JavaScript Object Notation (JSON) format. Each record in the manifest describes an MSI dataset. The records can be updated by any lab member by editing `manifest.json` and commiting the changes to this Github repository.
 
