@@ -12,6 +12,46 @@ Before committing changes, please make sure the manifest can be parsed with `jso
 
 
 
+
+## Accessing the data
+
+The R script `msidata.R` provides convenience functions for searching and downloading the data from R. It assumes you are running in a UNIX-alike environment that includes `ssh` and `scp` command line programs.
+
+Recommended usage is to source the functions with `source("MSIData/msidata.R")`.
+
+The following functions are provided:
+
+- `msi_db()`
+    + Return the complete dataset manifest
+
+- `msi_ls()`
+    + List all dataset identifiers
+
+- `msi_path(id, dir = ".", remote = FALSE)`
+    + Generate the local or remote path for a dataset's storage location (assuming it exists)
+    + `id` is a the dataset identifier
+    + `dir` is the parent directory used for downloading datasets
+    + `remote` indicates whether to return the local or remote storage location 
+
+- `msi_search(pattern)`
+    + Search all experimental metadata for `pattern`.
+    + `pattern` is a regular expression passed to `grepl()`
+
+- `msi_download(id, username, dir = ".", port = 8080)`
+    + Download a single dataset selected by `id`.
+    + `id` is a the dataset identifier
+    + `username` is your Khoury username for `login.khoury.northeastern.edu`
+    + `dir` is the parent directory used for downloading datasets
+    + `port` is a port to use for SSH port forwarding
+
+Please be mindful of resources on `Magi-03`.
+
+`Magi-03` is not intended for running analysis. It has limited memory and internal storage. (Data are stored on a connected RAID array.)
+
+
+
+
+
 ## Magi servers
 
 The data is currently hosted from the machine `Magi-03` on the Khoury network.
@@ -25,6 +65,30 @@ Then you can connect to the Magi servers from any Khoury login server. To access
 `ssh viteklab@Magi-03`
 
 Please contact Kylie Bemis at <k.bemis@northeastern.edu> or on Slack for login credentials.
+
+
+
+### SSH tunneling
+
+Because the Magi servers are behind the Khoury servers, downloading datasets requires SSH tunneling.
+
+#### 1. Connect to Khoury servers with local port forwarding:
+
+`ssh -NL 8080:Magi-03:22 <your-khoury-username>@login.khoury.northeastern.edu &`
+
+This will establish an SSH session with Khoury servers in the background, and forward communication to `Magi-03` on your local port 8080.
+
+#### 2. Store PID of the background SSH process:
+
+`pid=$!`
+
+#### 3. Securely copy data from Magi server:
+
+`scp -rP 8080 viteklab@localhost:</remote/src> </local/dest>`
+
+The above commands use local port 8080 to access the remote Magi server. Tehnically, any unused port with a high number can be used.
+
+
 
 ### SSH keys for Khoury servers
 
@@ -121,42 +185,5 @@ The following directory structure is assumed:
 where `...` contain group directories which contain data directories.
 
 Recommended usage is to set your working directory to `<Parent>` when downloading datasets. Then the appropriate directory structure will be created automatically when you download a dataset.
-
-
-
-## Accessing the data
-
-The R script `msidata.R` provides convenience functions for searching and downloading the data from R. It assumes you are running in a UNIX environment that includes `ssh` and `scp` command line programs.
-
-Recommended usage is to source the functions with `source("MSIData/msidata.R")`.
-
-The following functions are provided:
-
-- `msi_db()`
-    + Return the complete dataset manifest
-
-- `msi_ls()`
-    + List all dataset identifiers
-
-- `msi_path(id, dir = ".", remote = FALSE)`
-    + Generate the local or remote path for a dataset's storage location (assuming it exists)
-    + `id` is a the dataset identifier
-    + `dir` is the parent directory used for downloading datasets
-    + `remote` indicates whether to return the local or remote storage location 
-
-- `msi_search(pattern)`
-    + Search all experimental metadata for `pattern`.
-    + `pattern` is a regular expression passed to `grepl()`
-
-- `msi_download(id, username, dir = ".", port = 8080)`
-    + Download a single dataset selected by `id`.
-    + `id` is a the dataset identifier
-    + `username` is your Khoury username for `login.khoury.northeastern.edu`
-    + `dir` is the parent directory used for downloading datasets
-    + `port` is a port to use for SSH port forwarding
-
-Please be mindful of resources on `Magi-03`.
-
-`Magi-03` is not intended for running analysis. It has limited memory and internal storage. (Data are stored on a connected RAID array.)
 
 
