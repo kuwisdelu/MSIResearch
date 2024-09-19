@@ -2,7 +2,13 @@
 if ( !requireNamespace("jsonlite", quietly=TRUE) )
 	install.packages("jsonlite")
 
-.db <- "MSIData/manifest.json" |>
+if ( basename(getwd()) == "MSIData" ) {
+	.dbpath <- "manifest.json"
+} else {
+	.dbpath <- "MSIData/manifest.json"
+}
+
+.db <- .dbpath |>
 	jsonlite::fromJSON() |>
 	lapply(structure, class="msi_dataset") |>
 	structure(class="msi_db")
