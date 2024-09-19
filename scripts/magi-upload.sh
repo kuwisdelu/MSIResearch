@@ -2,7 +2,7 @@
 
 # > magi-upload <port> <username> /src /dest
 
-# You may need to setup SSH keys on the login.khoury.northeastern
+# You may need to setup SSH keys on login.khoury.northeastern
 # You may need to enable remote login under System Settings
 # Please do _NOT_ setup SSH keys on shared Magi computers
 
