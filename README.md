@@ -8,7 +8,7 @@ This repository tracks experimental metadata for lab-curated MSI datasets stored
 
 The metadata is saved in `manifest.json` in JavaScript Object Notation (JSON) format. Each record in the manifest describes an MSI dataset. The records can be updated by any lab member by editing `manifest.json` and commiting the changes to this Github repository.
 
-Before committing changes, please make sure the manifest can be parsed with `jsonlite::fromJSON` (in R) or `json.load` (in Python).
+Before committing changes to this repository, please make sure the manifest can be parsed with `jsonlite::fromJSON` (in R) or `json.load` (in Python).
 
 
 
