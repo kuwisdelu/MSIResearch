@@ -3,12 +3,14 @@ if ( !requireNamespace("jsonlite", quietly=TRUE) )
 	install.packages("jsonlite")
 
 if ( basename(getwd()) == "MSIData" ) {
-	.dbpath <- "manifest.json"
+	.dbpath <- ".."
 } else {
-	.dbpath <- "MSIData/manifest.json"
+	.dbpath <- "."
 }
 
 .db <- .dbpath |>
+	file.path("MSIData") |>
+	file.path("manifest.json") |>
 	jsonlite::fromJSON() |>
 	lapply(structure, class="msi_dataset") |>
 	structure(class="msi_db")
@@ -49,7 +51,7 @@ msi_db <- function(id)
 
 msi_ls <- function() names(.db)
 
-msi_path <- function(id, dir = ".", remote = FALSE)
+msi_path <- function(id, dir = .dbpath, remote = FALSE)
 {
 	xs <- .db[id]
 	scope <- vapply(xs, function(x) x$scope, character(1L))
@@ -68,7 +70,7 @@ msi_search <- function(pattern)
 	.db[hits]
 }
 
-msi_download <- function(id, username, dir = ".", port = 8080)
+msi_download <- function(id, username, dir = .dbpath, port = 8080)
 {
 	if ( length(id) != 1L )
 		stop("you must specify exactly one dataset")
