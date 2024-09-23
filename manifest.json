@@ -908,6 +908,34 @@
 		"notes" : []
 	},
 
+	"PTSD-study" : {
+		"scope" : "Private",
+		"group" : "Seeley Lab",
+		"title" : "",
+		"description" : "",
+		"sample processing" : "",
+		"data processing" : "",
+		"contact" : [
+			{
+				"name" : "Erin Seeley",
+				"email" : "erin.seeley@utexas.edu",
+				"affiliation" : "University of Texas at Austin"
+			},
+			{
+				"name" : "Keith Young",
+				"email" : "kayoung@tamu.edu",
+				"affiliation" : "University of Texas at Austin"
+			}
+		],
+		"date" : {
+			"created" : "5 Oct 2023",
+			"received" : "12 Oct 2023"
+		},
+		"formats" : [],
+		"keywords" : ["arthritis"],
+		"notes" : []
+	},
+
 	"20210921_vc_rugose_tims_gordon" : {
 		"scope" : "Private",
 		"group" : "Unknown",
