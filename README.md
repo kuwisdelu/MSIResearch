@@ -1,6 +1,11 @@
 # Mass spectrometry imaging datasets
 
-
+1. [Overview](#Overview)
+2. [Accessing the data](#Accessing-the-data)
+3. [Magi servers](#Magi-servers)
+4. [Scopes](#Scopes)
+5. [Groups](#Groups)
+6. [Directory structure](#Directory-structure)
 
 ## Overview
 
