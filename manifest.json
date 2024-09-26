@@ -908,8 +908,36 @@
 		"notes" : []
 	},
 
+	"PTSD-study" : {
+		"scope" : "Private",
+		"group" : "Seeley Lab",
+		"title" : "",
+		"description" : "",
+		"sample processing" : "",
+		"data processing" : "",
+		"contact" : [
+			{
+				"name" : "Erin Seeley",
+				"email" : "erin.seeley@utexas.edu",
+				"affiliation" : "University of Texas at Austin"
+			},
+			{
+				"name" : "Keith Young",
+				"email" : "kayoung@tamu.edu",
+				"affiliation" : "University of Texas at Austin"
+			}
+		],
+		"date" : {
+			"created" : "5 Oct 2023",
+			"received" : "12 Oct 2023"
+		},
+		"formats" : [],
+		"keywords" : ["arthritis"],
+		"notes" : []
+	},
+
 	"20210921_vc_rugose_tims_gordon" : {
-		"scope" : "Protected",
+		"scope" : "Private",
 		"group" : "Unknown",
 		"title" : "Example ion mobility data from Bruker timsTOF",
 		"description" : "",
@@ -933,7 +961,7 @@
 	},
 
 	"EDRN-PCa Image Analysis" : {
-		"scope" : "Protected",
+		"scope" : "Private",
 		"group" : "Unknown",
 		"title" : "",
 		"description" : "",
@@ -950,7 +978,7 @@
 	},
 
 	"M329_cen_withmob" : {
-		"scope" : "Protected",
+		"scope" : "Private",
 		"group" : "Unknown",
 		"title" : "Example ion mobility data from Bruker timsTOF",
 		"description" : "",
@@ -974,7 +1002,7 @@
 	},
 
 	"RK0102" : {
-		"scope" : "Protected",
+		"scope" : "Private",
 		"group" : "Unknown",
 		"title" : "Data from spatially-aware clustering paper",
 		"description" : "",
@@ -991,7 +1019,7 @@
 	},
 
 	"RatBrain_TA_JProtRes2010" : {
-		"scope" : "Protected",
+		"scope" : "Private",
 		"group" : "Unknown",
 		"title" : "Data from spatially-aware clustering paper",
 		"description" : "Rat brain dataset",
@@ -1008,7 +1036,7 @@
 	},
 
 	"Single-Cell" : {
-		"scope" : "Protected",
+		"scope" : "Private",
 		"group" : "Unknown",
 		"title" : "",
 		"description" : "",
@@ -1025,7 +1053,7 @@
 	},
 
 	"Brain_test_1p7" : {
-		"scope" : "Protected",
+		"scope" : "Private",
 		"group" : "Waters",
 		"title" : "Example ion mobility data from Waters",
 		"description" : "",
@@ -1048,7 +1076,7 @@
 	},
 
 	"Rat-Brain-SYNAPT-MALDI" : {
-		"scope" : "Protected",
+		"scope" : "Private",
 		"group" : "Waters",
 		"title" : "Example 3D MSI data from Waters",
 		"description" : "",
