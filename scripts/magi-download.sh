@@ -19,6 +19,6 @@ echo "forwarding to Magi-$1 on port $2"
 sleep 1
 echo "downloading from: '$4'"
 echo "downloading to: '$5'"
-scp -rP $2 viteklab@localhost:$4 $5
+rsync -aP --rsh="ssh -p $2" viteklab@localhost:$4 $5
 kill $pid
 echo "closing connection to server"

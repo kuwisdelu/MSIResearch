@@ -1098,6 +1098,91 @@
 		"notes" : []
 	},
 
+	"Example_Continuous_imzML1.1.1" : {
+		"scope" : "Public",
+		"group" : "Examples",
+		"title" : "Example 1: imzML example data (3×3 pixels) in continuous and processed format",
+		"description" : "",
+		"sample processing" : "",
+		"data processing" : "",
+		"contact" : [],
+		"date" : {
+			"created" : "10 May 2010",
+			"received" : "10 May 2010"
+		},
+		"formats" : ["imzML"],
+		"keywords" : ["example"],
+		"notes" : []
+	},
+
+	"Example_Processed_imzML1.1.1" : {
+		"scope" : "Public",
+		"group" : "Examples",
+		"title" : "Example 1: imzML example data (3×3 pixels) in continuous and processed format",
+		"description" : "",
+		"sample processing" : "",
+		"data processing" : "",
+		"contact" : [],
+		"date" : {
+			"created" : "10 May 2010",
+			"received" : "10 May 2010"
+		},
+		"formats" : ["imzML"],
+		"keywords" : ["example"],
+		"notes" : []
+	},
+
+	"S042_Continuous_imzML1.1.1" : {
+		"scope" : "Public",
+		"group" : "Examples",
+		"title" : "Example 3: MS imaging data set of a urinary bladder in imzML (processed and continuous)",
+		"description" : "",
+		"sample processing" : "",
+		"data processing" : "",
+		"contact" : [],
+		"date" : {
+			"created" : "10 May 2010",
+			"received" : "10 May 2010"
+		},
+		"formats" : ["imzML"],
+		"keywords" : ["example"],
+		"notes" : []
+	},
+
+	"S042_Processed_imzML1.1.1" : {
+		"scope" : "Public",
+		"group" : "Examples",
+		"title" : "Example 3: MS imaging data set of a urinary bladder in imzML (processed and continuous)",
+		"description" : "",
+		"sample processing" : "",
+		"data processing" : "",
+		"contact" : [],
+		"date" : {
+			"created" : "10 May 2010",
+			"received" : "10 May 2010"
+		},
+		"formats" : ["imzML"],
+		"keywords" : ["example"],
+		"notes" : []
+	},
+
+	"S043_Processed_imzML1.1.1" : {
+		"scope" : "Public",
+		"group" : "Examples",
+		"title" : "Example 2: MS imaging data set of a urinary bladder in imzML (processed)",
+		"description" : "",
+		"sample processing" : "",
+		"data processing" : "",
+		"contact" : [],
+		"date" : {
+			"created" : "10 May 2010",
+			"received" : "10 May 2010"
+		},
+		"formats" : ["imzML"],
+		"keywords" : ["example"],
+		"notes" : []
+	},
+
 	"3DMouseKidney" : {
 		"scope" : "Public",
 		"group" : "GigaDB",
