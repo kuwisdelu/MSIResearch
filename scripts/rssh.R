@@ -1,4 +1,6 @@
 
+# Restricted SSH manager for rsync
+# 
 # Example usage:
 # 
 # con <- rssh("kuwisdelu", "Magi-02", server="login.khoury.northeastern.edu")

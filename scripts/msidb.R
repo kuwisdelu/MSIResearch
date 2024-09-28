@@ -1,4 +1,6 @@
 
+# MSI database manager
+# 
 # Example usage:
 # 
 # db <- msidb("viteklab", "/Volumes/Datasets/")
