@@ -3,7 +3,7 @@
 # 
 # Example usage:
 # 
-# source("MSIData/scripts/rssh.R")
+# source("~/Datasets/MSIData/scripts/rssh.R")
 # con <- rssh("kuwisdelu", "Magi-02", server="login.khoury.northeastern.edu")
 # con$isopen()
 # file.create("~/Scratch/test")
@@ -28,6 +28,8 @@
 		if ( !is.na(server) && !isopen() )
 		{
 			message("connecting to ", server)
+			if ( is.na(server_username) )
+				server_username <<- readline("Please enter your username: ")
 			gateway <- paste0(server_username, "@", server)
 			target <- paste0(port, ":", destination, ":", destination_port)
 			cmd_ssh <- paste("{", "ssh", "-NL", target, gateway, "& }")

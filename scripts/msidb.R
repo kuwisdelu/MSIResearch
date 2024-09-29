@@ -3,7 +3,7 @@
 # 
 # Example usage:
 # 
-# source("MSIData/scripts/msidb.R")
+# source("~/Datasets/MSIData/scripts/msidb.R")
 # db <- msidb("viteklab", "/Volumes/Datasets/")
 # db$ls()
 # db$search("tumor")
@@ -44,10 +44,12 @@ setClassUnion("environment_OR_NULL", c("environment", "NULL"))
 		if ( !is.na(dbpath) && !isopen() )
 		{
 			dbpath <<- normalizePath(dbpath)
-			if ( !exists("rssh") ) {
-				rsshpath <- file.path(dbpath, "MSIData", "scripts", "rssh.R")
-				rsshpath <- normalizePath(rsshpath)
-				source(rsshpath)
+			if ( !exists("rssh") )
+			{
+				with(.self@.xData, {
+					source(file.path(dbpath, "MSIData", "scripts", "rssh.R"),
+						local=TRUE)
+				})
 			}
 			file <- file.path(dbpath, "MSIData", "manifest.json")
 			file <- normalizePath(file)
@@ -186,6 +188,8 @@ print.msidata <- function(x, nchar = 60L, ...)
 	cat("...additional fields:",
 		paste0(sQuote(notprinted), collapse=", "), "\n")
 }
+
+registerS3method("print", "msidata", .magi$print.msidata)
 
 msidb <- function(username, dbpath,
 	remote_dbpath = NA_character_,
