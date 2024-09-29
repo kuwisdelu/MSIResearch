@@ -3,10 +3,18 @@
 # 
 # Example usage:
 # 
+# source("MSIData/scripts/msidb.R")
 # db <- msidb("viteklab", "/Volumes/Datasets/")
 # db$ls()
 # db$search("tumor")
-# db$cached()
+# db$search("example")
+# db$remote_dbpath <- "/Volumes/MagiCache"
+# db$remote_dbhost <- "Magi-03"
+# db$server <- "login.khoury.northeastern.edu"
+# db$server_username <- "kuwisdelu"
+# db$sync("Example_Continuous_imzML")
+# db$sync("Example_Processed_imzML")
+# db$cached(full=TRUE)
 # 
 
 if ( !requireNamespace("jsonlite", quietly=TRUE) )
@@ -35,13 +43,19 @@ setClassUnion("environment_OR_NULL", c("environment", "NULL"))
 	open = function() {
 		if ( !is.na(dbpath) && !isopen() )
 		{
+			dbpath <<- normalizePath(dbpath)
+			if ( !exists("rssh") ) {
+				rsshpath <- file.path(dbpath, "MSIData", "scripts", "rssh.R")
+				rsshpath <- normalizePath(rsshpath)
+				source(rsshpath)
+			}
 			file <- file.path(dbpath, "MSIData", "manifest.json")
 			file <- normalizePath(file)
 			message("parsing ", sQuote(file))
 			db <- jsonlite::fromJSON(file)
 			db <- lapply(db, structure, class="msidata")
 			manifest <<- list2env(db, parent=emptyenv())
-			message("detecting cached datasets")
+			message("checking for cached datasets")
 			scopes <- c("Private", "Protected", "Public")
 			scopes <- intersect(scopes, dir(dbpath))
 			scopes <- normalizePath(file.path(dbpath, scopes))
@@ -49,7 +63,8 @@ setClassUnion("environment_OR_NULL", c("environment", "NULL"))
 			groups <- unlist(unname(Map(file.path, scopes, groups)))
 			datasets <- lapply(groups, dir)
 			datasets <- unlist(unname(Map(file.path, groups, datasets)))
-			message("detected ", length(datasets), " cached datasets")
+			message("detected ", length(datasets),
+				" cached datasets in ", dbpath)
 			if ( length(datasets) > 0L )
 			{
 				atime <- file.info(datasets)$atime
@@ -89,7 +104,7 @@ setClassUnion("environment_OR_NULL", c("environment", "NULL"))
 		}
 		results
 	},
-	sync = function(id, ask = FALSE) {
+	sync = function(id, force = FALSE, ask = FALSE) {
 		if ( !isopen() )
 			stop("database is not ready; please call $open()")
 		if ( is.na(remote_dbpath) )
@@ -97,22 +112,37 @@ setClassUnion("environment_OR_NULL", c("environment", "NULL"))
 		if ( length(id) != 1L )
 			stop("must specify exactly 1 dataset")
 		id <- match.arg(id, base::ls(manifest))
-		scope <- manifest[id]$scope
-		group <- manifest[id]$group
-		src <- file.path(remote_dbpath, scope, group, id)
-		dest <- file.path(dbpath, scope, group, id)
-		if ( !exists("rssh") ) {
-			rsshpath <- file.path(dbpath,
-				"MSIData", "scripts", "rssh.R")
-			source(rsshpath, local=FALSE)
+		message("syncing dataset: ", sQuote(id))
+		if ( !force && id %in% cached() ) {
+			message("dataset is already cached; use force=TRUE to sync anyway")
+			return(invisible())
 		}
+		scope <- manifest[[id]]$scope
+		group <- manifest[[id]]$group
+		scopedir <- file.path(dbpath, scope)
+		if ( !dir.exists(scopedir) ) {
+			message("creating ", scopedir)
+			dir.create(scopedir)
+		}
+		groupdir <- file.path(dbpath, scope, group)
+		if ( !dir.exists(groupdir) ) {
+			message("creating ", groupdir)
+			dir.create(groupdir)
+		}
+		src <- file.path(remote_dbpath, scope, group, id)
+		src <- paste0(src, "/")
+		dest <- file.path(dbpath, scope, group, id)
+		dest <- paste0(dest, "/")
 		con <- rssh(username,
 			destination=remote_dbhost,
 			server=server,
 			server_username=server_username,
 			port=port)
+		Sys.sleep(1)
 		try(con$download(src, dest, ask))
 		con$close()
+		message("refreshing local database cache")
+		refresh()
 	},
 	cached = function(full = FALSE) {
 		if ( !isopen() ) {
@@ -163,7 +193,7 @@ msidb <- function(username, dbpath,
 	server = NA_character_,
 	server_username = username,
 	port = 8080L,
-	autoconnect = TRUE)
+	open = TRUE)
 {
 	if ( missing(dbpath) )
 		dbpath <- NA_character_
@@ -176,7 +206,7 @@ msidb <- function(username, dbpath,
 		server_username=server_username,
 		port=port,
 		manifest=NULL)
-	if ( autoconnect )
+	if ( open )
 		db$open()
 	db
 }

@@ -3,6 +3,7 @@
 # 
 # Example usage:
 # 
+# source("MSIData/scripts/rssh.R")
 # con <- rssh("kuwisdelu", "Magi-02", server="login.khoury.northeastern.edu")
 # con$isopen()
 # file.create("~/Scratch/test")
@@ -100,7 +101,7 @@ rssh <- function(username, destination,
 	server_username = username,
 	port = 8080L,
 	destination_port = 22L,
-	autoconnect = TRUE)
+	open = TRUE)
 {
 	con <- .rssh(
 		username=username,
@@ -110,7 +111,7 @@ rssh <- function(username, destination,
 		port=port,
 		destination_port=destination_port,
 		pid=NA_character_)
-	if ( autoconnect )
+	if ( open )
 		con$open()
 	con
 }
