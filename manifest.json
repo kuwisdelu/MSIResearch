@@ -1098,7 +1098,7 @@
 		"notes" : []
 	},
 
-	"Example_Continuous_imzML1.1.1" : {
+	"Example_Continuous_imzML" : {
 		"scope" : "Public",
 		"group" : "Examples",
 		"title" : "Example 1: imzML example data (3×3 pixels) in continuous and processed format",
@@ -1115,7 +1115,7 @@
 		"notes" : []
 	},
 
-	"Example_Processed_imzML1.1.1" : {
+	"Example_Processed_imzML" : {
 		"scope" : "Public",
 		"group" : "Examples",
 		"title" : "Example 1: imzML example data (3×3 pixels) in continuous and processed format",
@@ -1132,7 +1132,7 @@
 		"notes" : []
 	},
 
-	"S042_Continuous_imzML1.1.1" : {
+	"S042_Continuous_imzML" : {
 		"scope" : "Public",
 		"group" : "Examples",
 		"title" : "Example 3: MS imaging data set of a urinary bladder in imzML (processed and continuous)",
@@ -1149,7 +1149,7 @@
 		"notes" : []
 	},
 
-	"S042_Processed_imzML1.1.1" : {
+	"S042_Processed_imzML" : {
 		"scope" : "Public",
 		"group" : "Examples",
 		"title" : "Example 3: MS imaging data set of a urinary bladder in imzML (processed and continuous)",
@@ -1166,7 +1166,7 @@
 		"notes" : []
 	},
 
-	"S043_Processed_imzML1.1.1" : {
+	"S043_Processed_imzML" : {
 		"scope" : "Public",
 		"group" : "Examples",
 		"title" : "Example 2: MS imaging data set of a urinary bladder in imzML (processed)",

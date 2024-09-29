@@ -6,10 +6,17 @@
 # db <- msidb("viteklab", "/Volumes/Datasets/")
 # db$ls()
 # db$search("tumor")
+# db$cached()
 # 
 
 if ( !requireNamespace("jsonlite", quietly=TRUE) )
 	install.packages("jsonlite")
+
+if ( !requireNamespace("BiocManager", quietly=TRUE) )
+	install.packages("BiocManager")
+
+if ( !requireNamespace("matter", quietly=TRUE) )
+	BiocManager::install("matter")
 
 setClassUnion("environment_OR_NULL", c("environment", "NULL"))
 
@@ -30,10 +37,33 @@ setClassUnion("environment_OR_NULL", c("environment", "NULL"))
 		{
 			file <- file.path(dbpath, "MSIData", "manifest.json")
 			file <- normalizePath(file)
-			message("parsing ", file)
+			message("parsing ", sQuote(file))
 			db <- jsonlite::fromJSON(file)
 			db <- lapply(db, structure, class="msidata")
 			manifest <<- list2env(db, parent=emptyenv())
+			message("detecting cached datasets")
+			scopes <- c("Private", "Protected", "Public")
+			scopes <- intersect(scopes, dir(dbpath))
+			scopes <- normalizePath(file.path(dbpath, scopes))
+			groups <- lapply(scopes, dir)
+			groups <- unlist(unname(Map(file.path, scopes, groups)))
+			datasets <- lapply(groups, dir)
+			datasets <- unlist(unname(Map(file.path, groups, datasets)))
+			message("detected ", length(datasets), " cached datasets")
+			if ( length(datasets) > 0L )
+			{
+				atime <- file.info(datasets)$atime
+				files <- lapply(datasets, list.files, recursive=TRUE)
+				files <- Map(file.path, datasets, files)
+				size <- lapply(files, file.size)
+				size <- vapply(size, sum, numeric(1L))
+				size <- matter::size_bytes(size)
+				dbcache <- data.frame(id=basename(datasets),
+					time=atime, size=size, path=datasets,
+					row.names=NULL)
+				manifest[[".dbcache"]] <<- dbcache
+			}
+			message("database is ready")
 		}
 		if ( is.na(dbpath) )
 			warning("couldn't find database; please set $dbpath")
@@ -42,14 +72,14 @@ setClassUnion("environment_OR_NULL", c("environment", "NULL"))
 		!is.null(manifest)
 	},
 	ls = function() {
-		if ( is.null(manifest) ) {
+		if ( !isopen() ) {
 			character(0L)
 		} else {
 			base::ls(manifest)
 		}
 	},
 	search = function(pattern) {
-		if ( is.null(manifest) || missing(pattern) ) {
+		if ( !isopen() || missing(pattern) ) {
 			results <- as.list(manifest)
 		} else {
 			is_hit <- function(x) any(grepl(pattern, unlist(x)))
@@ -59,8 +89,48 @@ setClassUnion("environment_OR_NULL", c("environment", "NULL"))
 		}
 		results
 	},
+	sync = function(id, ask = FALSE) {
+		if ( !isopen() )
+			stop("database is not ready; please call $open()")
+		if ( is.na(remote_dbpath) )
+			stop("no remote database; please set $remote_dbpath")
+		if ( length(id) != 1L )
+			stop("must specify exactly 1 dataset")
+		id <- match.arg(id, base::ls(manifest))
+		scope <- manifest[id]$scope
+		group <- manifest[id]$group
+		src <- file.path(remote_dbpath, scope, group, id)
+		dest <- file.path(dbpath, scope, group, id)
+		if ( !exists("rssh") ) {
+			rsshpath <- file.path(dbpath,
+				"MSIData", "scripts", "rssh.R")
+			source(rsshpath, local=FALSE)
+		}
+		con <- rssh(username,
+			destination=remote_dbhost,
+			server=server,
+			server_username=server_username,
+			port=port)
+		try(con$download(src, dest, ask))
+		con$close()
+	},
+	cached = function(full = FALSE) {
+		if ( !isopen() ) {
+			character(0L)
+		} else {
+			if ( full ) {
+				manifest[[".dbcache"]]
+			} else {
+				manifest[[".dbcache"]]$id
+			}
+		}
+	},
+	refresh = function() {
+		close()
+		open()
+	},
 	close = function() {
-		if ( !is.null(manifest) )
+		if ( isopen() )
 			manifest <<- NULL
 	})
 

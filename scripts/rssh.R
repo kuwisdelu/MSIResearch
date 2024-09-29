@@ -47,6 +47,8 @@
 		if ( is.na(server) ) {
 			src <- paste0(username, "@", destination, ":", src)
 		} else {
+			if ( !isopen() )
+				stop("connection is closed; please call $open()")
 			src <- paste0(username, "@localhost:", src)
 		}
 		message("data will be downloaded from: ", sQuote(showsrc))
@@ -67,6 +69,8 @@
 		if ( is.na(server) ) {
 			dest <- paste0(username, "@", destination, ":", dest)
 		} else {
+			if ( !isopen() )
+				stop("connection is closed; please call $open()")
 			dest <- paste0(username, "@localhost:", dest)
 		}
 		message("data will be uploaded from: ", sQuote(src))
@@ -83,7 +87,7 @@
 		}
 	},
 	close = function() {
-		if ( !is.na(pid) ) {
+		if ( isopen() ) {
 			cmd_close <- paste("kill", pid)
 			message("closing connection to server")
 			pid <<- NA_character_
