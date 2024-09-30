@@ -189,7 +189,7 @@ print.msidata <- function(x, nchar = 60L, ...)
 		paste0(sQuote(notprinted), collapse=", "), "\n")
 }
 
-registerS3method("print", "msidata", .magi$print.msidata)
+registerS3method("print", "msidata", print.msidata)
 
 msidb <- function(username, dbpath,
 	remote_dbpath = NA_character_,
