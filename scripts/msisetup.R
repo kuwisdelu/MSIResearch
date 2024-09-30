@@ -3,7 +3,7 @@
 # 
 # Example usage:
 # 
-# source("~/Datasets/MSIData/scripts/setup.R")
+# source("~/Datasets/MSIData/scripts/msisetup.R")
 # .msi$load()
 # .msi$db$ls()
 # .msi$db$cached()
@@ -18,11 +18,14 @@
 .msi <- new.env()
 .msirc <- new.env()
 
-.msi$known_hosts <- c("Magi-01", "Magi-02", "Magi-03")
 .msi$dbpath <- Sys.getenv("MSI_DBPATH", "/Volumes/Datasets")
+.msi$known_hosts <- c("Magi-01", "Magi-02", "Magi-03")
+
+.msi$host <- Sys.info()[["nodename"]]
+.msi$host <- gsub(".local", "", .msi$host, fixed=TRUE)
 .msi$isloaded <- FALSE
 
-if ( basename(Sys.info()[["nodename"]]) %in% .msi$known_hosts ) {
+if ( .msi$host %in% .msi$known_hosts ) {
 	# defaults for Magi nodes
 	.msi$defaults <- list(
 		username = Sys.info()[["user"]],
@@ -73,7 +76,7 @@ if ( basename(Sys.info()[["nodename"]]) %in% .msi$known_hosts ) {
 		.msi$load()
 	message("attaching msirc functions:\n",
 		paste0(" + ", ls(.msirc), "\n"))
-	attach(.msirc, name="msirc")
+	attach(.msirc, name="MSIData:msirc")
 }
 
 .msi$detach <- function()
@@ -81,7 +84,7 @@ if ( basename(Sys.info()[["nodename"]]) %in% .msi$known_hosts ) {
 	if ( !.msi$isloaded )
 		return(invisible())
 	message("detaching msirc functions")
-	detach("msirc", character.only=TRUE)
+	detach("MSIData:msirc", character.only=TRUE)
 }
 
 .msi$magi_download <- function(node, src, dest, username = NULL)

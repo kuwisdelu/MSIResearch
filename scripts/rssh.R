@@ -46,15 +46,15 @@
 		!is.na(pid)
 	},
 	download = function(src, dest, ask = FALSE) {
-		showsrc <- paste0(username, "@", destination, ":", src)
+		truesrc <- paste0(username, "@", destination, ":", src)
 		if ( is.na(server) ) {
-			src <- paste0(username, "@", destination, ":", src)
+			src <- truesrc
 		} else {
 			if ( !isopen() )
 				stop("connection is closed; please call $open()")
 			src <- paste0(username, "@localhost:", src)
 		}
-		message("data will be downloaded from: ", sQuote(showsrc))
+		message("data will be downloaded from: ", sQuote(truesrc))
 		message("data will be downloaded to: ", sQuote(dest))
 		if ( isFALSE(ask) || isTRUE(askYesNo("continue?")) )
 		{
@@ -63,21 +63,25 @@
 			rsh <- paste0("--rsh=", sQuote(rsh, FALSE))
 			src <- sQuote(src, FALSE)
 			dest <- sQuote(path.expand(dest), FALSE)
-			cmd_rsync <- paste("rsync", "-aP", rsh, src, dest)
+			if ( is.na(server) ) {
+				cmd_rsync <- paste("rsync", "-aP", src, dest)
+			} else {
+				cmd_rsync <- paste("rsync", "-aP", rsh, src, dest)
+			}
 			system(cmd_rsync)
 		}
 	},
 	upload = function(src, dest, ask = FALSE) {
-		showdest <- paste0(username, "@", destination, ":", dest)
+		truedest <- paste0(username, "@", destination, ":", dest)
 		if ( is.na(server) ) {
-			dest <- paste0(username, "@", destination, ":", dest)
+			dest <- truedest
 		} else {
 			if ( !isopen() )
 				stop("connection is closed; please call $open()")
 			dest <- paste0(username, "@localhost:", dest)
 		}
 		message("data will be uploaded from: ", sQuote(src))
-		message("data will be uploaded to: ", sQuote(showdest))
+		message("data will be uploaded to: ", sQuote(truedest))
 		if ( isFALSE(ask) || isTRUE(askYesNo("continue?")) )
 		{
 			rsh <- "ssh -o NoHostAuthenticationForLocalhost=yes"
@@ -85,7 +89,11 @@
 			rsh <- paste0("--rsh=", sQuote(rsh, FALSE))
 			src <- sQuote(path.expand(src), FALSE)
 			dest <- sQuote(dest, FALSE)
-			cmd_rsync <- paste("rsync", "-aP", rsh, src, dest)
+			if ( is.na(server) ) {
+				cmd_rsync <- paste("rsync", "-aP", src, dest)
+			} else {
+				cmd_rsync <- paste("rsync", "-aP", rsh, src, dest)
+			}
 			system(cmd_rsync)
 		}
 	},
