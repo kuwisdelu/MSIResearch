@@ -186,7 +186,5 @@ You should now be able to access the Khoury servers using key-based authenticati
 
 ### SSH keys for Magi servers
 
-Because we currently rely on shared login credentials for `viteklab` members, please do __NOT__ set up SSH keys on Magi servers.
-
-You will be asked for password authentication when connecting to any Magi node.
+Because we currently rely on shared login credentials for `viteklab` members, please do __NOT__ set up SSH keys on Magi servers. You will be asked for password authentication when connecting to any Magi node.
 
