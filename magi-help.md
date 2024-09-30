@@ -183,13 +183,14 @@ If you need additional software or dependencies that require administrator privi
 
 Northeastern University members also have access to the Discovery cluster which includes over 50,000 CPU cores and 525 GPUs.
 
-You should use Magi node if:
+You should use Magi if:
 
 - You need faster single-core performance
 - You need fast SSD storage for out-of-core computing
 - You need less than 192 GB of memory
 - You need more memory on a GPU than is available on Discovery
 - You need software that is not available on Discovery
+- Your data is already available on Magi
 
 You should use Discovery if:
 
@@ -198,4 +199,4 @@ You should use Discovery if:
 - You need a more powerful GPU than is available on Magi
 - You need multiple CPUs with >40 Gbps interconnect bandwidth
 - You need software that is not available on Magi
-
+- Your data can be easily transfered to Discovery
