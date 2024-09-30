@@ -86,9 +86,12 @@ The following functions are provided:
 - `msi_ls()`
     + List all dataset identifiers
 
-- `msi_search(pattern)`
+- `msi_search(pattern, scope, group, cached = FALSE)`
     + Search all experimental metadata for `pattern`.
     + `pattern` is a regular expression passed to `grepl()`
+    + `scope` is used to limit the search to given scopes
+    + `group` is used to limit the search to given groups
+    + `cached` is used to limit the search locally cached datasets
 
 - `msi_sync(id, force = FALSE)`
     + Download a single dataset selected by `id`.

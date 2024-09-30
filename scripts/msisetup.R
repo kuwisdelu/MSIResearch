@@ -138,9 +138,9 @@ with(.msirc,
 		.msi$db$ls()
 	}
 
-	msi_search <- function(pattern)
+	msi_search <- function(pattern, scope, group, cached = FALSE)
 	{
-		.msi$db$search(pattern)
+		.msi$db$search(pattern, scope=scope, group=group, cached=cached)
 	}
 
 	msi_sync <- function(id, force = FALSE)

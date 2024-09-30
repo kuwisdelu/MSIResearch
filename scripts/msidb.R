@@ -90,20 +90,29 @@ setClassUnion("environment_OR_NULL", c("environment", "NULL"))
 	},
 	ls = function() {
 		if ( !isopen() ) {
-			character(0L)
+			stop("database is not ready; please call $open()")
 		} else {
 			base::ls(manifest)
 		}
 	},
-	search = function(pattern) {
-		if ( !isopen() || missing(pattern) ) {
-			results <- as.list(manifest)
-		} else {
-			is_hit <- function(x) any(grepl(pattern, unlist(x)))
-			hits <- eapply(manifest, is_hit)
-			hits <- names(hits)[which(as.logical(unlist(hits)))]
-			results <- mget(hits, manifest)
+	search = function(pattern, scope, group, cached = FALSE) {
+		if ( !isopen() )
+			stop("database is not ready; please call $open()")
+		is_hit <- function(x, pattern, scope, group) {
+			ok <- TRUE
+			if ( !missing(pattern) )
+				ok <- ok && any(grepl(tolower(pattern), tolower(unlist(x))))
+			if ( !missing(scope) )
+				ok <- ok && any(pmatch(tolower(scope), tolower(x$scope)))
+			if ( !missing(group) )
+				ok <- ok && any(pmatch(tolower(group), tolower(x$group)))
+			ok
 		}
+		hits <- eapply(manifest, is_hit, pattern, scope, group)
+		hits <- names(hits)[which(as.logical(unlist(hits)))]
+		if ( cached )
+			hits <- hits[hits %in% manifest[[".dbcache"]]$id]
+		results <- mget(hits, manifest)
 		results
 	},
 	sync = function(id, force = FALSE, ask = FALSE) {
