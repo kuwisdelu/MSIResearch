@@ -183,9 +183,13 @@ Otherwise:
 
 `ssh-copy-id -i ~/.ssh/id_ed25519.pub <your-khoury-username>@login.khoury.northeastern.edu`
 
-You should now be able to access the Khoury servers using key-based authentication rather than using a password.
+You should now be able to access the Khoury servers using key-based authentication rather than using a password:
+
+`ssh your-khoury-username>@login.khoury.northeastern.edu`
 
 (If you access the servers from multiple machines, you will need to do this on each machine you use.)
+
+
 
 ### SSH keys for Magi servers
 
