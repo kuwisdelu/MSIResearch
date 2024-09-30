@@ -1,6 +1,7 @@
 # Magi cluster
 
 Maintainer: Kylie Ariel Bemis <k.bemis@northeastern.edu>
+
 Revised: 30 September 2024
 
 ## Nodes

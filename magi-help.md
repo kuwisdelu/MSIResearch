@@ -6,6 +6,7 @@
 3. [Accessing data](#Accessing-data)
 4. [File management](#File-management)
 5. [Best practices](#Best-practices)
+6. [Magi versus Discovery](#Magi-versus-Discovery)
 
 
 ## Overview
@@ -27,7 +28,7 @@ or:
 
 `ssh -Y viteklab@Magi-02`
 
-Note that X11 forwarding *must* have been requested when connecting to the Khoury login servers too.
+Note that X11 forwarding *must* have been requested when connecting to the Khoury login servers or this will not work.
 
 Currently, the following nodes are available to `viteklab` members:
 
@@ -116,7 +117,9 @@ This will copy to/from the `viteklab/Scratch/` directory.
 
 Please be mindful of shared system resources.
 
-In particular, it is recommended to limit parallel analyses to 8 or fewer workers, so that cores are available for other users.
+Please do not upload large datasets without permission. Home directory storage is intended for processed data and analysis results. Contact the Magi cluster maintainer to add datasets to the cluster's storage devices.
+
+In addition, it is recommended to limit parallel analyses to 8 or fewer workers, so that cores are available for other users.
 
 To manage remote sessions, you can either us `tmux` on the Khoury login servers or `screen` on a Magi compute node.
 
@@ -131,7 +134,7 @@ tmux
 ssh viteklab@Magi-02
 ```
 
-You can then do `C-b d` to detach the `tmux` session while still connected to the Magi node with your processes running.
+You can then do `C-b d` to detach the `tmux` session while still connected to the Magi node with your process running.
 
 To continue the session, do:
 
@@ -151,7 +154,7 @@ Please use use the `-S` option to give a descriptive name to your `screen` sessi
 screen -S yourname
 ```
 
-You can then do `C-a d` to detach the `screen` session with your processes running.
+You can then do `C-a d` to detach the `screen` session with your process running.
 
 To continue the session, do:
 
@@ -171,8 +174,28 @@ The default software is listed in `magi-info.md`.
 
 If you need additional Python and R packages, but __not__ a specific version, you may install the packages directory using `pip3 install` or `install.packages()`.
 
-If you need *specific versions* of packages, please create a virtual environment using `venv` (if Python) or `renv` (if R) and install packages into the virtual environment.
+If you need *specific versions* of packages, please create a virtual environment using `venv` (for Python packages) or `renv` (for R packages) and install packages into the virtual environment.
 
 If you need additional software or dependencies that require administrator privileges to install, please contact the Magi cluster maintainer.
 
+
+## Magi versus Discovery
+
+Northeastern University members also have access to the Discovery cluster which includes over 50,000 CPU cores and 525 GPUs.
+
+You should use Magi node if:
+
+- You need faster single-core performance
+- You need fast SSD storage for out-of-core computing
+- You need less than 192 GB of memory
+- You need more memory on a GPU than is available on Discovery
+- You need software that is not available on Discovery
+
+You should use Discovery if:
+
+- You need more than 24 CPU cores
+- You need more than 192 GB of memory
+- You need a more powerful GPU than is available on Magi
+- You need multiple CPUs with >40 Gbps interconnect bandwidth
+- You need software that is not available on Magi
 
