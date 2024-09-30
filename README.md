@@ -70,8 +70,19 @@ where `...` contain group directories which contain dataset directories.
 
 Recommended usage is to set an environment variable *$MSI_DBPATH* in your shell to the directory where `MSIData` is cloned and where locally cached datasets should be stored.
 
-The appropriate directory structure will be created automatically when datasets are downloaded.
+For example, in your `.zshrc` or `.bashrc`:
 
+```
+export MSI_DBPATH="path/to/database/"
+```
+
+Alternatively, in R:
+
+```
+Sys.setenv(MSI_DBPATH="/path/to/database/")
+```
+
+The appropriate directory structure will be created automatically when datasets are downloaded.
 
 
 
