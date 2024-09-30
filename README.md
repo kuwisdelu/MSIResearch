@@ -6,7 +6,7 @@
 3. [Groups](#Groups)
 4. [Directory structure](#Directory-structure)
 5. [Accessing the data](#Accessing-the-data)
-6. [Magi servers](#Magi-servers)
+6. [SSH setup](#SSH-setup)
 
 
 
@@ -119,47 +119,15 @@ The following functions are provided:
 
 
 
-## Magi servers
+## SSH setup
 
-The data is currently hosted from the machine `Magi-03` on the Khoury network.
+The Magi servers can be accessed from the Khoury login servers at `login.khoury.northeastern.edu`. You must have a Khoury network account to connect using SSH:
 
-To access the Magi servers, you must first connect to the Khoury login servers:
+```
+ssh <your-khoury-username>@login.khoury.northeastern.edu
+```
 
-`ssh <your-khoury-username>@login.khoury.northeastern.edu`
-
-Then you can connect to the Magi servers from any Khoury login server. To access `Magi-03`, you can do:
-
-`ssh viteklab@Magi-03`
-
-Please contact Kylie Bemis at <k.bemis@northeastern.edu> or on Slack for login credentials.
-
-
-
-### SSH tunneling
-
-Because the Magi servers are behind the Khoury servers, downloading datasets requires SSH tunneling.
-
-#### 1. Connect to Khoury servers with local port forwarding:
-
-`ssh -NL 8080:Magi-03:22 <your-khoury-username>@login.khoury.northeastern.edu &`
-
-This will establish an SSH session with Khoury servers in the background, and forward communication to `Magi-03` on your local port 8080.
-
-#### 2. Store PID of the background SSH process:
-
-`pid=$!`
-
-#### 3. Securely copy data from Magi server:
-
-`scp -rP 8080 viteklab@localhost:</remote/src> </local/dest>`
-
-The above commands use local port 8080 to access the remote Magi server. Tehnically, any unused port with a high number can be used.
-
-
-
-### SSH keys for Khoury servers
-
-It is strongly recommended to set up SSH key-based authentication for the intermediate Khoury login servers:
+It is strongly recommended to set up SSH key-based authentication for the intermediate Khoury login servers.
 
 If you have not already set up SSH keys, this can be done with the following steps:
 
@@ -177,16 +145,24 @@ Accepting the defaults is fine, but you can add an optional passphrase.
 
 `vim ~/.ssh/config`
 
-You can list specific hosts instead of `*`, but the following should work in any case:
+On macOS, if you want to store the (optional) passphrase in your keychain:
 
 ```
 Host *
-	UseKeychain yes
-	AddKeysToAgent yes
-	IdentityFile ~/.ssh/id_ed25519
+    UseKeychain yes
+    AddKeysToAgent yes
+    IdentityFile ~/.ssh/id_ed25519
 ```
 
-The `UseKeychain` line can be omitted if you are not on macOS or don't want to store the (optional) passphrase in your keychain.
+Otherwise:
+
+```
+Host *
+    AddKeysToAgent yes
+    IdentityFile ~/.ssh/id_ed25519
+```
+
+You can also list specific hosts instead of `*`.
 
 #### 4. Add your private key to the ssh-agent:
 
@@ -208,7 +184,7 @@ You should now be able to access the Khoury servers using key-based authenticati
 
 ### SSH keys for Magi servers
 
-Because we currently rely on shared login credentials for lab members, please do __NOT__ set up SSH keys on Magi servers.
+Because we currently rely on shared login credentials for `viteklab` members, please do __NOT__ set up SSH keys on Magi servers.
 
-You will be asked for password authentication when connecting to `Magi-03`.
+You will be asked for password authentication when connecting to any Magi node.
 
