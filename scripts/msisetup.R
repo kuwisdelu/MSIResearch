@@ -143,9 +143,9 @@ with(.msirc,
 		.msi$db$search(pattern)
 	}
 
-	msi_sync <- function(id, force = FALSE, ask = FALSE)
+	msi_sync <- function(id, force = FALSE)
 	{
-		.msi$db$sync(id, force=force, ask=ask)
+		.msi$db$sync(id, force=force)
 	}
 
 	msi_cached <- function(full = FALSE)

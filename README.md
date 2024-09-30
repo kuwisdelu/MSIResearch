@@ -1,11 +1,14 @@
+
 # Mass spectrometry imaging datasets
 
 1. [Overview](#Overview)
-2. [Accessing the data](#Accessing-the-data)
-3. [Magi servers](#Magi-servers)
-4. [Scopes](#Scopes)
-5. [Groups](#Groups)
-6. [Directory structure](#Directory-structure)
+2. [Scopes](#Scopes)
+3. [Groups](#Groups)
+4. [Directory structure](#Directory-structure)
+5. [Accessing the data](#Accessing-the-data)
+6. [Magi servers](#Magi-servers)
+
+
 
 ## Overview
 
@@ -23,42 +26,95 @@ If you analyze a dataset, please add to `notes` with your name and your observat
 
 
 
+## Scopes
+
+Datasets are organized into scopes that define their permissions and visibility.
+
+Datasets marked with `Private` scope require authorization from a PI for access even among lab members.
+
+Datasets marked with `Protected` scope should not be shared outside the lab, but are accessible to any lab member.
+
+Datasets marked with `Public` scope are already available on public repositories and can be freely shared.
+
+
+
+## Groups
+
+Within each scope, datasets are organized into groups based on their provenance.
+
+For `Private` and `Protected` scope datasets, the groups typically correspond to external labs.
+
+For `Public` scope datasets, the groups are typically public repositories such as GigaDB, MassIVE, METASPACE, and PRIDE.
+
+
+
+
+## Directory structure
+
+Datasets described in this repository can be downloaded and cached locally.
+
+The following directory structure is assumed:
+
+```
+/<$MSI_DBPATH>
+    /MSIData
+    /Protected
+        /...
+            /<Dataset>
+    /Public
+        /...
+            /<Dataset>
+```
+
+where `...` contain group directories which contain dataset directories.
+
+Recommended usage is to set an environment variable *$MSI_DBPATH* in your shell to the directory where `MSIData` is cloned and where locally cached datasets should be stored.
+
+The appropriate directory structure will be created automatically when datasets are downloaded.
+
+
+
 
 ## Accessing the data
 
-The R script `msidata.R` provides convenience functions for searching and downloading the data from R. It assumes you are running in a UNIX-alike environment that includes `ssh` and `scp` command line programs.
+The R script `msirc.R` provides convenience functions for searching and downloading the data from R. It assumes you are running in a UNIX-alike environment that includes `ssh` and `rsync` command line programs.
 
-Recommended usage is to source the functions with `source("MSIData/msidata.R")`.
+Recommended usage is to source the functions with `source("MSIData/msirc.R")`.
 
 The following functions are provided:
 
-- `msi_db()`
-    + Return the complete dataset manifest
-
 - `msi_ls()`
     + List all dataset identifiers
-
-- `msi_path(id, dir = ".", remote = FALSE)`
-    + Generate the local or remote path for a dataset's storage location (assuming it exists)
-    + `id` is a the dataset identifier
-    + `dir` is the parent directory used for downloading datasets
-    + `remote` indicates whether to return the local or remote storage location 
 
 - `msi_search(pattern)`
     + Search all experimental metadata for `pattern`.
     + `pattern` is a regular expression passed to `grepl()`
 
-- `msi_download(id, username, dir = ".", port = 8080)`
+- `msi_sync(id, force = FALSE)`
     + Download a single dataset selected by `id`.
     + `id` is a the dataset identifier
-    + `username` is your Khoury username for `login.khoury.northeastern.edu`
-    + `dir` is the parent directory used for downloading datasets
-    + `port` is a port to use for SSH port forwarding
+    + `force` is used to re-download a dataset that is already locally cached
 
-Please be mindful of resources on `Magi-03`.
+- `msi_cached(full = FALSE)`
+    + List all locally cached datasets
+    + `full` is used to return additional metadata columns
 
-`Magi-03` is not intended for running analysis. It has limited memory and internal storage. (Data are stored on a connected RAID array.)
+- `msi_refresh()`
+    + Refreshes the metadata on locally cached datasets
 
+- `magi_download(node, src, dest, username = NULL)`
+    + Download a file or directory from a Magi node
+    + `node` is the Magi node (e.g., "Magi-02")
+    + `src` is the source file or directory on the Magi node
+    + `dest` is the destination file or directory on your computer
+    + `username` is your username on the Magi node (defaults to `viteklab` if `NULL`)
+
+- `magi_upload(node, src, dest, username = NULL)`
+    + Upload a file or directory to a Magi node
+    + `node` is the Magi node (e.g., "Magi-02")
+    + `src` is the source file or directory on your computer
+    + `dest` is the destination file or directory on the Magi node
+    + `username` is your username on the Magi node (defaults to `viteklab` if `NULL`)
 
 
 
@@ -155,46 +211,4 @@ You should now be able to access the Khoury servers using key-based authenticati
 Because we currently rely on shared login credentials for lab members, please do __NOT__ set up SSH keys on Magi servers.
 
 You will be asked for password authentication when connecting to `Magi-03`.
-
-
-
-## Scopes
-
-Datasets marked with `Private` scope require authorization from a PI for access even among lab members.
-
-Datasets marked with `Protected` scope should not be shared outside the lab, but are accessible to any lab member.
-
-Datasets marked with `Public` scope are already available on public repositories and can be freely shared.
-
-
-
-## Groups
-
-Within each scope, datasets are organized into groups based on their provenance.
-
-For `Private` and `Protected` scope datasets, the groups typically correspond to external labs.
-
-For `Public` scope datasets, the groups are typically public repositories such as GigaGB, MassIVE, METASPACE, and PRIDE.
-
-
-
-## Directory structure
-
-The following directory structure is assumed:
-
-```
-/<Parent>
-    /MSIData
-    /Protected
-        /...
-            /<Dataset>
-    /Public
-        /...
-            /<Dataset>
-```
-
-where `...` contain group directories which contain data directories.
-
-Recommended usage is to set your working directory to `<Parent>` when downloading datasets. Then the appropriate directory structure will be created automatically when you download a dataset.
-
 
