@@ -129,6 +129,8 @@ ssh <your-khoury-username>@login.khoury.northeastern.edu
 
 It is strongly recommended to set up SSH key-based authentication for the intermediate Khoury login servers.
 
+### SSH keys for Khoury servers
+
 If you have not already set up SSH keys, this can be done with the following steps:
 
 #### 1. Generate a private key on your local machine:
