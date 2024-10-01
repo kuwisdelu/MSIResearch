@@ -102,7 +102,7 @@ The following functions are provided:
     + `pattern` is a regular expression passed to `grepl()`
     + `scope` is used to limit the search to given scopes
     + `group` is used to limit the search to given groups
-    + `cached` is used to limit the search locally cached datasets
+    + `cached` is used to limit the search to locally cached datasets
 
 - `msi_sync(id, force = FALSE)`
     + Download a single dataset selected by `id`.
@@ -196,7 +196,7 @@ Otherwise:
 
 You should now be able to access the Khoury servers using key-based authentication rather than using a password:
 
-`ssh your-khoury-username>@login.khoury.northeastern.edu`
+`ssh <your-khoury-username>@login.khoury.northeastern.edu`
 
 (If you access the servers from multiple machines, you will need to do this on each machine you use.)
 
