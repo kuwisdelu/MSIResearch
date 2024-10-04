@@ -272,6 +272,8 @@ You can see available Homebrew packages by using:
 brew list
 ```
 
+Homebrew packages require administrator permission to install.
+
 Please contact the Magi cluster maintainer if you need additional system dependencies installed.
 
 ### Best practices for software
