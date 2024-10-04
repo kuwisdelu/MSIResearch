@@ -227,9 +227,9 @@ Additional Python interpreters are available through `conda`.
 
 ### Miniconda
 
-Miniconda 3 is installed to provide package management and reproducible environmentsn via `conda`.
+Miniconda 3 is installed to provide package management and environments with `conda`.
 
-While the system R and Python are set up to provide an out-of-the-box scientific computing environment, more specific environment needs are best handled using `conda`.
+While the system R and Python are set up to provide a useful out-of-the-box scientific computing environment, more specific environment needs are best handled using `conda`.
 
 By default, `conda` is not active. Activate the base `conda` environment by using:
 
@@ -280,13 +280,13 @@ Please use virtual environments as needed to avoid creating conflicts in the sys
 
 It should generally be safe to install additional R packages with `install.packages()`.
 
-It is acceptable to install additional Python packages with `pip install` *if do not conflict with the system `numpy`, `pytorch`, and `tensorflow` installations*. If you are not sure, please install packages to a virtual environment instead.
+It is acceptable to install additional Python packages with `pip install` *if they do not conflict with the system `numpy`, `pytorch`, and `tensorflow` installations*. If you are not sure, please install packages to a virtual environment instead.
 
 Environments can become quite large, so please try to re-use your environments as much as possible, and remove unused environments.
 
 For shared projects, it is recommended to create a single environment to be used by multiple lab members.
 
-Please take care naming your `conda` environments so their owner and purpose are clear to other users.
+Please name your `conda` environments so their owner and purpose are clear to other users.
 
 
 
