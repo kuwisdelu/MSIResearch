@@ -213,7 +213,7 @@ If you need additional software or dependencies that require administrator privi
 
 The system R will be kept up-to-date with Bioc-devel, including the Bioc-devel versions of `Cardinal` and `matter`.
 
-The system R is aliased as `R="R --no-save"`. Please do not attempt to change this.
+The system R is aliased as `R="R --no-save"`.
 
 If you need the release version of Bioconductor or earlier, please use `renv` or `conda create`.
 
@@ -221,7 +221,7 @@ If you need the release version of Bioconductor or earlier, please use `renv` or
 
 The system Python will be kept up-to-date with the most recent release that is compatible with both `pytorch` with `mps` device and `tensorflow-metal`.
 
-The system Python is aliased as `python=python3` and `pip=pip3`. Please do not attempt to change this.
+The system Python is aliased as `python=python3` and `pip=pip3`.
 
 Additional Python interpreters are available through `conda`.
 
