@@ -123,7 +123,7 @@ Additional subdirectories can be created for projects shared between multiple la
 
 ## Session management
 
-To manage remote sessions, you can either us `tmux` on the Khoury login servers or `screen` on a Magi compute node.
+To manage remote sessions, you can either use `tmux` or `screen` on the Khoury login servers or `tmux` or `screen` on a Magi compute node.
 
 Please be mindful of shared system resources. When running parallel jobs, please use as few workers as you need so that cores are available for other users.
 
@@ -145,6 +145,24 @@ To continue the session, do:
 
 ```
 tmux attach
+```
+
+To create a named session, you can do:
+
+```
+tmux new -s yourname
+```
+
+To attach a named session, you can do:
+
+```
+tmux attach -t yourname
+```
+
+You can view existing `tmux` sessions with:
+
+```
+tmux ls
 ```
 
 ### Using `screen` on Magi nodes
