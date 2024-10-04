@@ -3,7 +3,7 @@
 # 
 # Example usage:
 # 
-# source("~/Datasets/MSIData/scripts/msidb.R")
+# source("~/Datasets/MSIResearch/scripts/msidb.R")
 # db <- msidb("viteklab", "/Volumes/Datasets/")
 # db$ls()
 # db$search("tumor")
@@ -47,11 +47,11 @@ setClassUnion("environment_OR_NULL", c("environment", "NULL"))
 			if ( !exists("rssh") )
 			{
 				with(.self@.xData, {
-					source(file.path(dbpath, "MSIData", "scripts", "rssh.R"),
+					source(file.path(dbpath, "MSIResearch", "scripts", "rssh.R"),
 						local=TRUE)
 				})
 			}
-			file <- file.path(dbpath, "MSIData", "manifest.json")
+			file <- file.path(dbpath, "MSIResearch", "manifest.json")
 			file <- normalizePath(file)
 			message("parsing ", sQuote(file))
 			db <- jsonlite::fromJSON(file)

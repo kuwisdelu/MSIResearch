@@ -3,7 +3,7 @@
 # 
 # Example usage:
 # 
-# source("~/Datasets/MSIData/scripts/msisetup.R")
+# source("~/Datasets/MSIResearch/scripts/msisetup.R")
 # .msi$load()
 # .msi$db$ls()
 # .msi$db$cached()
@@ -55,9 +55,9 @@ if ( .msi$host %in% .msi$known_hosts ) {
 		{
 			if ( !dir.exists(dbpath) )
 				stop("couldn't find database; please set $dbpath")
-			source(file.path(dbpath, "MSIData", "scripts", "rssh.R"),
+			source(file.path(dbpath, "MSIResearch", "scripts", "rssh.R"),
 				local=TRUE)
-			source(file.path(dbpath, "MSIData", "scripts", "msidb.R"),
+			source(file.path(dbpath, "MSIResearch", "scripts", "msidb.R"),
 				local=TRUE)
 		}
 		db <- msidb(defaults$username, dbpath=dbpath,
@@ -76,7 +76,7 @@ if ( .msi$host %in% .msi$known_hosts ) {
 		.msi$load()
 	message("attaching msirc functions:\n",
 		paste0(" + ", ls(.msirc), "\n"))
-	attach(.msirc, name="MSIData:msirc")
+	attach(.msirc, name="MSIResearch:msirc")
 }
 
 .msi$detach <- function()
@@ -84,7 +84,7 @@ if ( .msi$host %in% .msi$known_hosts ) {
 	if ( !.msi$isloaded )
 		return(invisible())
 	message("detaching msirc functions")
-	detach("MSIData:msirc", character.only=TRUE)
+	detach("MSIResearch:msirc", character.only=TRUE)
 }
 
 .msi$magi_download <- function(node, src, dest, username = NULL)
@@ -95,7 +95,7 @@ if ( .msi$host %in% .msi$known_hosts ) {
 		{
 			if ( !dir.exists(dbpath) )
 				stop("couldn't find database; please set $dbpath")
-			source(file.path(dbpath, "MSIData", "scripts", "rssh.R"),
+			source(file.path(dbpath, "MSIResearch", "scripts", "rssh.R"),
 				local=TRUE)
 		}
 	})
@@ -117,7 +117,7 @@ if ( .msi$host %in% .msi$known_hosts ) {
 		{
 			if ( !dir.exists(dbpath) )
 				stop("couldn't find database; please set $dbpath")
-			source(file.path(dbpath, "MSIData", "scripts", "rssh.R"),
+			source(file.path(dbpath, "MSIResearch", "scripts", "rssh.R"),
 				local=TRUE)
 		}
 	})

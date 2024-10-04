@@ -3,7 +3,7 @@
 # 
 # Example usage:
 # 
-# source("~/Datasets/MSIData/scripts/rssh.R")
+# source("~/Datasets/MSIResearch/scripts/rssh.R")
 # con <- rssh("kuwisdelu", "Magi-02", server="login.khoury.northeastern.edu")
 # con$isopen()
 # file.create("~/Scratch/test")

@@ -57,7 +57,7 @@ The following directory structure is assumed:
 
 ```
 /<$MSI_DBPATH>
-    /MSIData
+    /MSIResearch
     /Protected
         /...
             /<Dataset>
@@ -68,7 +68,7 @@ The following directory structure is assumed:
 
 where `...` contain group directories which contain dataset directories.
 
-Recommended usage is to set an environment variable *$MSI_DBPATH* in your shell to the directory where `MSIData` is cloned and where locally cached datasets should be stored.
+Recommended usage is to set an environment variable *$MSI_DBPATH* in your shell to the directory where `MSIResearch` is cloned and where locally cached datasets should be stored.
 
 For example, in your `.zshrc` or `.bashrc`:
 
@@ -90,7 +90,7 @@ The appropriate directory structure will be created automatically when datasets 
 
 The R script `msirc.R` provides convenience functions for searching and downloading the data from R. It assumes you are running in a UNIX-alike environment that includes `ssh` and `rsync` command line programs.
 
-Recommended usage is to source the functions with `source("MSIData/msirc.R")`.
+Recommended usage is to source the functions with `source("MSIResearch/msirc.R")`.
 
 The following functions are provided:
 

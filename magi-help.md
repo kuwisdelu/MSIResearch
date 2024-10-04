@@ -69,7 +69,7 @@ Due to the small number of users, lab members use a shared `viteklab` login to s
 Please use the following directories for data management:
 
 - `~/Datasets/`
-	+ Includes `MSIData` repository and dataset manifest
+	+ Includes `MSIResearch` repository and dataset manifest
 	+ Includes locally cached MSI datasets
 	+ Manage using functions from `msirc.R`
 
@@ -102,7 +102,7 @@ Alternatively, an easier method is to use the `magi_download()` and `magi_upload
 For example, on your personal computer:
 
 ```
-source("MSIData/msirc.R")
+source("MSIResearch/msirc.R")
 file.create("~/Scratch/test")
 magi_upload("Magi-02", "~/Scratch/test", "Scratch/test")
 file.remote("~/Scratch/test")

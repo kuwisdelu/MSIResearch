@@ -3,7 +3,7 @@
 # 
 # Example usage:
 # 
-# source("~/Datasets/MSIData/msirc.R")
+# source("~/Datasets/MSIResearch/msirc.R")
 # msi_ls()
 # msi_cached(full=TRUE)
 # msi_search("tumor")
@@ -14,16 +14,16 @@
 
 local(
 {
-	if ( dir.exists("./MSIData") ) {
+	if ( dir.exists("./MSIResearch") ) {
 		dbpath <- normalizePath(".")
-	} else if ( dir.exists("../MSIData") ) {
+	} else if ( dir.exists("../MSIResearch") ) {
 		dbpath <- normalizePath("..")
 	} else {
 		dbpath <- Sys.getenv("MSI_DBPATH", "/Volumes/Datasets")
 	}
-	if ( !dir.exists(file.path(dbpath, "MSIData")) )
+	if ( !dir.exists(file.path(dbpath, "MSIResearch")) )
 		stop("can't find database; set $MSI_DBPATH and try again")
-	source(file.path(dbpath, "MSIData", "scripts", "msisetup.R"))
+	source(file.path(dbpath, "MSIResearch", "scripts", "msisetup.R"))
 })
 
 .msi$attach()
