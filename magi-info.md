@@ -1,8 +1,7 @@
 # Magi cluster
 
 Maintainer: Kylie Ariel Bemis <k.bemis@northeastern.edu>
-
-Revised: 30 September 2024
+Revised: 4 October 2024
 
 ## Nodes
 
@@ -52,27 +51,12 @@ Revised: 30 September 2024
 - Available on Magi compute nodes
 
 - Command line developer tools
-	+ screen
 	+ clang
 	+ git
 	+ python3
 	+ pip3
-
-- Python packages (standard installation)
-	+ numpy
-	+ pandas
-	+ scikit-learn
-	+ statsmodels
-	+ matplotlib
-	+ seaborn
-
-- Python packages  (custom installation)
-	+ tensorflow
-	+ tensorflow-macos
-	+ tensorflow-metal
-	+ torch
-	+ torchvision
-	+ torchaudio
+	+ tmux
+	+ conda
 
 - R and CRAN/Bioconductor packages
 	+ remotes
@@ -85,6 +69,23 @@ Revised: 30 September 2024
 	+ Cardinal
 	+ CardinalIO
 	+ matter
+
+- Python packages (standard installation)
+	+ numpy
+	+ pandas
+	+ scikit-learn
+	+ statsmodels
+	+ matplotlib
+	+ seaborn
+	+ pyimzML
+
+- Python packages  (custom installation)
+	+ tensorflow
+	+ tensorflow-macos
+	+ tensorflow-metal
+	+ torch
+	+ torchvision
+	+ torchaudio
 
 - X11
 	+ XQuartz
