@@ -24,6 +24,8 @@ If you are the contact person for a dataset within the lab, please add yourself 
 
 If you analyze a dataset, please add to `notes` with your name and your observations.
 
+*Please note that dataset names, scopes, and groups should be ASCII for file system compatibility.*
+
 
 
 ## Scopes
