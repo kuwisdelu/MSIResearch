@@ -5,8 +5,9 @@
 2. [Accessing the cluster](#Accessing-the-cluster)
 3. [Accessing data](#Accessing-data)
 4. [File management](#File-management)
-5. [Best practices](#Best-practices)
-6. [Magi versus Discovery](#Magi-versus-Discovery)
+5. [Session management](#Session-management)
+6. [Software](#Software)
+7. [Magi versus Discovery](#Magi-versus-Discovery)
 
 
 ## Overview
@@ -64,6 +65,8 @@ To remove the functions from your search path, you can do:
 
 Due to the small number of users, lab members use a shared `viteklab` login to simplify cluster management.
 
+Please do not upload large datasets without permission. Home directory storage is intended for processed data and analysis results. Contact the Magi cluster maintainer to add datasets to the cluster's storage devices.
+
 ### Shared lab directories
 
 Please use the following directories for data management:
@@ -111,17 +114,19 @@ magi_download("Magi-02", "Scratch/test", "~/Scratch/test")
 
 This will copy to/from the `viteklab/Scratch/` directory.
 
+### Best practices for files
+
+It is recommended to create a subdirectory with your name in `~/Projects` and `~/Scratch` for your own usage.
+
+Additional subdirectories can be created for projects shared between multiple lab members.
 
 
-## Best practices
-
-Please be mindful of shared system resources.
-
-Please do not upload large datasets without permission. Home directory storage is intended for processed data and analysis results. Contact the Magi cluster maintainer to add datasets to the cluster's storage devices.
-
-In addition, it is recommended to limit parallel analyses to 8 or fewer workers, so that cores are available for other users.
+## Session management
 
 To manage remote sessions, you can either us `tmux` on the Khoury login servers or `screen` on a Magi compute node.
+
+Please be mindful of shared system resources. When running parallel jobs, please use as few workers as you need so that cores are available for other users.
+
 
 ### Using `tmux` on Khoury servers
 
@@ -168,15 +173,103 @@ You can view existing `screen` sessions with:
 screen -ls
 ```
 
-### Installing software
+### Best practices for sessions
+
+Please name any `screen` or `tmux` sessions on Magi nodes with your name and/or description.
+
+*Your sessions can be attached by other `viteklab` members.*
+
+This is useful for sharing an ongoing task among lab members, but please be careful not to attach another user's session without permission.
+
+
+
+## Software
 
 The default software is listed in `magi-info.md`.
 
-If you need additional Python and R packages, but __not__ a specific version, you may install the packages directory using `pip3 install` or `install.packages()`.
-
-If you need *specific versions* of packages, please create a virtual environment using `venv` (for Python packages) or `renv` (for R packages) and install packages into the virtual environment.
+If you need *specific versions* of packages, please create a virtual environment using `conda create` (for multiple dependencies), `venv` (for Python packages), or `renv` (for R packages) and install packages into the virtual environment.
 
 If you need additional software or dependencies that require administrator privileges to install, please contact the Magi cluster maintainer.
+
+### R/Bioconductor
+
+The system R will be kept up-to-date with Bioc-devel, including the Bioc-devel versions of `Cardinal` and `matter`.
+
+The system R is aliased as `R="R --no-save"`. Please do not attempt to change this.
+
+If you need the release version of Bioconductor or earlier, please use `renv` or `conda create`.
+
+### Python
+
+The system Python will be kept up-to-date with the most recent release that is compatible with both `pytorch` with `mps` device and `tensorflow-metal`.
+
+The system Python is aliased as `python=python3` and `pip=pip3`. Please do not attempt to change this.
+
+Additional Python interpreters are available through `conda`.
+
+### Miniconda
+
+Miniconda 3 is installed to provide package management and reproducible environmentsn via `conda`.
+
+While the system R and Python are set up to provide an out-of-the-box scientific computing environment, more specific environment needs are best handled using `conda`.
+
+By default, `conda` is not active. Activate the base `conda` environment by using:
+
+```
+conda activate
+```
+
+Deactivate the current `conda` environment by using:
+
+```
+conda deactivate
+```
+
+If you have specific environment needs, please create a descriptively-named `conda` environment.
+
+For example:
+
+```
+conda create -p ~/Scratch/testenv
+conda activate ~/Scratch/testenv
+```
+
+You can then install dependencies using `conda` or `pip`.
+
+For additional details, please see https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html.
+
+To remove unused environments, after deactivating them, use:
+
+```
+conda env remove -p ~/Scratch/testenv
+```
+
+### Homebrew
+
+Additional system dependencies are handled via Homebrew.
+
+You can see available Homebrew packages by using:
+
+```
+brew list
+```
+
+Please contact the Magi cluster maintainer if you need additional system dependencies installed.
+
+### Best practices for software
+
+Please use virtual environments as needed to avoid creating conflicts in the system environment.
+
+It should generally be safe to install additional R packages with `install.packages()`.
+
+It is acceptable to install additional Python packages with `pip install` *if do not conflict with the system `numpy`, `pytorch`, and `tensorflow` installations*. If you are not sure, please install packages to a virtual environment instead.
+
+Environments can become quite large, so please try to re-use your environments as much as possible, and remove unused environments.
+
+For shared projects, it is recommended to create a single environment to be used by multiple lab members.
+
+Please take care naming your `conda` environments so their owner and purpose are clear to other users.
+
 
 
 ## Magi versus Discovery
