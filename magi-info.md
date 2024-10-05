@@ -55,7 +55,6 @@ Revised: 4 October 2024
 	+ git
 	+ python3
 	+ pip3
-	+ tmux
 	+ conda
 
 - R and CRAN/Bioconductor packages
