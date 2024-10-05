@@ -153,7 +153,7 @@ To create a named session, you can do:
 tmux new -s yourname
 ```
 
-To attach a named session, you can do:
+To attach a named session, do:
 
 ```
 tmux attach -t yourname
@@ -171,7 +171,7 @@ Alternatively, you can use `screen` on a Magi node directly.
 
 Because `screen` sessions will be accessible to other `viteklab` members, it is important to name your sessions.
 
-Please use use the `-S` option to give a descriptive name to your `screen` sessions, e.g., your name:
+Please use the `-S` option to give a descriptive name to your `screen` sessions, e.g., your name:
 
 ```
 screen -S yourname
@@ -219,11 +219,11 @@ If you need the release version of Bioconductor or earlier, please use `renv` or
 
 ### Python
 
-The system Python will be kept up-to-date with the most recent release that is compatible with both `pytorch` with `mps` device and `tensorflow-metal`.
+The system Python will be kept up-to-date with the most recent release that is compatible with both `pytorch-nightly` with `mps` device and `tensorflow-metal`.
 
 The system Python is aliased as `python=python3` and `pip=pip3`.
 
-Additional Python interpreters are available through `conda`.
+Additional Python interpreters are available through `conda create`.
 
 ### Miniconda
 
@@ -254,12 +254,35 @@ conda activate ~/Scratch/testenv
 
 You can then install dependencies using `conda` or `pip`.
 
+To get a specific version of Python, you can do:
+
+```
+conda create -p ~/Scratch/pythonenv python=3.12
+```
+
+To get an environment with `tensorflow-metal`:
+
+```
+conda create -p ~/Scratch/tfenv python=3.10
+conda activate ~/Scratch/tfenv
+pip install tensorflow tensorflow-macos tensorflow-metal
+```
+
+To get an environment with `pytorch-nightly`:
+
+```
+conda create -p ~/Scratch/torchenv numpy pytorch torchvision torchaudio -c pytorch-nightly
+```
+
 For additional details, please see https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html.
 
 To remove unused environments, after deactivating them, use:
 
 ```
 conda env remove -p ~/Scratch/testenv
+conda env remove -p ~/Scratch/pythonenv
+conda env remove -p ~/Scratch/tfenv
+conda env remove -p ~/Scratch/torchenv
 ```
 
 ### Homebrew
@@ -282,7 +305,7 @@ Please use virtual environments as needed to avoid creating conflicts in the sys
 
 It should generally be safe to install additional R packages with `install.packages()`.
 
-It is acceptable to install additional Python packages with `pip install` *if they do not conflict with the system `numpy`, `pytorch`, and `tensorflow` installations*. If you are not sure, please install packages to a virtual environment instead.
+It is acceptable to install additional Python packages with `pip install` *if they do not conflict with the system `tensorflow-metal` and `pytorch-nightly` installations*. If you are not sure, please install packages to a virtual environment instead.
 
 Environments can become quite large, so please try to re-use your environments as much as possible, and remove unused environments.
 
