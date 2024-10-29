@@ -83,6 +83,7 @@ class msidata:
 	"""
 	MSI dataset metadata
 	"""
+	
 	scope: str
 	group: str
 	title: str
@@ -173,6 +174,7 @@ class msisearch:
 	"""
 	MSI dataset search results
 	"""
+	
 	title: str
 	scope: str
 	group: str
@@ -306,17 +308,30 @@ class msidb:
 		fields = ", ".join(fields)
 		return f"msidb({fields})"
 	
-	def __getitem__(self, key):
-		"""
-		Return db[key(s)]
-		"""
-		return self.get(key)
-	
 	def __del__(self):
 		"""
 		Delete self
 		"""
 		self.close()
+	
+	def __getitem__(self, key):
+		"""
+		Return db[key]
+		"""
+		return self.get(key)
+	
+	def get(self, key):
+		"""
+		Return db[key]
+		:param key: A dataset name or iterable of them
+		:returns: An msidata instance or dict of them
+		"""
+		if self._manifest is None:
+			self.open_manifest()
+		if isinstance(key, str):
+			return self._manifest.get(key)
+		else:
+			return {ki: self._manifest[ki] for ki in key}
 	
 	def isopen(self):
 		"""
@@ -353,8 +368,10 @@ class msidb:
 	
 	def ls(self, scope = None, group = None):
 		"""
-		List available datasets by id
+		List available datasets by name
 		"""
+		if self._manifest is None:
+			self.open_manifest()
 		if scope is None and group is None:
 			return list(self._manifest.keys())
 		else:
@@ -369,15 +386,6 @@ class msidb:
 					names.append(name)
 			return names
 	
-	def get(self, key):
-		"""
-		Return db[key]
-		"""
-		if isinstance(key, str):
-			return self._manifest.get(key)
-		else:
-			return {ki: self._manifest[ki] for ki in key}
-	
 	def search(self, pattern = None, scope = None, group = None):
 		"""
 		Search dataset metadata for a pattern
@@ -385,6 +393,8 @@ class msidb:
 		:param scope: Filter by scope
 		:param group: Filter by group
 		"""
+		if self._manifest is None:
+			self.open_manifest()
 		hits = {}
 		for name, dataset in self._manifest.items():
 			ok = True
