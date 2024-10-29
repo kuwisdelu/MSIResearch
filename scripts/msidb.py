@@ -12,7 +12,7 @@
 # print(db)
 # hits = db.search("cancer")
 # print(hits["Bladder_Tumor"])
-# print(fmt_search(hits))
+# print(format_search(hits))
 #
 
 import os
@@ -382,7 +382,7 @@ class msidb:
 	def search(self, pattern = None, scope = None, group = None):
 		"""
 		Search dataset metadata for a pattern
-		:param pattern: The search pattern
+		:param pattern: The pattern to find
 		:param scope: Filter by scope
 		:param group: Filter by group
 		"""
@@ -406,7 +406,7 @@ class msidb:
 		self._manifest = None
 		self._cache = None
 
-def fmt_search(hits):
+def format_search(hits):
 	"""
 	Format a dict of database search hits
 	:param hits: A dict of hits
