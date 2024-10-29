@@ -22,6 +22,7 @@ def normalizePath(path, mustWork = True):
 	Normalize and expand paths
 	:param path: The path to normalize
 	:param mustWork: Must the path exist?
+	:returns: The normalized path
 	"""
 	if "~" in path:
 		path = os.path.expanduser(path)
@@ -77,6 +78,9 @@ class rssh:
 		self.open()
 	
 	def __str__(self):
+		"""
+		Return str(self)
+		"""
 		dest = f"{self.username}@{self.destination}"
 		if self.isopen():
 			server = f"(forwarding to {self.server} over {self.port})"
@@ -85,6 +89,9 @@ class rssh:
 			return "ssh: " + dest
 	
 	def __repr__(self):
+		"""
+		Return repr(self)
+		"""
 		user = f"username='{self.username}'"
 		dest = f"destination='{self.destination}'"
 		if self.isopen():
@@ -96,13 +103,22 @@ class rssh:
 			return f"rssh({user}, {dest})"
 	
 	def __enter__(self):
+		"""
+		Enter context manager
+		"""
 		self.open()
 		return self
 	
 	def __exit__(self, exc_type, exc_value, traceback):
+		"""
+		Exit context manager
+		"""
 		self.close()
 	
 	def __del__(self):
+		"""
+		Delete self
+		"""
 		self.close()
 	
 	def isopen(self):
