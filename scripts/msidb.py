@@ -11,8 +11,7 @@
 # print(db["PXD001283"])
 # print(db)
 # hits = db.search("cancer")
-# print(hits["Bladder_Tumor"])
-# print(format_search(hits))
+# print_search(hits)
 #
 
 import os
@@ -408,7 +407,7 @@ class msidb:
 
 def format_search(hits):
 	"""
-	Format a dict of database search hits
+	Format a dict of search hits
 	:param hits: A dict of hits
 	:return: A formatted string
 	"""
@@ -417,4 +416,11 @@ def format_search(hits):
 		in hits.items()]
 	sl = [f"#### {len(hits)} hits ####\n"] + sl
 	return "\n".join(sl)
+
+def print_search(hits):
+	"""
+	Print a dict of search hits
+	:param hits: A dict of hits
+	"""
+	print(format_search(hits))
 
