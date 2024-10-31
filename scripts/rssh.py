@@ -67,8 +67,6 @@ class rssh:
 		:param port: The local port for gateway server SSH forwarding
 		:param destination_port: The destination port
 		"""
-		if server_username is None:
-			server_username = username
 		self.username = username
 		self.destination = destination
 		self.server = server

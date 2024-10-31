@@ -12,7 +12,8 @@
 # hits = db.search("cancer")
 # print_datasets(hits)
 # 
-# db = msidb("viteklab", "/Volumes/Datasets", "Magi-03", server="login.khoury.northeastern.edu", server_username="kuwisdelu")
+# from msidb import *
+# db = msidb("viteklab", "/Volumes/Datasets", "Magi-03", server="login.khoury.northeastern.edu")
 # db.sync("Example_Continuous_imzML")
 # db.ls_cache()
 # cached = db.ls_cache(scope="Public", details=True)
@@ -181,7 +182,6 @@ def print_datasets(iterable):
 	"""
 	print(format_datasets(iterable))
 
-
 @dataclass
 class msidata:
 	"""
@@ -224,11 +224,20 @@ class msidata:
 		"""
 		Return str(self)
 		"""
+		return self.describe(self.printwidth)
+	
+	def describe(self, printwidth = None):
+		"""
+		Return dataset description
+		"""
 		dataset = asdict(self)
 		printed = ["scope", "group", "description",
-			"sample_processing", "data_processing"]
+			"sample_processing", "data_processing",
+			"formats", "keywords"]
 		notprinted = set(dataset.keys()).difference(printed)
-		notprinted = notprinted.difference(["title"])
+		notprinted = notprinted.difference(["name", "title"])
+		if len(dataset["notes"]) > 0:
+			notprinted = notprinted.difference(["notes"])
 		title = self.title
 		if ( len(title) > 0 ):
 			sl = [f" {title}: "]
@@ -237,9 +246,18 @@ class msidata:
 		sl.append(" {")
 		for field in printed:
 			value = dataset[field]
-			if len(value) > self.printwidth:
-				value = value[:self.printwidth - 4] + "..."
+			if isinstance(value, str):
+				if printwidth is not None:
+					if len(value) > printwidth:
+						value = value[:printwidth - 4] + "..."
+			else:
+				value = ", ".join(value)
 			sl.append(f"  {field}: {value}")
+		for i, note in enumerate(dataset["notes"]):
+			if printwidth is not None:
+				if len(note) > printwidth:
+					note = note[:printwidth - 4] + "..."
+			sl.append(f"  note {i + 1}: {note}")
 		more_fields = [f"'{field}'" for field in notprinted]
 		more_fields = ", ".join(more_fields)
 		sl.append(f"  additional fields: {more_fields}")
@@ -406,7 +424,7 @@ class msidb:
 	def __init__(self, username, dbpath,
 		remote_dbhost = None, remote_dbpath = None,
 		server = None, server_username = None,
-		port = 8080, remote_port = 22,
+		port = 8080, remote_port = 22, verbose = False,
 		autoconnect = True):
 		"""
 		Initialize an msidb instance
@@ -419,18 +437,17 @@ class msidb:
 		:param port: The local port for gateway server SSH forwarding
 		:param remote_port: The remote database host port
 		"""
-		if server_username is None:
-			server_username = username
-		if remote_dbpath is None:
+		if remote_dbhost is not None and remote_dbpath is None:
 			remote_dbpath = dbpath
 		self.username = username
 		self.dbpath = normalizePath(dbpath, mustWork=True)
-		self.remote_dbpath = remote_dbpath
 		self.remote_dbhost = remote_dbhost
+		self.remote_dbpath = remote_dbpath
 		self.server = server
 		self.server_username = server_username
 		self.port = port
 		self.remote_port = remote_port
+		self.verbose = verbose
 		self._manifest = None
 		self._cache = None
 		if autoconnect:
@@ -457,7 +474,10 @@ class msidb:
 				fields.append(remote_dbpath)
 		if self.server is not None:
 			server = f"server='{self.server}'"
-			server_username = f"server_username='{self.server_username}'"
+			if self.server_username is None:
+				server_username = f"server_username=None"
+			else:
+				server_username = f"server_username='{self.server_username}'"
 			port = f"port={self.port}"
 			fields.extend([server, server_username, port])
 		fields = ", ".join(fields)
@@ -560,25 +580,29 @@ class msidb:
 		"""
 		path = os.path.join(self.dbpath, "MSIResearch", "manifest.json")
 		path = normalizePath(path, mustWork=True)
-		print(f"parsing '{path}'")
+		if self.verbose:
+			print(f"parsing '{path}'")
 		with open(path) as file:
 			manifest = json.load(file)
 			manifest = {name: msidata(name, entry) 
 				for name, entry in manifest.items()}
 			self._manifest = manifest
-		print(f"manifest is searchable")
+		if self.verbose:
+			print(f"manifest is searchable")
 	
 	def open_cache(self):
 		"""
 		Refresh the cache metadata
 		"""
-		print("detecting cached datasets")
+		if self.verbose:
+			print("detecting cached datasets")
 		cache = []
 		cache.extend(self.get_cached_scope("Private"))
 		cache.extend(self.get_cached_scope("Protected"))
 		cache.extend(self.get_cached_scope("Public"))
 		self._cache = {dataset.name: dataset for dataset in cache}
-		print(f"{len(cache)} datasets available locally")
+		if self.verbose:
+			print(f"{len(cache)} datasets available locally")
 	
 	def ls(self, scope = None, group = None, details = False):
 		"""
@@ -716,7 +740,7 @@ class msidb:
 				destination_port=self.remote_port)
 			sleep(1) # allow time to connect
 			con.download(src, dest, ask=ask)
-			if os.path.isdir(dest)
+			if os.path.isdir(dest):
 				print("sync complete; refreshing cache metadata")
 				self.open_cache()
 		except:
