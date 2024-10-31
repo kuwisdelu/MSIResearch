@@ -7,11 +7,14 @@
 # db = msidb("viteklab", "/Volumes/Datasets")
 # db.ls()
 # db.ls(scope="Public")
+# db.ls_cache()
+# cached = db.ls_cache(scope="Public", details=True)
+# print_datasets(cached)
 # db.get("PXD001283")
 # print(db["PXD001283"])
 # print(db)
 # hits = db.search("cancer")
-# print_search(hits)
+# print_datasets(hits)
 # db.get_cached_dataset("Public", "PRIDE", "PXD001283")
 # db.get_cached_group("Public", "PRIDE")
 # db.get_cached_scope("Public")
@@ -151,12 +154,40 @@ def format_bytes(x, units = "auto"):
 	x = round(x, ndigits=2)
 	return f"{x} {units}"
 
+def print_bytes(x, units = "auto"):
+	"""
+	Print bytes
+	:param x: The number of bytes
+	:param units: The units (B, KB, MB, etc.)
+	"""
+	print(format_bytes(x, units))
+
+def format_datasets(iterable):
+	"""
+	Format an iterable of datasets
+	:param iterable: An iterable of datasets
+	:return: A formatted string
+	"""
+	sl = [f"['{dataset.name}']\n{dataset}" 
+		for dataset 
+		in iterable]
+	sl = [f"#### {len(sl)} datasets ####\n"] + sl
+	return "\n".join(sl)
+
+def print_datasets(iterable):
+	"""
+	Print an iterable of datasets
+	:param iterable: An iterable of datasets
+	"""
+	print(format_datasets(iterable))
+
+
 @dataclass
 class msidata:
 	"""
 	MSI dataset metadata
 	"""
-	
+	name: str
 	scope: str
 	group: str
 	title: str
@@ -169,22 +200,24 @@ class msidata:
 	keywords: list
 	notes: list
 	
-	def __init__(self, dataset, printwidth = 60):
+	def __init__(self, name, entry, printwidth = 60):
 		"""
 		Initialize an msidata instance
-		:param dataset: A dict parsed from manifest.json
+		:param name: The name of the dataset
+		:param entry: A dict parsed from its manifest entry
 		"""
-		self.scope = dataset["scope"]
-		self.group = dataset["group"]
-		self.title = dataset["title"]
-		self.description = dataset["description"]
-		self.sample_processing = dataset["sample processing"]
-		self.data_processing = dataset["data processing"]
-		self.contact = dataset["contact"]
-		self.date = dataset["date"]
-		self.formats = dataset["formats"]
-		self.keywords = dataset["keywords"]
-		self.notes = dataset["notes"]
+		self.name = name
+		self.scope = entry["scope"]
+		self.group = entry["group"]
+		self.title = entry["title"]
+		self.description = entry["description"]
+		self.sample_processing = entry["sample processing"]
+		self.data_processing = entry["data processing"]
+		self.contact = entry["contact"]
+		self.date = entry["date"]
+		self.formats = entry["formats"]
+		self.keywords = entry["keywords"]
+		self.notes = entry["notes"]
 		self.printwidth = printwidth
 	
 	def __str__(self):
@@ -202,14 +235,14 @@ class msidata:
 		else:
 			sl = [" <Untitled>: "]
 		sl.append(" {")
-		for name in printed:
-			desc = dataset[name]
-			if len(desc) > self.printwidth:
-				desc = desc[:self.printwidth - 4] + "..."
-			sl.append(f"  {name}: {desc}")
-		more_keys = [f"'{name}'" for name in notprinted]
-		more_keys = ", ".join(more_keys)
-		sl.append(f"  additional fields: {more_keys}")
+		for field in printed:
+			value = dataset[field]
+			if len(value) > self.printwidth:
+				value = value[:self.printwidth - 4] + "..."
+			sl.append(f"  {field}: {value}")
+		more_fields = [f"'{field}'" for field in notprinted]
+		more_fields = ", ".join(more_fields)
+		sl.append(f"  additional fields: {more_fields}")
 		sl.append(" }")
 		return "\n".join(["{"] + sl + ["}"])
 	
@@ -248,6 +281,7 @@ class msisearch:
 	MSI dataset search results
 	"""
 	
+	name: str
 	title: str
 	scope: str
 	group: str
@@ -261,6 +295,7 @@ class msisearch:
 		:param pattern: The search pattern
 		:param context: Width of a context window to return
 		"""
+		self.name = dataset.name
 		self.title = dataset.title
 		self.scope = dataset.scope
 		self.group = dataset.group
@@ -310,10 +345,10 @@ class msisearch:
 		sl.append("  _no. of matches_: " + str(len(self.hits)))
 		sl.append("  scope: " + str(self.scope))
 		sl.append("  group: " + str(self.group))
-		for name, desc in self.hits.items():
-			if len(desc) > self.printwidth:
-				desc = desc[:self.printwidth - 4] + "..."
-			sl.append(f"  >{name}: {desc}")
+		for field, match in self.hits.items():
+			if len(match) > self.printwidth:
+				match = match[:self.printwidth - 4] + "..."
+			sl.append(f"  >{field}: {match}")
 		sl.append(" }")
 		return "\n".join(["{"] + sl + ["}"])
 
@@ -332,8 +367,8 @@ class msicache:
 	def __init__(self, name, path, atime, mtime, size):
 		"""
 		Initialize an msicache instance
-		:param path: The file path to the dataset
 		:param name: The name of the dataset
+		:param path: The file path to the dataset
 		:param atime: Last access time
 		:param mtime: Last modified time
 		:param size: Total size in storage
@@ -356,12 +391,11 @@ class msicache:
 		"""
 		Return str(self)
 		"""
-		path = f"  path: '{self.path}'"
-		atime = f"  atime: '{self.atime}'"
-		mtime = f"  mtime: '{self.mtime}'"
-		size = f"  size: {format_bytes(self.size)}"
-		sl = [" {"] + [path, atime, mtime, size] + [" }"]
-		sl = [f" {self.name}: "] + sl
+		path = f" path: '{self.path}'"
+		atime = f" atime: '{self.atime}'"
+		mtime = f" mtime: '{self.mtime}'"
+		size = f" size: {format_bytes(self.size)}"
+		sl = [path, atime, mtime, size]
 		return "\n".join(["{"] + sl + ["}"])
 
 class msidb:
@@ -402,10 +436,7 @@ class msidb:
 		"""
 		Return str(self)
 		"""
-		sl = [f"['{key}']\n{val}" 
-			for key, val 
-			in self._manifest.items()]
-		return "\n".join(sl)
+		return format_datasets(self.manifest.values())
 	
 	def __repr__(self):
 		"""
@@ -440,18 +471,28 @@ class msidb:
 		"""
 		return self.get(key)
 	
+	@property
+	def manifest(self):
+		if self._manifest is None:
+			self.open_manifest()
+		return self._manifest
+	
+	@property
+	def cache(self):
+		if self._cache is None:
+			self.open_cache()
+		return self._cache
+	
 	def get(self, key):
 		"""
 		Return db[key]
 		:param key: A dataset name or iterable of them
 		:returns: An msidata instance or dict of them
 		"""
-		if self._manifest is None:
-			self.open_manifest()
 		if isinstance(key, str):
-			return self._manifest.get(key)
+			return self.manifest.get(key)
 		else:
-			return {ki: self._manifest[ki] for ki in key}
+			return {ki: self.manifest[ki] for ki in key}
 	
 	def get_cached_dataset(self, scope, group, dataset):
 		"""
@@ -518,8 +559,8 @@ class msidb:
 		print(f"parsing '{path}'")
 		with open(path) as file:
 			manifest = json.load(file)
-			manifest = {name: msidata(dataset) 
-				for name, dataset in manifest.items()}
+			manifest = {name: msidata(name, entry) 
+				for name, entry in manifest.items()}
 			self._manifest = manifest
 		print(f"manifest is searchable")
 	
@@ -532,40 +573,76 @@ class msidb:
 		cache.extend(self.get_cached_scope("Private"))
 		cache.extend(self.get_cached_scope("Protected"))
 		cache.extend(self.get_cached_scope("Public"))
-		self._cache = cache
-		print(f"{len(cache)} datasets cached locally")
+		self._cache = {dataset.name: dataset for dataset in cache}
+		print(f"{len(cache)} datasets available locally")
 	
-	def ls(self, scope = None, group = None):
+	def ls(self, scope = None, group = None, details = False):
 		"""
-		List available datasets by name
+		List all datasets by name
+		:param scope: Filter by scope
+		:param group: Filter by group
+		:param details: Return names only or dataset details?
+		:returns: A list of datasets
 		"""
-		if self._manifest is None:
-			self.open_manifest()
 		if scope is None and group is None:
-			return list(self._manifest.keys())
+			if details:
+				return list(self.manifest.values())
+			else:
+				return list(self.manifest.keys())
 		else:
-			names = []
-			for name, dataset in self._manifest.items():
+			results = []
+			for name, dataset in self.manifest.items():
 				ok = True
 				if scope is not None:
 					ok = ok and dataset.has_scope(scope)
 				if group is not None:
 					ok = ok and dataset.has_group(group)
 				if ok:
-					names.append(name)
-			return names
+					if details:
+						results.append(dataset)
+					else:
+						results.append(name)
+			return results
+	
+	def ls_cache(self, scope = None, group = None, details = False):
+		"""
+		List cached datasets by name
+		:param scope: Filter by scope
+		:param group: Filter by group
+		:param details: Return names only or dataset details?
+		:returns: A list of datasets
+		"""
+		if scope is None and group is None:
+			if details:
+				return list(self.cache.values())
+			else:
+				return list(self.cache.keys())
+		else:
+			results = []
+			for name in self.cache.keys():
+				ok = True
+				dataset = self.get(name)
+				if scope is not None:
+					ok = ok and dataset.has_scope(scope)
+				if group is not None:
+					ok = ok and dataset.has_group(group)
+				if ok:
+					if details:
+						results.append(self.cache.get(name))
+					else:
+						results.append(name)
+			return results
 	
 	def search(self, pattern = None, scope = None, group = None):
 		"""
-		Search dataset metadata for a pattern
+		Search all dataset metadata for a pattern
 		:param pattern: The pattern to find
 		:param scope: Filter by scope
 		:param group: Filter by group
+		:returns: A list of search hits
 		"""
-		if self._manifest is None:
-			self.open_manifest()
-		hits = {}
-		for name, dataset in self._manifest.items():
+		hits = []
+		for name, dataset in self.manifest.items():
 			ok = True
 			if scope is not None:
 				ok = ok and dataset.has_scope(scope)
@@ -574,7 +651,29 @@ class msidb:
 			if ok and pattern is not None:
 				result = dataset.search(pattern)
 				if result is not None:
-					hits[name] = result
+					hits.append(result)
+		return hits
+	
+	def search_cache(self, pattern = None, scope = None, group = None):
+		"""
+		Search cached dataset metadata for a pattern
+		:param pattern: The pattern to find
+		:param scope: Filter by scope
+		:param group: Filter by group
+		:returns: A list of search hits
+		"""
+		hits = []
+		for name in self.cache.keys():
+			ok = True
+			dataset = self.get(name)
+			if scope is not None:
+				ok = ok and dataset.has_scope(scope)
+			if group is not None:
+				ok = ok and dataset.has_group(group)
+			if ok and pattern is not None:
+				result = dataset.search(pattern)
+				if result is not None:
+					hits.append(result)
 		return hits
 	
 	def close(self):
@@ -583,23 +682,3 @@ class msidb:
 		"""
 		self._manifest = None
 		self._cache = None
-
-def format_search(hits):
-	"""
-	Format a dict of search hits
-	:param hits: A dict of hits
-	:return: A formatted string
-	"""
-	sl = [f"['{key}']\n{val}" 
-		for key, val 
-		in hits.items()]
-	sl = [f"#### {len(hits)} hits ####\n"] + sl
-	return "\n".join(sl)
-
-def print_search(hits):
-	"""
-	Print a dict of search hits
-	:param hits: A dict of hits
-	"""
-	print(format_search(hits))
-
