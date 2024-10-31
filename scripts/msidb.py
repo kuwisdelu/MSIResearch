@@ -12,14 +12,17 @@
 # print(db)
 # hits = db.search("cancer")
 # print_search(hits)
+# db.get_cached_dataset("Public", "PRIDE", "PXD001283")
+# db.get_cached_group("Public", "PRIDE")
+# db.get_cached_scope("Public")
 #
 
 import os
 import re
 import json
-from collections import namedtuple
 from dataclasses import dataclass
 from dataclasses import asdict
+from datetime import datetime
 from rssh import *
 
 def grep1(pattern, x, ignore_case = True, context = None):
@@ -78,9 +81,17 @@ def grepl(pattern, x, ignore_case = True):
 		for match 
 		in grep(pattern, x, ignore_case=ignore_case)]
 
-def listfiles(path = ".", all_names = False):
+def listfiles(path = ".", allnames = False):
+	"""
+	List files in a directory
+	:param path: The directory
+	:param allnames: Should hidden files be included?
+	:returns: A list of file names
+	"""
 	path = normalizePath(path)
-	if all_names:
+	if not os.path.isdir(path):
+		raise NotADirectoryError("path must be a directory")
+	if allnames:
 		return [f 
 			for f 
 			in os.listdir(path)]
@@ -89,6 +100,56 @@ def listfiles(path = ".", all_names = False):
 			for f 
 			in os.listdir(path)
 			if not f.startswith(".")]
+
+def dirsize(path, allnames = False):
+	"""
+	Get size of a directory
+	:param path: The directory
+	:param allnames: Should hidden files be included?
+	:returns: The size of the directory in bytes
+	"""
+	size = 0
+	files = listfiles(path, allnames=allnames)
+	for file in files:
+		file = os.path.join(path, file)
+		if os.path.isdir(file):
+			size += dirsize(file, allnames=allnames)
+		elif os.path.exists(file):
+			size += os.path.getsize(file)
+	return size
+
+def format_bytes(x, units = "auto"):
+	"""
+	Format bytes
+	:param x: The number of bytes
+	:param units: The units (B, KB, MB, etc.)
+	:returns: A string
+	"""
+	if units == "auto":
+		if x >= 1000 ** 5:
+			units = "PB"
+		elif x >= 1000 ** 4:
+			units = "TB"
+		elif x >= 1000 ** 3:
+			units = "GB"
+		elif x >= 1000 ** 2:
+			units = "MB"
+		elif x >= 1000:
+			units = "KB"
+		else:
+			units = "bytes"
+	if units == "KB":
+		x /= 1000
+	elif units == "MB":
+		x /= 1000 ** 2
+	elif units == "GB":
+		x /= 1000 ** 3
+	elif units == "TB":
+		x /= 1000 ** 4
+	elif units == "PB":
+		x /= 1000 ** 5
+	x = round(x, ndigits=2)
+	return f"{x} {units}"
 
 @dataclass
 class msidata:
@@ -256,6 +317,53 @@ class msisearch:
 		sl.append(" }")
 		return "\n".join(["{"] + sl + ["}"])
 
+@dataclass
+class msicache:
+	"""
+	MSI dataset cache metadata
+	"""
+	
+	name: str
+	path: str
+	_atime: float
+	_mtime: float
+	size: int
+	
+	def __init__(self, name, path, atime, mtime, size):
+		"""
+		Initialize an msicache instance
+		:param path: The file path to the dataset
+		:param name: The name of the dataset
+		:param atime: Last access time
+		:param mtime: Last modified time
+		:param size: Total size in storage
+		"""
+		self.name = name
+		self.path = path
+		self._atime = atime
+		self._mtime = mtime
+		self.size = size
+	
+	@property
+	def atime(self):
+		return datetime.fromtimestamp(self._atime)
+	
+	@property
+	def mtime(self):
+		return datetime.fromtimestamp(self._mtime)
+	
+	def __str__(self):
+		"""
+		Return str(self)
+		"""
+		path = f"  path: '{self.path}'"
+		atime = f"  atime: '{self.atime}'"
+		mtime = f"  mtime: '{self.mtime}'"
+		size = f"  size: {format_bytes(self.size)}"
+		sl = [" {"] + [path, atime, mtime, size] + [" }"]
+		sl = [f" {self.name}: "] + sl
+		return "\n".join(["{"] + sl + ["}"])
+
 class msidb:
 	"""
 	MSI database manager
@@ -345,8 +453,48 @@ class msidb:
 		else:
 			return {ki: self._manifest[ki] for ki in key}
 	
-	def get_dataset_metadata(self, scope, group, dataset):
-		pass
+	def get_cached_dataset(self, scope, group, dataset):
+		"""
+		Get cached dataset metadata
+		:param scope: The dataset scope
+		:param group: The dataset group
+		:param dataset: The dataset name
+		:returns: An msicache instance
+		"""
+		tags = ["name", "atime", "mtime", "size", "path"]
+		path = os.path.join(self.dbpath, scope, group, dataset)
+		path = normalizePath(path, mustWork=True)
+		size = dirsize(path, allnames=True)
+		atime = os.path.getatime(path)
+		mtime = os.path.getmtime(path)
+		return msicache(name=dataset, path=path,
+			atime=atime, mtime=mtime, size=size)
+	
+	def get_cached_group(self, scope, group):
+		"""
+		Get list of cached group metadata
+		:param scope: The dataset scope
+		:param group: The dataset group
+		:returns: A list of msicache instances
+		"""
+		path = os.path.join(self.dbpath, scope, group)
+		path = normalizePath(path, mustWork=True)
+		return [self.get_cached_dataset(scope, group, dataset)
+			for dataset
+			in listfiles(path)]
+	
+	def get_cached_scope(self, scope):
+		"""
+		Get list of cached scope metadata
+		:param scope: The dataset scope
+		:returns: A list of msicache instances
+		"""
+		path = os.path.join(self.dbpath, scope)
+		path = normalizePath(path, mustWork=True)
+		scopes = []
+		for group in listfiles(path):
+			scopes.extend(self.get_cached_group(scope, group))
+		return scopes
 	
 	def isopen(self):
 		"""
@@ -379,7 +527,13 @@ class msidb:
 		"""
 		Refresh the cache metadata
 		"""
-		pass
+		print("detecting cached datasets")
+		cache = []
+		cache.extend(self.get_cached_scope("Private"))
+		cache.extend(self.get_cached_scope("Protected"))
+		cache.extend(self.get_cached_scope("Public"))
+		self._cache = cache
+		print(f"{len(cache)} datasets cached locally")
 	
 	def ls(self, scope = None, group = None):
 		"""
