@@ -56,7 +56,8 @@ class rssh:
 	
 	def __init__(self, username, destination,
 		server = None, server_username = None,
-		port = 8080, destination_port = 22):
+		port = 8080, destination_port = 22,
+		autoconnect = True):
 		"""
 		Initialize an rssh instance
 		:param username: Your username on destination machine
@@ -75,7 +76,8 @@ class rssh:
 		self.port = port
 		self.destination_port = destination_port
 		self.process = None
-		self.open()
+		if autoconnect:
+			self.open()
 	
 	def __str__(self):
 		"""

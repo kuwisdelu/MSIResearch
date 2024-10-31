@@ -7,22 +7,22 @@
 # db = msidb("viteklab", "/Volumes/Datasets")
 # db.ls()
 # db.ls(scope="Public")
-# db.ls_cache()
-# cached = db.ls_cache(scope="Public", details=True)
-# print_datasets(cached)
-# db.get("PXD001283")
 # print(db["PXD001283"])
 # print(db)
 # hits = db.search("cancer")
 # print_datasets(hits)
-# db.get_cached_dataset("Public", "PRIDE", "PXD001283")
-# db.get_cached_group("Public", "PRIDE")
-# db.get_cached_scope("Public")
+# 
+# db = msidb("viteklab", "/Volumes/Datasets", "Magi-03", server="login.khoury.northeastern.edu", server_username="kuwisdelu")
+# db.sync("Example_Continuous_imzML")
+# db.ls_cache()
+# cached = db.ls_cache(scope="Public", details=True)
+# print_datasets(cached)
 #
 
 import os
 import re
 import json
+from time import sleep
 from dataclasses import dataclass
 from dataclasses import asdict
 from datetime import datetime
@@ -404,15 +404,16 @@ class msidb:
 	"""
 	
 	def __init__(self, username, dbpath,
-		remote_dbpath = None, remote_dbhost = None,
+		remote_dbhost = None, remote_dbpath = None,
 		server = None, server_username = None,
-		port = 8080, remote_port = 22):
+		port = 8080, remote_port = 22,
+		autoconnect = True):
 		"""
 		Initialize an msidb instance
 		:param username: Your username on remote database host
 		:param dbpath: The local database path
+		:param remote_dbhost: The remote database host
 		:param remote_dbpath: The remote database path
-		:param remote_dbhost: The remote hostname
 		:param server: The gateway server hostname (optional)
 		:param server_username: Your username on the gateway server (optional)
 		:param port: The local port for gateway server SSH forwarding
@@ -420,6 +421,8 @@ class msidb:
 		"""
 		if server_username is None:
 			server_username = username
+		if remote_dbpath is None:
+			remote_dbpath = dbpath
 		self.username = username
 		self.dbpath = normalizePath(dbpath, mustWork=True)
 		self.remote_dbpath = remote_dbpath
@@ -430,7 +433,8 @@ class msidb:
 		self.remote_port = remote_port
 		self._manifest = None
 		self._cache = None
-		self.open_manifest()
+		if autoconnect:
+			self.open()
 	
 	def __str__(self):
 		"""
@@ -445,12 +449,12 @@ class msidb:
 		user = f"username='{self.username}'"
 		dbpath = f"dbpath='{self.dbpath}'"
 		fields = [user, dbpath]
-		if self.remote_dbpath is not None:
-			remote_dbpath = f"remote_dbpath='{self.remote_dbpath}'"
-			fields.append(remote_dbpath)
 		if self.remote_dbhost is not None:
 			remote_dbhost = f"remote_dbhost='{self.remote_dbhost}'"
 			fields.append(remote_dbhost)
+			if self.remote_dbpath is not None:
+				remote_dbpath = f"remote_dbpath='{self.remote_dbpath}'"
+				fields.append(remote_dbpath)
 		if self.server is not None:
 			server = f"server='{self.server}'"
 			server_username = f"server_username='{self.server_username}'"
@@ -675,6 +679,50 @@ class msidb:
 				if result is not None:
 					hits.append(result)
 		return hits
+	
+	def sync(self, name, force = False, ask = False):
+		"""
+		Sync a dataset to local storage
+		:param name: The name of the dataset
+		:param force: Should the dataset be re-synced if already cached?
+		:param ask: Confirm before downloading?
+		"""
+		if name not in self.manifest:
+			raise KeyError(f"no such dataset: '{name}'")
+		if name in self.cache and not force:
+			print("dataset is already cached; use force=True to re-sync")
+			return
+		if self.remote_dbhost is None:
+			raise ConnectionError("remote host is None")
+		if self.remote_dbpath is None:
+			raise ConnectionError("remote path is None")
+		dataset = self.get(name)
+		scope = dataset.scope
+		group = dataset.group
+		path = os.path.join(self.dbpath, scope, group)
+		path = normalizePath(path, mustWork=False)
+		if not os.path.isdir(path):
+			os.makedirs(path)
+		src = os.path.join(self.remote_dbpath, scope, group, name)
+		src = src + "/"
+		dest = os.path.join(self.dbpath, scope, group, name)
+		dest = dest + "/"
+		try:
+			con = rssh(self.username,
+				destination=self.remote_dbhost,
+				server=self.server,
+				server_username=self.server_username,
+				port=self.port,
+				destination_port=self.remote_port)
+			sleep(1) # allow time to connect
+			con.download(src, dest, ask=ask)
+			if os.path.isdir(dest)
+				print("sync complete; refreshing cache metadata")
+				self.open_cache()
+		except:
+			print("a problem occured during syncing")
+		finally:
+			con.close()
 	
 	def close(self):
 		"""
