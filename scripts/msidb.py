@@ -78,6 +78,18 @@ def grepl(pattern, x, ignore_case = True):
 		for match 
 		in grep(pattern, x, ignore_case=ignore_case)]
 
+def listfiles(path = ".", all_names = False):
+	path = normalizePath(path)
+	if all_names:
+		return [f 
+			for f 
+			in os.listdir(path)]
+	else:
+		return [f 
+			for f 
+			in os.listdir(path)
+			if not f.startswith(".")]
+
 @dataclass
 class msidata:
 	"""
@@ -155,7 +167,7 @@ class msidata:
 	
 	def has_scope(self, pattern):
 		"""
-		Detect dataset's scope matches pattern
+		Detect if the dataset's scope matches a pattern
 		:param pattern: The scope pattern
 		:returns: bool
 		"""
@@ -163,7 +175,7 @@ class msidata:
 	
 	def has_group(self, pattern):
 		"""
-		Detect dataset's group matches pattern
+		Detect if the dataset's group matches a pattern
 		:param pattern: The group pattern
 		:returns: bool
 		"""
@@ -332,6 +344,9 @@ class msidb:
 			return self._manifest.get(key)
 		else:
 			return {ki: self._manifest[ki] for ki in key}
+	
+	def get_dataset_metadata(self, scope, group, dataset):
+		pass
 	
 	def isopen(self):
 		"""
