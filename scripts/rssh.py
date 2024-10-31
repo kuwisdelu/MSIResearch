@@ -172,6 +172,7 @@ class rssh:
 				return
 			else:
 				print("Invalid input. Please enter yes/no.")
+		print(f"downloading data as {self.username}@{self.destination}")
 		dest = normalizePath(dest, mustWork=False)
 		if self.server is None:
 			cmd = ["rsync", "-aP", src, dest]
@@ -209,6 +210,7 @@ class rssh:
 				return
 			else:
 				print("Invalid input. Please enter yes/no.")
+		print(f"uploading data as {self.username}@{self.destination}")
 		src = normalizePath(src, mustWork=True)
 		if self.server is None:
 			cmd = ["rsync", "-aP", src, dest]

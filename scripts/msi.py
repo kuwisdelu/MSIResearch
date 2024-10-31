@@ -1,5 +1,5 @@
 
-# MSI database manager
+# MSI database manager CLI
 # 
 # Example usage:
 # 
@@ -14,21 +14,35 @@
 
 import sys
 import os
+import platform
 import argparse
 from msidb import *
 
 # set up defaults
 
 dbpath = os.getenv("MSI_DBPATH", default="/Volumes/Datasets/")
+known_hosts = ["Magi-01", "Magi-02", "Magi-03"]
+host = platform.node().replace(".local", "")
+user = os.getlogin()
 
-# defaults
-defaults = {"username": "viteklab",
-	"dbpath": dbpath,
-	"remote_dbhost": "Magi-03",
-	"remote_dbpath": "/Volumes/Datasets",
-	"server": "login.khoury.northeastern.edu",
-	"server_username": None,
-	"port": 8080}
+if host in known_hosts:
+	# local Magi defaults
+	defaults = {"username": user,
+		"dbpath": dbpath,
+		"remote_dbhost": "Magi-03.local",
+		"remote_dbpath": "/Volumes/Datasets",
+		"server": None,
+		"server_username": None,
+		"port": 8080}
+else:
+	# remote client defaults
+	defaults = {"username": "viteklab",
+		"dbpath": dbpath,
+		"remote_dbhost": "Magi-03",
+		"remote_dbpath": "/Volumes/Datasets",
+		"server": "login.khoury.northeastern.edu",
+		"server_username": None,
+		"port": 8080}
 
 help_description ="""
 	MSI database manager -
@@ -95,24 +109,20 @@ cmd_sync.add_argument("name", action="store",
 	help="the identifier of the dataset to sync")
 cmd_sync.add_argument("-f", "--force", action="store_true",
 	help="force re-sync if already cached")
-cmd_sync.add_argument("-u", "--user", action="store",
-	help="remote database user",
-	default=defaults["username"])
 cmd_sync.add_argument("-p", "--port", action="store",
-	help="port for SSH forwarding",
+	help="port forwarding",
 	default=defaults["port"])
-cmd_sync.add_argument("--remote-host", action="store",
-	help="remote database host",
-	default=defaults["remote_dbhost"])
-cmd_sync.add_argument("--remote-path", action="store",
-	help="remote database path",
-	default=defaults["remote_dbpath"])
-cmd_sync.add_argument("--server-user", action="store",
-	help="gateway server user",
-	default=defaults["server_username"])
-cmd_sync.add_argument("--server-host", action="store",
-	help="gateway server host",
-	default=defaults["server"])
+cmd_sync.add_argument("-u", "--user", action="store",
+	help="remote database user", default=defaults["username"])
+cmd_sync.add_argument("-H", "--remote-host", action="store",
+	help="remote database host", default=defaults["remote_dbhost"])
+cmd_sync.add_argument("-D", "--remote-path", action="store",
+	help="remote database path", default=defaults["remote_dbpath"])
+cmd_sync.add_argument("-l", "--login", action="store",
+	help="gateway server user", default=defaults["server_username"])
+cmd_sync.add_argument("-g", "--server", action="store",
+	help="gateway server host", default=defaults["server"])
+
 cmd_sync.add_argument("--ask", action="store_true",
 	help="ask to confirm before syncing?")
 
@@ -182,8 +192,8 @@ elif args.cmd == "sync":
 	db.username = args.user
 	db.remote_dbhost = args.remote_host
 	db.remote_dbpath = args.remote_path
-	db.server = args.server_host
-	db.server_username = args.server_user
+	db.server = args.server
+	db.server_username = args.login
 	db.port = args.port
 	db.sync(args.name,
 		force=args.force,
