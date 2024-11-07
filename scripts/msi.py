@@ -107,11 +107,12 @@ cmd_info.add_argument("name", action="store",
 # sync subcommand
 cmd_sync.add_argument("name", action="store",
 	help="the identifier of the dataset to sync")
+cmd_sync.add_argument("-a", "--ask", action="store_true",
+	help="ask to confirm before syncing?")
 cmd_sync.add_argument("-f", "--force", action="store_true",
 	help="force re-sync if already cached")
 cmd_sync.add_argument("-p", "--port", action="store",
-	help="port forwarding",
-	default=defaults["port"])
+	help="port forwarding", default=defaults["port"])
 cmd_sync.add_argument("-u", "--user", action="store",
 	help="remote database user", default=defaults["username"])
 cmd_sync.add_argument("-H", "--remote-host", action="store",
@@ -122,9 +123,6 @@ cmd_sync.add_argument("-l", "--login", action="store",
 	help="gateway server user", default=defaults["server_username"])
 cmd_sync.add_argument("-g", "--server", action="store",
 	help="gateway server host", default=defaults["server"])
-
-cmd_sync.add_argument("--ask", action="store_true",
-	help="ask to confirm before syncing?")
 
 # parse command arguments
 args = parser.parse_args()
