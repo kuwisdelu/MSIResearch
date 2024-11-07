@@ -16,7 +16,7 @@ import sys
 import os
 import argparse
 
-import defaults
+import config
 from msidb import *
 
 def get_parser():
@@ -84,17 +84,17 @@ def get_parser():
 	cmd_sync.add_argument("-f", "--force", action="store_true",
 		help="force re-sync if already cached")
 	cmd_sync.add_argument("-p", "--port", action="store",
-		help="port forwarding", default=defaults.port)
+		help="port forwarding", default=config.port)
 	cmd_sync.add_argument("-u", "--user", action="store",
-		help="remote database user", default=defaults.username)
+		help="remote database user", default=config.username)
 	cmd_sync.add_argument("-L", "--login", action="store",
-		help="gateway server user", default=defaults.server_username)
+		help="gateway server user", default=config.server_username)
 	cmd_sync.add_argument("-S", "--server", action="store",
-		help="gateway server host", default=defaults.server)
+		help="gateway server host", default=config.server)
 	cmd_sync.add_argument("--remote-host", action="store",
-		help="remote database host", default=defaults.remote_dbhost)
+		help="remote database host", default=config.remote_dbhost)
 	cmd_sync.add_argument("--remote-path", action="store",
-		help="remote database path", default=defaults.remote_dbpath)
+		help="remote database path", default=config.remote_dbpath)
 	return parser
 
 def open(dbpath = None):
@@ -103,19 +103,19 @@ def open(dbpath = None):
 	:param dbpath: The local database path
 	"""
 	if dbpath is None:
-		dbpath = defaults.dbpath
+		dbpath = config.dbpath
 	# check for valid database path
 	if not os.path.isdir(dbpath):
 		raise NotADirectoryError(f"database does not exist: '{dbpath}'")
 	if not os.path.isdir(os.path.join(dbpath, "MSIResearch")):
 		raise FileNotFoundError(f"database is not valid: '{dbpath}'")
 	# connect and return database
-	db = msidb(defaults.username, dbpath,
-		remote_dbhost=defaults.remote_dbhost,
-		remote_dbpath=defaults.remote_dbpath,
-		server=defaults.server,
-		server_username=defaults.server_username,
-		port=defaults.port,
+	db = msidb(config.username, dbpath,
+		remote_dbhost=config.remote_dbhost,
+		remote_dbpath=config.remote_dbpath,
+		server=config.server,
+		server_username=config.server_username,
+		port=config.port,
 		verbose=False, autoconnect=False)
 	return db
 
