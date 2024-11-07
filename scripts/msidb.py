@@ -27,6 +27,7 @@ from time import sleep
 from dataclasses import dataclass
 from dataclasses import asdict
 from datetime import datetime
+
 from rssh import *
 
 def grep1(pattern, x, ignore_case = True, context = None):
@@ -436,6 +437,8 @@ class msidb:
 		:param server_username: Your username on the gateway server (optional)
 		:param port: The local port for gateway server SSH forwarding
 		:param remote_port: The remote database host port
+		:param verbose: Print progress messages?
+		:param autoconnect: Connect on initialization?
 		"""
 		if remote_dbhost is not None and remote_dbpath is None:
 			remote_dbpath = dbpath
