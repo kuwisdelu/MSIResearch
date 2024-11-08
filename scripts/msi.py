@@ -73,7 +73,7 @@ def get_parser():
 		help="filter by scope")
 	cmd_search_cache.add_argument("-g", "--group", action="store",
 		help="filter by group")
-	# info subcommand
+	# describe subcommand
 	cmd_describe.add_argument("name", action="store",
 		help="the identifier of the dataset to describe")
 	# sync subcommand
@@ -97,7 +97,7 @@ def get_parser():
 		help="remote database path", default=config.remote_dbpath)
 	return parser
 
-def open(dbpath = None):
+def open_db(dbpath = None):
 	"""
 	Open connection to the database
 	:param dbpath: The local database path
@@ -116,7 +116,8 @@ def open(dbpath = None):
 		server=config.server,
 		server_username=config.server_username,
 		port=config.port,
-		verbose=False, autoconnect=False)
+		verbose=False,
+		autoconnect=False)
 	return db
 
 def main(args):
@@ -125,7 +126,7 @@ def main(args):
 	:param args: The parsed command line arguments
 	"""
 	# connect to database
-	db = open()
+	db = open_db()
 	# help
 	if args.cmd is None:
 		parser.print_help()

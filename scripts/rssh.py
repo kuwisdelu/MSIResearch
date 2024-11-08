@@ -6,11 +6,11 @@
 # from rssh import *
 # con = rssh("kuwisdelu", "Magi-02", "login.khoury.northeastern.edu")
 # con.isopen()
-# print(con)
 # mkfile("~/Scratch/test")
 # con.upload("~/Scratch/test", "Scratch/test")
 # rmfile("~/Scratch/test")
 # con.download("Scratch/test", "~/Scratch/test")
+# con.ssh()
 # con.close()
 # 
 
@@ -67,6 +67,9 @@ class rssh:
 		:param port: The local port for gateway server SSH forwarding
 		:param destination_port: The destination port
 		"""
+		if server is not None:
+			if server_username is None:
+				server_username = username
 		self.username = username
 		self.destination = destination
 		self.server = server
@@ -147,6 +150,42 @@ class rssh:
 			self.process = None
 			print("failed to open connection")
 	
+	def copy_id(self, id_file, ask = False):
+		"""
+		Copy local SSH keys to a remote machine
+		:param id_file: The identity file (ending in .pub)
+		:param ask: Confirm before copying?
+		"""
+		truedest = f"{self.username}@{self.destination}"
+		if self.server is None:
+			dest = truedest
+		else:
+			if not self.isopen():
+				raise ConnectionError("connection is close; call open()")
+			dest = f"{self.username}@localhost"
+		print(f"key will be uploaded from: '{id_file}'")
+		print(f"key will be uploaded to: '{truedest}'")
+		while ask:
+			msg = "Continue? (yes/no): "
+			confirm = input(msg)
+			if confirm in ["y", "yes"]:
+				ask = False
+			elif confirm in ["n", "no"]:
+				return
+			else:
+				print("Invalid input. Please enter yes/no.")
+		print(f"copying key as {self.username}@{self.destination}")
+		id_file = normalizePath(id_file, mustWork=True)
+		cmd = ["ssh-copy-id", "-i", id_file]
+		if self.server is None:
+			cmd += [dest]
+			return subprocess.run(cmd)
+		else:
+			cmd += ["-o", "NoHostAuthenticationForLocalhost=yes"]
+			cmd += ["-p", str(self.port)]
+			cmd += [dest]
+			return subprocess.run(cmd)
+	
 	def download(self, src, dest, ask = False):
 		"""
 		Download file(s) using rsync over ssh
@@ -223,13 +262,33 @@ class rssh:
 			cmd = " ".join(cmd)
 			return subprocess.run(cmd, shell=True)
 	
+	def ssh(self):
+		"""
+		Create an unrestricted ssh terminal session
+		"""
+		truedest = f"{self.username}@{self.destination}"
+		if self.server is None:
+			dest = truedest
+		else:
+			if not self.isopen():
+				self.open()
+			dest = f"{self.username}@localhost"
+		print(f"connecting as {self.username}@{self.destination}")
+		if self.server is None:
+			cmd = ["ssh", dest]
+			return subprocess.run(cmd)
+		else:
+			cmd = ["ssh", "-o", "NoHostAuthenticationForLocalhost=yes"]
+			cmd += ["-p", str(self.port), dest]
+			return subprocess.run(cmd)
+	
 	def close(self):
 		"""
 		Close the connection to the gateway server
 		"""
 		if self.process is None:
 			return
-		print("closing connection to server")
+		print(f"closing connection to {self.server}")
 		self.process.terminate()
 		self.process = None
 
