@@ -107,11 +107,11 @@ def main(args):
 		if len(args.node) != 1:
 			sys.exit("magi connect: error: must target exactly 1 Magi node")
 		if config.is_Magi:
-			target = f"Magi-{args.node[0]}"
+			host = f"Magi-{args.node[0]}.local"
 		else:
-			target = f"Magi-{args.node[0]}"
-		con = open_ssh(args.user, target, args.port)
-		return con.ssh()
+			host = f"Magi-{args.node[0]}"
+		con = open_ssh(args.user, host, args.port)
+		con.ssh()
 	# copy-id
 	elif args.cmd == "copy-id":
 		pass

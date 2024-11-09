@@ -213,21 +213,20 @@ class rssh:
 		"""
 		truehost = {self.username}@{self.hostname}
 		showhost = {self.username}@{self.destination}
+		id_file = normalizePath(id_file, mustWork=True)
 		print(f"key will be uploaded from: '{id_file}'")
 		print(f"key will be uploaded to: '{showhost}'")
 		if ask and not askYesNo():
 			return
 		print(f"copying key as {showhost}")
-		id_file = normalizePath(id_file, mustWork=True)
 		cmd = ["ssh-copy-id", "-i", id_file]
 		if self.server is None:
 			cmd += [truehost]
-			return subprocess.run(cmd)
 		else:
 			cmd += ["-o", "NoHostAuthenticationForLocalhost=yes"]
 			cmd += ["-p", str(self.port)]
 			cmd += [truehost]
-			return subprocess.run(cmd)
+		return subprocess.run(cmd)
 	
 	def download(self, src, dest, dryrun = False, ask = False):
 		"""
@@ -247,18 +246,13 @@ class rssh:
 		print(f"downloading data as {self.username}@{self.destination}")
 		if self.server is None:
 			cmd = ["rsync", "-aP", truesrc, dest]
-			if dryrun:
-				cmd += ["--dry-run"]
-			return subprocess.run(cmd)
 		else:
 			rsh = ["ssh", "-o", "NoHostAuthenticationForLocalhost=yes"]
 			rsh = " ".join(rsh + ["-p", str(self.port)])
-			rsh = f"--rsh='{rsh}'"
-			cmd = ["rsync", "-aP", rsh, truesrc, dest]
-			cmd = " ".join(cmd)
-			if dryrun:
-				cmd += ["--dry-run"]
-			return subprocess.run(cmd, shell=True)
+			cmd = ["rsync", "-aP", "--rsh", rsh, truesrc, dest]
+		if dryrun:
+			cmd += ["--dry-run"]
+		return subprocess.run(cmd)
 	
 	def upload(self, src, dest, dryrun = False, ask = False):
 		"""
@@ -278,18 +272,13 @@ class rssh:
 		print(f"uploading data as {self.username}@{self.destination}")
 		if self.server is None:
 			cmd = ["rsync", "-aP", src, truedest]
-			if dryrun:
-				cmd += ["--dry-run"]
-			return subprocess.run(cmd)
 		else:
 			rsh = ["ssh", "-o", "NoHostAuthenticationForLocalhost=yes"]
 			rsh = " ".join(rsh + ["-p", str(self.port)])
-			rsh = f"--rsh='{rsh}'"
-			cmd = ["rsync", "-aP", rsh, src, truedest]
-			if dryrun:
-				cmd += ["--dry-run"]
-			cmd = " ".join(cmd)
-			return subprocess.run(cmd, shell=True)
+			cmd = ["rsync", "-aP", "--rsh", rsh, src, truedest]
+		if dryrun:
+			cmd += ["--dry-run"]
+		return subprocess.run(cmd)
 	
 	def rsync(self, src, dest, target = None, dryrun = False, ask = False):
 		"""
@@ -318,10 +307,9 @@ class rssh:
 		print(f"data will be copied to: '{showtarget}:{dest}'")
 		if ask and not askYesNo():
 			return
-		else:
-			if dryrun:
-				cmd += ["--dry-run"]
-			return subprocess.run(cmd)
+		if dryrun:
+			cmd += ["--dry-run"]
+		return subprocess.run(cmd)
 	
 	def ssh(self):
 		"""
