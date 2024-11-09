@@ -10,6 +10,7 @@
 # con.upload("~/Scratch/test", "Scratch/test")
 # rmfile("~/Scratch/test")
 # con.download("Scratch/test", "~/Scratch/test")
+# con.ls("Scratch", details=True)
 # con.rsync("Scratch/test", "Scratch/test2")
 # con.rsync("Scratch/test", "Scratch/test2", target="Magi-03")
 # con.ssh()
@@ -168,6 +169,38 @@ class rssh:
 			self.process = None
 			print("failed to open connection")
 	
+	def ls(self, file = None, all_names = False, details = False):
+		"""
+		List files on the destination machine
+		:param file: A file or directory or list of them
+		:param all_names: Should hidden files be included?
+		:param details: Show file metadata details?
+		"""
+		truedest = f"{self.username}@{self.destination}"
+		if self.server is None:
+			dest = truedest
+		else:
+			if not self.isopen():
+				self.open()
+			dest = f"{self.username}@localhost"
+		print(f"connecting as {self.username}@{self.destination}")
+		if self.server is None:
+			cmd = ["ssh", dest]
+		else:
+			cmd = ["ssh", "-o", "NoHostAuthenticationForLocalhost=yes"]
+			cmd += ["-p", str(self.port), dest]
+		cmd += ["ls"]
+		if all_names:
+			cmd += ["-a"]
+		if details:
+			cmd += ["-l"]
+		if file is not None:
+			if isinstance(file, str):
+				cmd += [file]
+			else:
+				cmd += file
+		return subprocess.run(cmd)
+	
 	def copy_id(self, id_file, ask = False):
 		"""
 		Copy local SSH keys to the destination machine
@@ -314,11 +347,10 @@ class rssh:
 		print(f"connecting as {self.username}@{self.destination}")
 		if self.server is None:
 			cmd = ["ssh", dest]
-			return subprocess.run(cmd)
 		else:
 			cmd = ["ssh", "-o", "NoHostAuthenticationForLocalhost=yes"]
 			cmd += ["-p", str(self.port), dest]
-			return subprocess.run(cmd)
+		return subprocess.run(cmd)
 	
 	def close(self):
 		"""
