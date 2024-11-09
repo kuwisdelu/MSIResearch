@@ -148,7 +148,7 @@ class rssh:
 		"""
 		Get the hostname used for the SSH connection
 		"""
-		if server is None:
+		if self.server is None:
 			return self.destination
 		else:
 			return "localhost"
