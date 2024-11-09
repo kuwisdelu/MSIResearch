@@ -10,12 +10,29 @@
 # con.upload("~/Scratch/test", "Scratch/test")
 # rmfile("~/Scratch/test")
 # con.download("Scratch/test", "~/Scratch/test")
+# con.rsync("Scratch/test", "Scratch/test2")
+# con.rsync("Scratch/test", "Scratch/test2", target="Magi-03")
 # con.ssh()
 # con.close()
 # 
 
 import subprocess
 import os
+
+def askYesNo(msg = "Continue? (yes/no): "):
+	"""
+	Ask a user to confirm yes or no
+	:param msg: The message to print
+	:returns: True if yes, False if no
+	"""
+	while True:
+		confirm = input(msg)
+		if confirm in ("y", "yes"):
+			return True
+		elif confirm in ("n", "no"):
+			return False
+		else:
+			print("Invalid input. Please enter yes/no.")
 
 def normalizePath(path, mustWork = True):
 	"""
@@ -66,6 +83,7 @@ class rssh:
 		:param server_username: Your username on the gateway server (optional)
 		:param port: The local port for gateway server SSH forwarding
 		:param destination_port: The destination port
+		:param autoconnect: Connect on initialization?
 		"""
 		if server is not None:
 			if server_username is None:
@@ -152,7 +170,7 @@ class rssh:
 	
 	def copy_id(self, id_file, ask = False):
 		"""
-		Copy local SSH keys to a remote machine
+		Copy local SSH keys to the destination machine
 		:param id_file: The identity file (ending in .pub)
 		:param ask: Confirm before copying?
 		"""
@@ -161,19 +179,12 @@ class rssh:
 			dest = truedest
 		else:
 			if not self.isopen():
-				raise ConnectionError("connection is close; call open()")
+				self.open()
 			dest = f"{self.username}@localhost"
 		print(f"key will be uploaded from: '{id_file}'")
 		print(f"key will be uploaded to: '{truedest}'")
-		while ask:
-			msg = "Continue? (yes/no): "
-			confirm = input(msg)
-			if confirm in ["y", "yes"]:
-				ask = False
-			elif confirm in ["n", "no"]:
-				return
-			else:
-				print("Invalid input. Please enter yes/no.")
+		if ask and not askYesNo():
+			return
 		print(f"copying key as {self.username}@{self.destination}")
 		id_file = normalizePath(id_file, mustWork=True)
 		cmd = ["ssh-copy-id", "-i", id_file]
@@ -186,11 +197,12 @@ class rssh:
 			cmd += [dest]
 			return subprocess.run(cmd)
 	
-	def download(self, src, dest, ask = False):
+	def download(self, src, dest, dryrun = False, ask = False):
 		"""
-		Download file(s) using rsync over ssh
-		:param src: The source path on the remote machine
+		Download file(s) to local storage using rsync
+		:param src: The source path on the destination machine
 		:param dest: The destination path on the local machine
+		:param dryrun: Show what would be done without doing it?
 		:param ask: Confirm before downloading?
 		"""
 		truesrc = f"{self.username}@{self.destination}:{src}"
@@ -198,23 +210,18 @@ class rssh:
 			src = truesrc
 		else:
 			if not self.isopen():
-				raise ConnectionError("connection is close; call open()")
+				self.open()
 			src = f"{self.username}@localhost:{src}"
 		print(f"data will be downloaded from: '{truesrc}'")
 		print(f"data will be downloaded to: '{dest}'")
-		while ask:
-			msg = "Continue? (yes/no): "
-			confirm = input(msg)
-			if confirm in ["y", "yes"]:
-				ask = False
-			elif confirm in ["n", "no"]:
-				return
-			else:
-				print("Invalid input. Please enter yes/no.")
+		if ask and not askYesNo():
+			return
 		print(f"downloading data as {self.username}@{self.destination}")
 		dest = normalizePath(dest, mustWork=False)
 		if self.server is None:
 			cmd = ["rsync", "-aP", src, dest]
+			if dryrun:
+				cmd += ["--dry-run"]
 			return subprocess.run(cmd)
 		else:
 			rsh = ["ssh", "-o", "NoHostAuthenticationForLocalhost=yes"]
@@ -222,13 +229,16 @@ class rssh:
 			rsh = f"--rsh='{rsh}'"
 			cmd = ["rsync", "-aP", rsh, src, dest]
 			cmd = " ".join(cmd)
+			if dryrun:
+				cmd += ["--dry-run"]
 			return subprocess.run(cmd, shell=True)
 	
-	def upload(self, src, dest, ask = False):
+	def upload(self, src, dest, dryrun = False, ask = False):
 		"""
-		Upload file(s) using rsync over ssh
+		Upload file(s) from local storage using rsync
 		:param src: The source path on the local machine
-		:param dest: The destination path on the remote machine
+		:param dest: The destination path on the destination machine
+		:param dryrun: Show what would be done without doing it?
 		:param ask: Confirm before uploading?
 		"""
 		truedest = f"{self.username}@{self.destination}:{dest}"
@@ -236,35 +246,63 @@ class rssh:
 			dest = truedest
 		else:
 			if not self.isopen():
-				raise ConnectionError("connection is close; call open()")
+				self.open()
 			dest = f"{self.username}@localhost:{dest}"
 		print(f"data will be uploaded from: '{src}'")
 		print(f"data will be uploaded to: '{truedest}'")
-		while ask:
-			msg = "Continue? (yes/no): "
-			confirm = input(msg)
-			if confirm in ["y", "yes"]:
-				ask = False
-			elif confirm in ["n", "no"]:
-				return
-			else:
-				print("Invalid input. Please enter yes/no.")
+		if ask and not askYesNo():
+			return
 		print(f"uploading data as {self.username}@{self.destination}")
 		src = normalizePath(src, mustWork=True)
 		if self.server is None:
 			cmd = ["rsync", "-aP", src, dest]
+			if dryrun:
+				cmd += ["--dry-run"]
 			return subprocess.run(cmd)
 		else:
 			rsh = ["ssh", "-o", "NoHostAuthenticationForLocalhost=yes"]
 			rsh = " ".join(rsh + ["-p", str(self.port)])
 			rsh = f"--rsh='{rsh}'"
 			cmd = ["rsync", "-aP", rsh, src, dest]
+			if dryrun:
+				cmd += ["--dry-run"]
 			cmd = " ".join(cmd)
 			return subprocess.run(cmd, shell=True)
 	
+	def rsync(self, src, dest, target = None, dryrun = False, ask = False):
+		"""
+		Sync file(s) using rsync from destination machine
+		:param src: The source path on the destination machine
+		:param dest: The destination path on the target machine
+		:param target: The target machine (if different from destination)
+		:param dryrun: Show what would be done without doing it?
+		:param ask: Confirm before syncing?
+		"""
+		truehost = f"{self.username}@{self.destination}"
+		if self.server is None:
+			host = truehost
+			cmd = ["ssh", host]
+		else:
+			host = f"{self.username}@localhost"
+			cmd = ["ssh", "-p", str(self.port), host]
+		if target is None:
+			target = truehost
+			cmd += ["rsync", "-aP", src, dest]
+		else:
+			target = f"{self.username}@{target}"
+			cmd += ["rsync", "-aP", src, f"{target}:{dest}"]
+		print(f"data will be copied from: '{truehost}:{src}'")
+		print(f"data will be copied to: '{target}:{dest}'")
+		if ask and not askYesNo():
+			return
+		else:
+			if dryrun:
+				cmd += ["--dry-run"]
+			return subprocess.run(cmd)
+	
 	def ssh(self):
 		"""
-		Create an unrestricted ssh terminal session
+		Attach an unrestricted ssh terminal session
 		"""
 		truedest = f"{self.username}@{self.destination}"
 		if self.server is None:
