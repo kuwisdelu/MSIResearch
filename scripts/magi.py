@@ -102,8 +102,28 @@ def main(args):
 	# help
 	if args.cmd is None:
 		parser.print_help()
-	else:
-		print(args)
+	# connect
+	elif args.cmd == "connect":
+		if len(args.node) != 1:
+			sys.exit("magi connect: error: must target exactly 1 Magi node")
+		if config.is_Magi:
+			target = f"Magi-{args.node[0]}"
+		else:
+			target = f"Magi-{args.node[0]}"
+		con = open_ssh(args.user, target, args.port)
+		return con.ssh()
+	# copy-id
+	elif args.cmd == "copy-id":
+		pass
+	# download
+	elif args.cmd == "download":
+		pass
+	# upload
+	elif args.cmd == "upload":
+		pass
+	# sync
+	elif args.cmd == "sync":
+		pass
 
 if __name__ == "__main__":
 	parser = get_parser()

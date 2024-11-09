@@ -170,13 +170,13 @@ def main(args):
 	elif args.cmd == "describe":
 		dataset = db.get(args.name)
 		if dataset is None:
-			raise KeyError(f"no such dataset: '{args.name}'")
+			sys.exit(f"msi describe: error: no such dataset: '{args.name}'")
 		else:
 			print(dataset.describe())
 	# sync
 	elif args.cmd == "sync":
 		if args.name in db.cache and not args.force:
-			print("dataset is already cached; use --force to re-sync")
+			print("msi sync: dataset is already cached; use --force to re-sync")
 			sys.exit()
 		db.username = args.user
 		db.remote_dbhost = args.remote_host

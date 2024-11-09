@@ -143,6 +143,16 @@ class rssh:
 		"""
 		self.close()
 	
+	@property
+	def hostname(self):
+		"""
+		Get the hostname used for the SSH connection
+		"""
+		if server is None:
+			return self.destination
+		else:
+			return "localhost"
+	
 	def isopen(self):
 		"""
 		Check if the gateway server connection is open
@@ -176,19 +186,12 @@ class rssh:
 		:param all_names: Should hidden files be included?
 		:param details: Show file metadata details?
 		"""
-		truedest = f"{self.username}@{self.destination}"
+		host = f"{self.username}@{self.hostname}"
 		if self.server is None:
-			dest = truedest
-		else:
-			if not self.isopen():
-				self.open()
-			dest = f"{self.username}@localhost"
-		print(f"connecting as {self.username}@{self.destination}")
-		if self.server is None:
-			cmd = ["ssh", dest]
+			cmd = ["ssh", host]
 		else:
 			cmd = ["ssh", "-o", "NoHostAuthenticationForLocalhost=yes"]
-			cmd += ["-p", str(self.port), dest]
+			cmd += ["-p", str(self.port), host]
 		cmd += ["ls"]
 		if all_names:
 			cmd += ["-a"]
@@ -199,6 +202,7 @@ class rssh:
 				cmd += [file]
 			else:
 				cmd += file
+		print(f"connecting as {self.username}@{self.destination}")
 		return subprocess.run(cmd)
 	
 	def copy_id(self, id_file, ask = False):
@@ -207,27 +211,22 @@ class rssh:
 		:param id_file: The identity file (ending in .pub)
 		:param ask: Confirm before copying?
 		"""
-		truedest = f"{self.username}@{self.destination}"
-		if self.server is None:
-			dest = truedest
-		else:
-			if not self.isopen():
-				self.open()
-			dest = f"{self.username}@localhost"
+		truehost = {self.username}@{self.hostname}
+		showhost = {self.username}@{self.destination}
 		print(f"key will be uploaded from: '{id_file}'")
-		print(f"key will be uploaded to: '{truedest}'")
+		print(f"key will be uploaded to: '{showhost}'")
 		if ask and not askYesNo():
 			return
-		print(f"copying key as {self.username}@{self.destination}")
+		print(f"copying key as {showhost}")
 		id_file = normalizePath(id_file, mustWork=True)
 		cmd = ["ssh-copy-id", "-i", id_file]
 		if self.server is None:
-			cmd += [dest]
+			cmd += [truehost]
 			return subprocess.run(cmd)
 		else:
 			cmd += ["-o", "NoHostAuthenticationForLocalhost=yes"]
 			cmd += ["-p", str(self.port)]
-			cmd += [dest]
+			cmd += [truehost]
 			return subprocess.run(cmd)
 	
 	def download(self, src, dest, dryrun = False, ask = False):
@@ -238,21 +237,16 @@ class rssh:
 		:param dryrun: Show what would be done without doing it?
 		:param ask: Confirm before downloading?
 		"""
-		truesrc = f"{self.username}@{self.destination}:{src}"
-		if self.server is None:
-			src = truesrc
-		else:
-			if not self.isopen():
-				self.open()
-			src = f"{self.username}@localhost:{src}"
-		print(f"data will be downloaded from: '{truesrc}'")
+		truesrc = f"{self.username}@{self.hostname}:{src}"
+		showsrc = f"{self.username}@{self.destination}:{src}"
+		dest = normalizePath(dest, mustWork=False)
+		print(f"data will be downloaded from: '{showsrc}'")
 		print(f"data will be downloaded to: '{dest}'")
 		if ask and not askYesNo():
 			return
 		print(f"downloading data as {self.username}@{self.destination}")
-		dest = normalizePath(dest, mustWork=False)
 		if self.server is None:
-			cmd = ["rsync", "-aP", src, dest]
+			cmd = ["rsync", "-aP", truesrc, dest]
 			if dryrun:
 				cmd += ["--dry-run"]
 			return subprocess.run(cmd)
@@ -260,7 +254,7 @@ class rssh:
 			rsh = ["ssh", "-o", "NoHostAuthenticationForLocalhost=yes"]
 			rsh = " ".join(rsh + ["-p", str(self.port)])
 			rsh = f"--rsh='{rsh}'"
-			cmd = ["rsync", "-aP", rsh, src, dest]
+			cmd = ["rsync", "-aP", rsh, truesrc, dest]
 			cmd = " ".join(cmd)
 			if dryrun:
 				cmd += ["--dry-run"]
@@ -274,21 +268,16 @@ class rssh:
 		:param dryrun: Show what would be done without doing it?
 		:param ask: Confirm before uploading?
 		"""
-		truedest = f"{self.username}@{self.destination}:{dest}"
-		if self.server is None:
-			dest = truedest
-		else:
-			if not self.isopen():
-				self.open()
-			dest = f"{self.username}@localhost:{dest}"
+		src = normalizePath(src, mustWork=True)
+		truedest = f"{self.username}@{self.hostname}:{dest}"
+		showdest = f"{self.username}@{self.destination}:{dest}"
 		print(f"data will be uploaded from: '{src}'")
-		print(f"data will be uploaded to: '{truedest}'")
+		print(f"data will be uploaded to: '{showdest}'")
 		if ask and not askYesNo():
 			return
 		print(f"uploading data as {self.username}@{self.destination}")
-		src = normalizePath(src, mustWork=True)
 		if self.server is None:
-			cmd = ["rsync", "-aP", src, dest]
+			cmd = ["rsync", "-aP", src, truedest]
 			if dryrun:
 				cmd += ["--dry-run"]
 			return subprocess.run(cmd)
@@ -296,7 +285,7 @@ class rssh:
 			rsh = ["ssh", "-o", "NoHostAuthenticationForLocalhost=yes"]
 			rsh = " ".join(rsh + ["-p", str(self.port)])
 			rsh = f"--rsh='{rsh}'"
-			cmd = ["rsync", "-aP", rsh, src, dest]
+			cmd = ["rsync", "-aP", rsh, src, truedest]
 			if dryrun:
 				cmd += ["--dry-run"]
 			cmd = " ".join(cmd)
@@ -311,21 +300,22 @@ class rssh:
 		:param dryrun: Show what would be done without doing it?
 		:param ask: Confirm before syncing?
 		"""
-		truehost = f"{self.username}@{self.destination}"
+		truehost = f"{self.username}@{self.hostname}"
+		showhost = f"{self.username}@{self.destination}"
 		if self.server is None:
-			host = truehost
-			cmd = ["ssh", host]
+			cmd = ["ssh", truehost]
 		else:
-			host = f"{self.username}@localhost"
-			cmd = ["ssh", "-p", str(self.port), host]
+			cmd = ["ssh", "-p", str(self.port), truehost]
 		if target is None:
-			target = truehost
+			truetarget = truehost
+			showtarget = showhost
 			cmd += ["rsync", "-aP", src, dest]
 		else:
-			target = f"{self.username}@{target}"
-			cmd += ["rsync", "-aP", src, f"{target}:{dest}"]
-		print(f"data will be copied from: '{truehost}:{src}'")
-		print(f"data will be copied to: '{target}:{dest}'")
+			truetarget = f"{self.username}@{target}"
+			showtarget = truetarget
+			cmd += ["rsync", "-aP", src, f"{truetarget}:{dest}"]
+		print(f"data will be copied from: '{showhost}:{src}'")
+		print(f"data will be copied to: '{showtarget}:{dest}'")
 		if ask and not askYesNo():
 			return
 		else:
@@ -337,14 +327,8 @@ class rssh:
 		"""
 		Attach an unrestricted ssh terminal session
 		"""
-		truedest = f"{self.username}@{self.destination}"
-		if self.server is None:
-			dest = truedest
-		else:
-			if not self.isopen():
-				self.open()
-			dest = f"{self.username}@localhost"
 		print(f"connecting as {self.username}@{self.destination}")
+		dest = f"{self.username}@{self.hostname}"
 		if self.server is None:
 			cmd = ["ssh", dest]
 		else:
