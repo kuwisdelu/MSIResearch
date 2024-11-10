@@ -1,4 +1,4 @@
-# Magi cluster help
+# Magi cluster tutorial
 
 
 ## Contents

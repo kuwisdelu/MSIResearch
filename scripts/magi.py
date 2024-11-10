@@ -26,10 +26,14 @@ def get_parser():
 	# argument parser
 	parser = argparse.ArgumentParser("magi",
 		description=description)
+	parser.add_argument("-m", "--readme", action="store_true",
+		help="display readme file")
+	parser.add_argument("-p", "--pager", action="store",
+		help="program to display readme (default 'glow')")
+	parser.add_argument("-w", "--width", action="store",
+		help="word-wrap readme at width (default 70)", default=70)
 	subparsers = parser.add_subparsers(dest="cmd")
 	# subcommands
-	cmd_readme = subparsers.add_parser("readme", 
-		help="show readme")
 	cmd_run = subparsers.add_parser("run", 
 		help="run command (e.g., login shell) on a Magi node")
 	cmd_copy_id = subparsers.add_parser("copy-id", 
@@ -54,9 +58,6 @@ def get_parser():
 			help="gateway server user", default=config.server_username)
 		p.add_argument("-S", "--server", action="store",
 			help="gateway server host", default=config.server)
-	# readme subcommand
-	cmd_readme.add_argument("-w", "--width", action="store",
-		help="word-wrap at width (default 70)", default=70)
 	# run subcommand
 	add_common_args(cmd_run)
 	# copy-id subcommand
@@ -135,15 +136,19 @@ def main(args):
 	Run the CLI
 	:param args: The parsed command line arguments
 	"""
-	# help
-	if args.cmd is None:
-		parser.print_help()
-		sys.exit()
 	# readme
-	elif args.cmd == "readme":
+	if args.readme:
 		file = os.path.join(config.dbpath, "MSIResearch", "Magi-README.md")
-		cmd = ["glow", "-p", "-w", str(args.width), file]
+		if args.pager is None:
+			cmd = ["glow", "-p", "-w", str(args.width)]
+		else:
+			cmd = [args.pager, file]
+		cmd += [file]
 		subprocess.run(cmd)
+		sys.exit()
+	# help
+	elif args.cmd is None:
+		parser.print_help()
 		sys.exit()
 	# open ssh
 	else:

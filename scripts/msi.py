@@ -30,10 +30,14 @@ def get_parser():
 	# argument parser
 	parser = argparse.ArgumentParser("msi",
 		description=description)
+	parser.add_argument("-m", "--readme", action="store_true",
+		help="display readme file")
+	parser.add_argument("-p", "--pager", action="store",
+		help="program to display readme (default 'glow')")
+	parser.add_argument("-w", "--width", action="store",
+		help="word-wrap readme at width (default 70)", default=70)
 	subparsers = parser.add_subparsers(dest="cmd")
 	# subcommands
-	cmd_readme = subparsers.add_parser("readme", 
-		help="show readme")
 	cmd_ls = subparsers.add_parser("ls", 
 		help="list all datasets")
 	cmd_ls_cache = subparsers.add_parser("ls-cache", 
@@ -46,9 +50,6 @@ def get_parser():
 		help="describe a dataset")
 	cmd_sync = subparsers.add_parser("sync", 
 		help="sync a dataset")
-	# readme subcommand
-	cmd_readme.add_argument("-w", "--width", action="store",
-		help="word-wrap at width (default 70)", default=70)
 	# ls subcommand
 	cmd_ls.add_argument("-s", "--scope", action="store",
 		help="filter by scope")
@@ -129,15 +130,19 @@ def main(args):
 	Run the CLI
 	:param args: The parsed command line arguments
 	"""
-	# help
-	if args.cmd is None:
-		parser.print_help()
-		sys.exit()
 	# readme
-	elif args.cmd == "readme":
+	if args.readme:
 		file = os.path.join(config.dbpath, "MSIResearch", "README.md")
-		cmd = ["glow", "-p", "-w", str(args.width), file]
+		if args.pager is None:
+			cmd = ["glow", "-p", "-w", str(args.width)]
+		else:
+			cmd = [args.pager, file]
+		cmd += [file]
 		subprocess.run(cmd)
+		sys.exit()
+	# help
+	elif args.cmd is None:
+		parser.print_help()
 		sys.exit()
 	# open database
 	else:
