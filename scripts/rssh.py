@@ -165,7 +165,7 @@ class rssh:
 		"""
 		if self.server is None or self.isopen():
 			return
-		print(f"connecting to {self.server}")
+		print(f"opening connection to {self.server}")
 		if self.server_username is None:
 			msg = "Please enter your username: "
 			self.server_username = input(msg)
@@ -173,6 +173,7 @@ class rssh:
 		target = f"{self.port}:{self.destination}:{self.destination_port}"
 		cmd = ["ssh", "-NL", target, gateway]
 		try:
+			print(f"connecting as {gateway}")
 			self.process = subprocess.Popen(cmd)
 			print(f"forwarding to {self.destination} on port {self.port}")
 		except:

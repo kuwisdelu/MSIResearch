@@ -9,6 +9,7 @@
 import sys
 import os
 import argparse
+from time import sleep
 
 import config
 from rssh import *
@@ -39,11 +40,11 @@ def get_parser():
 	# common arguments
 	def add_common_args(p):
 		p.add_argument("-01", action="append_const",
-			help="Magi-01", dest="node", const="01")
+			help="Magi-01", dest="nodes", const="01")
 		p.add_argument("-02", action="append_const",
-			help="Magi-02", dest="node", const="02")
+			help="Magi-02", dest="nodes", const="02")
 		p.add_argument("-03", action="append_const",
-			help="Magi-03", dest="node", const="03")
+			help="Magi-03", dest="nodes", const="03")
 		p.add_argument("-p", "--port", action="store",
 			help="port forwarding", default=config.port)
 		p.add_argument("-u", "--user", action="store",
@@ -74,11 +75,29 @@ def get_parser():
 	add_common_args(cmd_upload)
 	return parser
 
+def get_host_from_list(nodes = None):
+	"""
+	Get Magi hostname from a list of nodenames
+	:param nodes: A list of nodenames ('01', '02', etc.)
+	"""
+	if nodes is None or len(nodes) < 1:
+		sys.exit("magi: error: missing Magi host (-01, -02, -03)")
+	if len(nodes) > 1:
+		sys.exit("magi: error: must specify only _one_ Magi host")
+	host = f"Magi-{nodes[0]}"
+	if config.is_Magi:
+		if host.casefold() == config.localhost.casefold()
+			host = "localhost"
+		else:
+			host += ".local"
+	return host
+
 def open_ssh(user = None, host = None, port = None):
 	"""
 	Open connection to a Magi node
 	:param user: Magi username
 	:param host: Magi hostname
+	:param port: Port for forwarding
 	"""
 	if user is None:
 		user = config.username
@@ -104,13 +123,9 @@ def main(args):
 		parser.print_help()
 	# connect
 	elif args.cmd == "connect":
-		if len(args.node) != 1:
-			sys.exit("magi connect: error: must target exactly 1 Magi node")
-		if config.is_Magi:
-			host = f"Magi-{args.node[0]}.local"
-		else:
-			host = f"Magi-{args.node[0]}"
+		host = get_host_from_list(args.nodes)
 		con = open_ssh(args.user, host, args.port)
+		sleep(1) # allow time to connect
 		con.ssh()
 	# copy-id
 	elif args.cmd == "copy-id":
