@@ -27,16 +27,14 @@ def get_parser():
 		description=description)
 	subparsers = parser.add_subparsers(dest="cmd")
 	# subcommands
-	cmd_connect = subparsers.add_parser("connect", 
-		help="connect ssh session to a Magi node")
+	cmd_run = subparsers.add_parser("run", 
+		help="run command (e.g., login shell) on a Magi node")
 	cmd_copy_id = subparsers.add_parser("copy-id", 
 		help="copy ssh keys to a Magi node")
 	cmd_download = subparsers.add_parser("download", 
-		help="download file(s) from Magi")
+		help="download file(s) from a Magi node")
 	cmd_upload = subparsers.add_parser("upload", 
-		help="upload file(s) to Magi")
-	cmd_sync = subparsers.add_parser("sync", 
-		help="sync file(s) across Magi nodes")
+		help="upload file(s) to a Magi node")
 	# common arguments
 	def add_common_args(p):
 		p.add_argument("-01", action="append_const",
@@ -53,10 +51,12 @@ def get_parser():
 			help="gateway server user", default=config.server_username)
 		p.add_argument("-S", "--server", action="store",
 			help="gateway server host", default=config.server)
-	# connect subcommand
-	add_common_args(cmd_connect)
+	# run subcommand
+	add_common_args(cmd_run)
 	# copy-id subcommand
 	add_common_args(cmd_copy_id)
+	cmd_copy_id.add_argument("identity_file", action="store",
+		help="ssh key identity file")
 	# download subcommand
 	cmd_download.add_argument("src", action="store",
 		help="source file/directory")
@@ -83,10 +83,10 @@ def get_host_from_list(nodes = None):
 	if nodes is None or len(nodes) < 1:
 		sys.exit("magi: error: missing Magi host (-01, -02, -03)")
 	if len(nodes) > 1:
-		sys.exit("magi: error: must specify only _one_ Magi host")
+		sys.exit("magi: error: must specify exactly _one_ Magi host")
 	host = f"Magi-{nodes[0]}"
 	if config.is_Magi:
-		if host.casefold() == config.localhost.casefold()
+		if host.casefold() == config.localhost.casefold():
 			host = "localhost"
 		else:
 			host += ".local"
@@ -121,11 +121,13 @@ def main(args):
 	# help
 	if args.cmd is None:
 		parser.print_help()
-	# connect
-	elif args.cmd == "connect":
+		sys.exit()
+	else:
 		host = get_host_from_list(args.nodes)
 		con = open_ssh(args.user, host, args.port)
 		sleep(1) # allow time to connect
+	# run
+	if args.cmd == "run":
 		con.ssh()
 	# copy-id
 	elif args.cmd == "copy-id":
@@ -135,9 +137,6 @@ def main(args):
 		pass
 	# upload
 	elif args.cmd == "upload":
-		pass
-	# sync
-	elif args.cmd == "sync":
 		pass
 
 if __name__ == "__main__":

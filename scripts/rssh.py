@@ -73,7 +73,7 @@ class rssh:
 	"""
 	
 	def __init__(self, username, destination,
-		server = None, server_username = None,
+		server = None, server_username = True,
 		port = 8080, destination_port = 22,
 		autoconnect = True):
 		"""
@@ -86,9 +86,11 @@ class rssh:
 		:param destination_port: The destination port
 		:param autoconnect: Connect on initialization?
 		"""
-		if server is not None:
-			if server_username is None:
+		if server_username in (True, False):
+			if server_username:
 				server_username = username
+			else:
+				server_username = ""
 		self.username = username
 		self.destination = destination
 		self.server = server
@@ -166,10 +168,13 @@ class rssh:
 		if self.server is None or self.isopen():
 			return
 		print(f"opening connection to {self.server}")
-		if self.server_username is None:
+		if not isinstance(self.server_username, str):
 			msg = "Please enter your username: "
 			self.server_username = input(msg)
-		gateway = f"{self.server_username}@{self.server}"
+		if len(self.server_username) == 0:
+			gateway = self.server
+		else:
+			gateway = f"{self.server_username}@{self.server}"
 		target = f"{self.port}:{self.destination}:{self.destination_port}"
 		cmd = ["ssh", "-NL", target, gateway]
 		try:
