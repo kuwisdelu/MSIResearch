@@ -1,14 +1,16 @@
-
 # Mass spectrometry imaging datasets
 
-1. [Overview](#Overview)
-2. [Scopes](#Scopes)
-3. [Groups](#Groups)
-4. [Directory structure](#Directory-structure)
-5. [Accessing the data](#Accessing-the-data)
-6. [SSH setup](#SSH-setup)
 
+## Contents
 
+Jump to a section:
+
+- [Overview](#Overview)
+- [Scopes](#Scopes)
+- [Groups](#Groups)
+- [Directory structure](#Directory-structure)
+- [Accessing the data](#Accessing-the-data)
+- [SSH setup](#SSH-setup)
 
 ## Overview
 

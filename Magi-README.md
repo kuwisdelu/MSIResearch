@@ -1,13 +1,17 @@
-
 # Magi cluster help
 
-1. [Overview](#Overview)
-2. [Accessing the cluster](#Accessing-the-cluster)
-3. [Accessing data](#Accessing-data)
-4. [File management](#File-management)
-5. [Session management](#Session-management)
-6. [Software](#Software)
-7. [Magi versus Discovery](#Magi-versus-Discovery)
+
+## Contents
+
+Jump to a section:
+
+- [Overview](#Overview)
+- [Accessing the cluster](#Accessing-the-cluster)
+- [Accessing data](#Accessing-data)
+- [File management](#File-management)
+- [Session management](#Session-management)
+- [Software](#Software)
+- [Magi versus Discovery](#Magi-versus-Discovery)
 
 
 ## Overview

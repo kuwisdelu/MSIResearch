@@ -25,14 +25,15 @@ def get_parser():
 	"""
 	# help description
 	description = """
-		MSI database manager -
-		stored in $MSI_DBPATH (defaults to /Volumes/Datasets/)
+		MSI database manager
 		"""
 	# argument parser
 	parser = argparse.ArgumentParser("msi",
 		description=description)
 	subparsers = parser.add_subparsers(dest="cmd")
 	# subcommands
+	cmd_readme = subparsers.add_parser("readme", 
+		help="show readme")
 	cmd_ls = subparsers.add_parser("ls", 
 		help="list all datasets")
 	cmd_ls_cache = subparsers.add_parser("ls-cache", 
@@ -45,6 +46,9 @@ def get_parser():
 		help="describe a dataset")
 	cmd_sync = subparsers.add_parser("sync", 
 		help="sync a dataset")
+	# readme subcommand
+	cmd_readme.add_argument("-w", "--width", action="store",
+		help="word-wrap at width (default 70)", default=70)
 	# ls subcommand
 	cmd_ls.add_argument("-s", "--scope", action="store",
 		help="filter by scope")
@@ -125,13 +129,21 @@ def main(args):
 	Run the CLI
 	:param args: The parsed command line arguments
 	"""
-	# connect to database
-	db = open_db()
 	# help
 	if args.cmd is None:
 		parser.print_help()
+		sys.exit()
+	# readme
+	elif args.cmd == "readme":
+		file = os.path.join(config.dbpath, "MSIResearch", "README.md")
+		cmd = ["glow", "-p", "-w", str(args.width), file]
+		subprocess.run(cmd)
+		sys.exit()
+	# open database
+	else:
+		db = open_db()
 	# ls
-	elif args.cmd == "ls":
+	if args.cmd == "ls":
 		datasets = db.ls(
 			scope=args.scope,
 			group=args.group,
