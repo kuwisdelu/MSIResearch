@@ -64,6 +64,8 @@ def get_parser():
 		help="destination file/directory")
 	cmd_download.add_argument("-a", "--ask", action="store_true",
 		help="ask to confirm before downloading?")
+	cmd_download.add_argument("-n", "--dry-run", action="store_true",
+		help="show what would be transferred?")
 	add_common_args(cmd_download)
 	# upload subcommand
 	cmd_upload.add_argument("src", action="store",
@@ -72,13 +74,15 @@ def get_parser():
 		help="destination file/directory")
 	cmd_upload.add_argument("-a", "--ask", action="store_true",
 		help="ask to confirm before uploading?")
+	cmd_upload.add_argument("-n", "--dry-run", action="store_true",
+		help="show what would be transferred?")
 	add_common_args(cmd_upload)
 	return parser
 
-def get_host_from_list(nodes = None):
+def get_node_from_list(nodes = None):
 	"""
-	Get Magi hostname from a list of nodenames
-	:param nodes: A list of nodenames ('01', '02', etc.)
+	Get Magi nodename from a list of Magi node ids
+	:param nodes: A list of nodes ('01', '02', etc.)
 	"""
 	if nodes is None or len(nodes) < 1:
 		sys.exit("magi: error: missing Magi host (-01, -02, -03)")
@@ -92,23 +96,30 @@ def get_host_from_list(nodes = None):
 			host += ".local"
 	return host
 
-def open_ssh(user = None, host = None, port = None):
+def open_ssh(user = None, node = None,
+	login = None, server = None, port = None):
 	"""
 	Open connection to a Magi node
 	:param user: Magi username
-	:param host: Magi hostname
-	:param port: Port for forwarding
+	:param node: Magi nodename
+	:param login: Login gateway username
+	:param server: Login gateway server
+	:param port: Port used for gateway forwarding
 	"""
 	if user is None:
 		user = config.username
-	if host is None:
-		host = config.remote_dbhost
+	if node is None:
+		node = config.remote_dbhost
+	if login is None:
+		login = config.server_username
+	if server is None:
+		server = config.server
 	if port is None:
 		port = config.port
 	# connect and return the session
-	session = rssh(user, host,
-		server=config.server,
-		server_username=config.server_username,
+	session = rssh(user, node,
+		server=server,
+		server_username=login,
 		port=port,
 		autoconnect=True)
 	return session
@@ -123,21 +134,26 @@ def main(args):
 		parser.print_help()
 		sys.exit()
 	else:
-		host = get_host_from_list(args.nodes)
-		con = open_ssh(args.user, host, args.port)
+		con = open_ssh(args.user,
+			node=get_node_from_list(args.nodes),
+			login=args.login, server=args.server,
+			port=args.port)
 		sleep(1) # allow time to connect
 	# run
 	if args.cmd == "run":
 		con.ssh()
 	# copy-id
 	elif args.cmd == "copy-id":
-		pass
+		con.copy_id(args.identity_file)
 	# download
 	elif args.cmd == "download":
-		pass
+		con.download(args.src, args.dest,
+			dryrun=args.dry_run, ask=args.ask)
 	# upload
 	elif args.cmd == "upload":
-		pass
+		con.upload(args.src, args.dest,
+			dryrun=args.dry_run, ask=args.ask)
+	sys.exit()
 
 if __name__ == "__main__":
 	parser = get_parser()

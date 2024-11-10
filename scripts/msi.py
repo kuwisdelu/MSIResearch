@@ -188,6 +188,7 @@ def main(args):
 			force=args.force,
 			ask=args.ask)
 	db.close()
+	sys.exit()
 
 if __name__ == "__main__":
 	parser = get_parser()

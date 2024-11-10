@@ -217,8 +217,8 @@ class rssh:
 		:param id_file: The identity file (ending in .pub)
 		:param ask: Confirm before copying?
 		"""
-		truehost = {self.username}@{self.hostname}
-		showhost = {self.username}@{self.destination}
+		truehost = f"{self.username}@{self.hostname}"
+		showhost = f"{self.username}@{self.destination}"
 		id_file = normalizePath(id_file, mustWork=True)
 		print(f"key will be uploaded from: '{id_file}'")
 		print(f"key will be uploaded to: '{showhost}'")
