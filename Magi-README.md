@@ -51,7 +51,7 @@ Note that X11 forwarding *must* have been requested when connecting to the Khour
 
 The `magi` command line utility provides functionality for accessing the Magi cluster from an external network. It assumes you are running in a UNIX-alike environment that includes `ssh` and `rsync` command line programs.
 
-Recommended usage is to set an alias `magi` in your shell to the command `python3 $MSI_DBPATH/MSIResearch/scripts/magi.py`.
+Recommended usage is to set an alias `magi` in your shell to the command `python3 $MSI_DBPATH/MSIResearch/lib/magi.py`.
 
 Additionally, environment variables `$MAGI_USER` and `$MAGI_LOGIN` can be used to automatically set your Magi cluster username and Khoury login information.
 
@@ -60,7 +60,7 @@ For example, in your `.zshrc` or `.bashrc`:
 ```
 export MAGI_USER=viteklab
 export MAGI_LOGIN=<your-khoury-username>
-alias magi="python3 $MSI_DBPATH/MSIResearch/scripts/magi.py"
+alias magi="python3 $MSI_DBPATH/MSIResearch/lib/magi.py"
 ```
 
 You can then see the command help with:
@@ -141,7 +141,7 @@ Files and directories can be copied from any Magi node to any host visible to th
 
 Copying files and directories to machines not visible to the Northeastern University network requires SSH tunneling.
 
-The files `scripts/shell/magi-download` and `scripts/shell/magi-upload` show an example of using SSH port forwarding to download or upload files to or from a personal computer.
+The files `scripts/magi-download` and `scripts/magi-upload` show an example of using SSH port forwarding to download or upload files to or from a personal computer.
 
 Alternatively, an easier method is to use the `magi` command line utility. This program will set up the SSH tunnel for you, copy files or directories using `rsync`, and close the connection automatically after the file transfer is done.
 

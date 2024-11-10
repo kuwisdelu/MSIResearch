@@ -88,12 +88,12 @@ The appropriate directory structure will be created automatically when datasets 
 
 The `msi` command line utility provides functionality for searching and downloading the data. It assumes you are running in a UNIX-alike environment that includes `ssh` and `rsync` command line programs.
 
-Recommended usage is to set an alias `msi` in your shell to the command `python3 $MSI_DBPATH/MSIResearch/scripts/msi.py`.
+Recommended usage is to set an alias `msi` in your shell to the command `python3 $MSI_DBPATH/MSIResearch/lib/msi.py`.
 
 For example, in your `.zshrc` or `.bashrc`:
 
 ```
-alias msi="python3 $MSI_DBPATH/MSIResearch/scripts/msi.py"
+alias msi="python3 $MSI_DBPATH/MSIResearch/lib/msi.py"
 ```
 
 You can then see the command help with:
