@@ -4,6 +4,10 @@
 # Example usage:
 # 
 # magi -h
+# touch ~/Scratch/test
+# magi upload -02 ~/Scratch/test Scratch/test
+# magi download -02 Scratch/test ~/Scratch/test-copy
+# magi run -02
 #
 
 import sys

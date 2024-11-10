@@ -21,6 +21,18 @@ The data described in this repository is hosted on the Magi cluster. The Magi cl
 
 ## Accessing the cluster
 
+Currently, the following nodes are available to `viteklab` members:
+
+- `Magi-01` : compute node (M2 Ultra / 16 p-cores / 8 e-cores / 192 GB)
+
+- `Magi-02` : compute node (M2 Ultra / 16 p-cores / 8 e-cores / 192 GB)
+
+- `Magi-03` : xfer node (M2 Pro / 6 p-cores / 4 e-cores / 16 GB)
+
+Please contact the Magi cluster maintainer for `viteklab` credentials.
+
+### SSH from Khoury login servers
+
 You can access the Magi cluster from the Khoury login servers:
 
 `ssh viteklab@Magi-02`
@@ -35,39 +47,66 @@ or:
 
 Note that X11 forwarding *must* have been requested when connecting to the Khoury login servers or this will not work.
 
-Currently, the following nodes are available to `viteklab` members:
+### SSH from external network
 
-- `Magi-02` : compute node (M2 Ultra / 16 p-cores / 8 e-cores / 192 GB)
+The `magi` command line utility provides functionality for accessing the Magi cluster from an external network. It assumes you are running in a UNIX-alike environment that includes `ssh` and `rsync` command line programs.
 
-- `Magi-03` : data node (M2 Pro / 6 p-cores / 4 e-cores / 16 GB)
+Recommended usage is to set an alias `magi` in your shell to the command `python3 $MSI_DBPATH/MSIResearch/scripts/magi.py`.
 
-Please contact the Magi cluster maintainer for `viteklab` credentials.
+Additionally, environment variables `$MAGI_USER` and `$MAGI_LOGIN` can be used to automatically set your Magi cluster username and Khoury login information.
+
+For example, in your `.zshrc` or `.bashrc`:
+
+```
+export MAGI_USER=viteklab
+export MAGI_LOGIN=<your-khoury-username>
+alias magi="python3 $MSI_DBPATH/MSIResearch/scripts/magi.py"
+```
+
+You can then see the command help with:
+
+```
+magi --help
+```
+
+The following subcommands are provided:
+
+- `magi run`
+    + run a command (e.g., login shell) on a Magi node
+- `magi copy-id`
+    + copy SSH key to a Magi node
+- `magi download`
+    + download file(s) from a Magi node
+- `magi upload`
+    + upload file(s) to a Magi node
+
+You can see positional arguments and options for subcommand with the `--help` or `-h` flags.
+
+For example:
+
+```
+magi run --help
+```
 
 
 ## Accessing data
 
 All Magi nodes have network access to the datasets described in this repository.
 
-Please use the `msirc` functions documented in `README.md` to manage the datasets.
+Please use the `msi` command line utility documented in `README.md` to manage the datasets.
 
-From any R session started on a Magi node, you can do:
-
-```
-.msi$attach()
-```
-
-This will make all `msirc` functions available without needing to `source()` any files directly.
-
-To remove the functions from your search path, you can do:
+From a shell session on any Magi node, you can do:
 
 ```
-.msi$detach()
+msi --help
 ```
+
+This will show available `msi` subcommands.
 
 
 ## File management
 
-Due to the small number of users, lab members use a shared `viteklab` login to simplify cluster management.
+Due to the small number of users, lab members use shared `viteklab` credentials to simplify cluster management.
 
 Please do not upload large datasets without permission. Home directory storage is intended for processed data and analysis results. Contact the Magi cluster maintainer to add datasets to the cluster's storage devices.
 
@@ -76,23 +115,23 @@ Please do not upload large datasets without permission. Home directory storage i
 Please use the following directories for data management:
 
 - `~/Datasets/`
-	+ Includes `MSIResearch` repository and dataset manifest
-	+ Includes locally cached MSI datasets
-	+ Manage using functions from `msirc.R`
+    + Includes `MSIResearch` repository and dataset manifest
+    + Includes locally cached MSI datasets
+    + Manage using `msi` command line utility
 
 - `~/Projects/`
-	+ Directory for analysis projects
-	+ Create subdirectories for your analyses
-	+ Stable storage that will not be removed without notification
+    + Directory for analysis projects
+    + Create subdirectories for your analyses
+    + Stable storage that will not be removed without notification
 
 - `~/Scratch/`
-	+ Directory for temporary files
-	+ Create subdirectories for your scratch space
-	+ May be deleted without warning
+    + Directory for temporary files
+    + Create subdirectories for your scratch space
+    + May be deleted without warning
 
 - `~/Documents/`
-	+ Directory for lab documents
-	+ Use to share documents and reports with other lab members
+    + Directory for lab documents
+    + Use to share documents and reports with other lab members
 
 Please give your subdirectories clear, descriptive names within these directories.
 
@@ -102,21 +141,19 @@ Files and directories can be copied from any Magi node to any host visible to th
 
 Copying files and directories to machines not visible to the Northeastern University network requires SSH tunneling.
 
-The files `scripts/magi-download` and `scripts/magi-upload` show an example of using SSH port forwarding to download or upload files to or from a personal computer.
+The files `scripts/shell/magi-download` and `scripts/shell/magi-upload` show an example of using SSH port forwarding to download or upload files to or from a personal computer.
 
-Alternatively, an easier method is to use the `magi_download()` and `magi_upload` functions provided from `msirc.R`. These functions will set up the SSH tunnel for you, copy files or directories using `rsync`, and close the connection automatically after the file transfer is done.
+Alternatively, an easier method is to use the `magi` command line utility. This program will set up the SSH tunnel for you, copy files or directories using `rsync`, and close the connection automatically after the file transfer is done.
 
 For example, on your personal computer:
 
 ```
-source("MSIResearch/msirc.R")
-file.create("~/Scratch/test")
-magi_upload("Magi-02", "~/Scratch/test", "Scratch/test")
-file.remote("~/Scratch/test")
-magi_download("Magi-02", "Scratch/test", "~/Scratch/test")
+touch ~/Scratch/test
+magi upload -02 ~/Scratch/test Scratch/test
+magi download -02 Scratch/test ~/Scratch/test-copy
 ```
 
-This will copy to/from the `viteklab/Scratch/` directory.
+This will copy the `test` file to/from the `viteklab/Scratch/` directory on `Magi-02`.
 
 ### Best practices for files
 
@@ -207,7 +244,7 @@ This is useful for sharing an ongoing task among lab members, but please be care
 
 ## Software
 
-The default software is listed in `magi-info.md`.
+The default software is listed in `Magi-INFO.md`.
 
 If you need *specific versions* of packages, please create a virtual environment using `conda create` (for multiple dependencies), `venv` (for Python packages), or `renv` (for R packages) and install packages into the virtual environment.
 

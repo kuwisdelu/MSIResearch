@@ -1,12 +1,12 @@
 # Magi cluster
 
 Maintainer: Kylie Ariel Bemis <k.bemis@northeastern.edu>
-Revised: 4 October 2024
+Revised: 10 November 2024
 
 ## Nodes
 
 - Magi-01
-	+ Private compute node
+	+ Compute node
 	+ M2 Ultra Mac Studio
 	+ 16 p-cores / 8 e-cores
 	+ 192 GB unified memory
@@ -15,7 +15,7 @@ Revised: 4 October 2024
 	+ a4:fc:14:15:95:cb
 
 - Magi-02
-	+ Protected compute node
+	+ Compute node
 	+ M2 Ultra Mac Studio
 	+ 16 p-cores / 8 e-cores
 	+ 192 GB unified memory
@@ -24,7 +24,7 @@ Revised: 4 October 2024
 	+ a4:fc:14:18:4b:83
 
 - Magi-03
-	+ Private data node
+	+ Xfer node
 	+ M2 Pro Mac Mini
 	+ 6 p-cores / 4 e-cores
 	+ 16 GB unified memory
@@ -49,6 +49,10 @@ Revised: 4 October 2024
 ## Software
 
 - Available on Magi compute nodes
+
+- Cluster management tools
+	+ magi
+	+ msi
 
 - Command line developer tools
 	+ clang

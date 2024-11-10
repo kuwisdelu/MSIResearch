@@ -18,7 +18,7 @@ This repository tracks experimental metadata for lab-curated MSI datasets stored
 
 The metadata is saved in `manifest.json` in JavaScript Object Notation (JSON) format. Each record in the manifest describes an MSI dataset. The records can be updated by any lab member by editing `manifest.json` and commiting the changes to this Github repository.
 
-Before committing changes to this repository, please make sure the manifest can be parsed without errors using either `jsonlite::fromJSON` (in R) or `json.load` (in Python).
+Before committing changes to this repository, please make sure the manifest can be parsed without errors using either `json.load` (in Python) or `jsonlite::fromJSON` (in R).
 
 Please consider using an existing field before adding new fields. Some fields including `contact`, `keywords`, and `notes` allow multiple entries and can be extended as necessary.
 
@@ -72,18 +72,12 @@ The following directory structure is assumed:
 
 where `...` contain group directories which contain dataset directories.
 
-Recommended usage is to set an environment variable *$MSI_DBPATH* in your shell to the directory where `MSIResearch` is cloned and where locally cached datasets should be stored.
+Recommended usage is to set an environment variable `$MSI_DBPATH` in your shell to the directory where `MSIResearch` is cloned and where locally cached datasets should be stored.
 
 For example, in your `.zshrc` or `.bashrc`:
 
 ```
 export MSI_DBPATH="path/to/database/"
-```
-
-Alternatively, in R:
-
-```
-Sys.setenv(MSI_DBPATH="/path/to/database/")
 ```
 
 The appropriate directory structure will be created automatically when datasets are downloaded.
@@ -92,48 +86,44 @@ The appropriate directory structure will be created automatically when datasets 
 
 ## Accessing the data
 
-The R script `msirc.R` provides convenience functions for searching and downloading the data from R. It assumes you are running in a UNIX-alike environment that includes `ssh` and `rsync` command line programs.
+The `msi` command line utility provides functionality for searching and downloading the data. It assumes you are running in a UNIX-alike environment that includes `ssh` and `rsync` command line programs.
 
-Recommended usage is to source the functions with `source("MSIResearch/msirc.R")`.
+Recommended usage is to set an alias `msi` in your shell to the command `python3 $MSI_DBPATH/MSIResearch/scripts/msi.py`.
 
-The following functions are provided:
+For example, in your `.zshrc` or `.bashrc`:
 
-- `msi_ls()`
-    + List all dataset identifiers
+```
+alias msi="python3 $MSI_DBPATH/MSIResearch/scripts/msi.py"
+```
 
-- `msi_search(pattern, scope, group, cached = FALSE)`
-    + Search all experimental metadata for `pattern`.
-    + `pattern` is a regular expression passed to `grepl()`
-    + `scope` is used to limit the search to given scopes
-    + `group` is used to limit the search to given groups
-    + `cached` is used to limit the search to locally cached datasets
+You can then see the command help with:
 
-- `msi_sync(id, force = FALSE)`
-    + Download a single dataset selected by `id`.
-    + `id` is a the dataset identifier
-    + `force` is used to re-download a dataset that is already locally cached
+```
+msi --help
+```
 
-- `msi_cached(full = FALSE)`
-    + List all locally cached datasets
-    + `full` is used to return additional metadata columns
+The following subcommands are provided:
 
-- `msi_refresh()`
-    + Refreshes the metadata on locally cached datasets
+- `msi ls`
+    + list all datasets
+- `msi ls-cache`
+    + list cached datasets
+- `msi search`
+    + search all datasets
+- `msi search-cache`
+    + search cached datasets
+- `msi describe`
+    + describe a dataset
+- `msi sync`
+    + sync a dataset to local storage
 
-- `magi_download(node, src, dest, username = NULL)`
-    + Download a file or directory from a Magi node
-    + `node` is the Magi node (e.g., "Magi-02")
-    + `src` is the source file or directory on the Magi node
-    + `dest` is the destination file or directory on your computer
-    + `username` is your username on the Magi node (defaults to `viteklab` if `NULL`)
+You can see positional arguments and options for subcommand with the `--help` or `-h` flags.
 
-- `magi_upload(node, src, dest, username = NULL)`
-    + Upload a file or directory to a Magi node
-    + `node` is the Magi node (e.g., "Magi-02")
-    + `src` is the source file or directory on your computer
-    + `dest` is the destination file or directory on the Magi node
-    + `username` is your username on the Magi node (defaults to `viteklab` if `NULL`)
+For example:
 
+```
+msi search --help
+```
 
 
 
@@ -186,7 +176,7 @@ You can also list specific hosts instead of `*`.
 
 #### 4. Add your private key to the ssh-agent:
 
-On macOS, you can do:
+On macOS, if you used a passphrase, you can do:
 
 `ssh-add --apple-use-keychain ~/.ssh/id_ed25519`
 
@@ -204,9 +194,18 @@ You should now be able to access the Khoury servers using key-based authenticati
 
 (If you access the servers from multiple machines, you will need to do this on each machine you use.)
 
+#### 6. Access the Magi cluster
+
+You can then access the Magi cluster from the Khoury login servers:
+
+`ssh viteklab@Magi-02`
+
+Please contact the Magi cluster maintainer for `viteklab` credentials.
 
 
 ### SSH keys for Magi servers
 
-Because we currently rely on shared login credentials for `viteklab` members, please do __NOT__ set up SSH keys on Magi servers. You will be asked for password authentication when connecting to any Magi node.
+By default, you will be asked for password authentication when connecting to any Magi node.
+
+You can use the `magi copy-id` command line utility to set up SSH keys on Magi nodes. See `Magi-README.md` for details.
 
