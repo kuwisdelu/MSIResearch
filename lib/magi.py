@@ -64,6 +64,12 @@ def get_parser():
 			help="gateway server host", default=config.server)
 	# run subcommand
 	add_common_args(cmd_run)
+	cmd_run.add_argument("remote_command", action="store",
+		help="command to execute on a Magi node", nargs=argparse.OPTIONAL,
+		metavar="command")
+	cmd_run.add_argument("remote_args", action="store",
+		help="command arguments", nargs=argparse.REMAINDER,
+		metavar="...")
 	# copy-id subcommand
 	add_common_args(cmd_copy_id)
 	cmd_copy_id.add_argument("identity_file", action="store",
@@ -163,7 +169,19 @@ def main(args):
 		sleep(1) # allow time to connect
 	# run
 	if args.cmd == "run":
-		con.ssh()
+		if args.remote_command is None:
+			con.ssh()
+		else:
+			print(f"connecting as {con.username}@{con.destination}")
+			dest = f"{con.username}@{con.hostname}"
+			if con.server is None:
+				cmd = ["ssh", dest]
+			else:
+				cmd = ["ssh", "-o", "NoHostAuthenticationForLocalhost=yes"]
+				cmd += ["-p", str(con.port), dest]
+			cmd.append(args.remote_command)
+			cmd.extend(args.remote_args)
+			subprocess.run(cmd)
 	# copy-id
 	elif args.cmd == "copy-id":
 		con.copy_id(args.identity_file)
