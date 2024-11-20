@@ -558,11 +558,12 @@ class msidb:
 		:returns: A list of msicache instances
 		"""
 		path = os.path.join(self.dbpath, scope)
-		path = normalizePath(path, mustWork=True)
-		scopes = []
-		for group in listfiles(path):
-			scopes.extend(self.get_cached_group(scope, group))
-		return scopes
+		groups = []
+		if os.path.isdir(path):
+			path = normalizePath(path, mustWork=True)
+			for group in listfiles(path):
+				groups.extend(self.get_cached_group(scope, group))
+		return groups
 	
 	def isopen(self):
 		"""
