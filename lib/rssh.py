@@ -46,7 +46,7 @@ def normalizePath(path, mustWork = True):
 		path = os.path.expanduser(path)
 	path = os.path.realpath(path)
 	if mustWork and not os.path.exists(path):
-		raise FileNotFoundError("path does not exist")
+		raise FileNotFoundError(f"path does not exist: '{path}'")
 	return path
 
 def mkfile(path):
