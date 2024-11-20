@@ -7,8 +7,8 @@ alias pydoc=pydoc3
 alias pip=pip3
 
 # Magi/MSI environment
+export MSI_DBPATH="/Volumes/Datasets"
 export BIOCPARALLEL_WORKER_MAX=8
 export BIOCPARALLEL_WORKER_NUMBER=4
-export MSI_DBPATH="/Volumes/Datasets"
 alias magi="python3 $MSI_DBPATH/MSIResearch/lib/magi.py"
 alias msi="python3 $MSI_DBPATH/MSIResearch/lib/msi.py"
