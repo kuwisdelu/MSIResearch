@@ -654,6 +654,8 @@ class msidb:
 			for name in self.cache.keys():
 				ok = True
 				dataset = self.get(name)
+				if dataset is None:
+					continue
 				if scope is not None:
 					ok = ok and dataset.has_scope(scope)
 				if group is not None:
