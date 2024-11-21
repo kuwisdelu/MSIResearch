@@ -1422,7 +1422,7 @@
 		},
 		"formats" : ["imzML"],
 		"keywords" : [],
-		"notes" : []
+		"notes" : ["cancer"]
 	},
 
 	"PXD011104" : {
@@ -1618,6 +1618,6 @@
 		},
 		"formats" : ["imzML"],
 		"keywords" : [],
-		"notes" : []
+		"notes" : ["cancer"]
 	}
 }
