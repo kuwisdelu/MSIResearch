@@ -46,6 +46,8 @@ def get_parser():
 		help="search all datasets")
 	cmd_search_cache = subparsers.add_parser("search-cache", 
 		help="search cached datasets")
+	cmd_prune_cache = subparsers.add_parser("prune-cache", 
+		help="remove cached datasets")
 	cmd_describe = subparsers.add_parser("describe", 
 		help="describe a dataset")
 	cmd_sync = subparsers.add_parser("sync", 
@@ -62,6 +64,10 @@ def get_parser():
 		help="filter by scope")
 	cmd_ls_cache.add_argument("-g", "--group", action="store",
 		help="filter by group")
+	cmd_ls_cache.add_argument("-o", "--sort", action="store",
+		help="sort by file attribute (atime, mtime, size)")
+	cmd_ls_cache.add_argument("-r", "--reverse", action="store_true",
+		help="reverse order (only applied if sorted)")
 	cmd_ls_cache.add_argument("-l", "--details", action="store_true",
 		help="show full details")
 	# search subcommand
@@ -78,6 +84,23 @@ def get_parser():
 		help="filter by scope")
 	cmd_search_cache.add_argument("-g", "--group", action="store",
 		help="filter by group")
+	# prune-cache subcommand
+	cmd_prune_cache.add_argument("limit", action="store",
+		help="maximum cache size (10, 100, 1000, etc.)", type=float)
+	cmd_prune_cache.add_argument("units", action="store",
+		help="cache size units (MB, GB, TB, etc.)")
+	cmd_prune_cache.add_argument("-a", "--ask", action="store_true",
+		help="ask to confirm before deleting?")
+	cmd_prune_cache.add_argument("-n", "--dry-run", action="store_true",
+		help="show what would be deleted?")
+	cmd_prune_cache.add_argument("--lru", action="store_const",
+		help="prune least recently used (default)", dest="strategy", const="lru")
+	cmd_prune_cache.add_argument("--mru", action="store_const",
+		help="prune most recently used", dest="strategy", const="mru")
+	cmd_prune_cache.add_argument("--big", action="store_const",
+		help="prune largest files", dest="strategy", const="big")
+	cmd_prune_cache.add_argument("--small", action="store_const",
+		help="prune smallest files", dest="strategy", const="small")
 	# describe subcommand
 	cmd_describe.add_argument("name", action="store",
 		help="the identifier of the dataset to describe")
@@ -163,9 +186,23 @@ def main(args):
 		datasets = db.ls_cache(
 			scope=args.scope,
 			group=args.group,
-			details=args.details)
-		if args.details:
+			details=args.details or args.sort is not None)
+		if args.sort is not None:
+			sortby = args.sort.casefold()
+			if sortby == "size".casefold():
+				datasets.sort(key=lambda x: x.size)
+			elif sortby == "atime".casefold():
+				datasets.sort(key=lambda x: x.atime)
+			elif sortby == "mtime".casefold():
+				datasets.sort(key=lambda x: x.mtime)
+			else:
+				sys.exit(f"msi ls-cache: error: can't sort by attribute: '{args.sort}'")
+			if args.reverse:
+				datasets.reverse()
+		if args.details or args.sort is not None:
 			print_datasets(datasets)
+			sizes = [x.size for x in datasets]
+			print(f"~= {format_bytes(sum(sizes))} total")
 		else:
 			for name in datasets:
 				print(f"['{name}']")
@@ -183,6 +220,15 @@ def main(args):
 			scope=args.scope,
 			group=args.group)
 		print_datasets(hits)
+	# prune-cache
+	elif args.cmd == "prune-cache":
+		if args.strategy is None:
+			args.strategy = "lru"
+		db.prune_cache(
+			limit=args.limit,
+			units=args.units,
+			strategy=args.strategy,
+			dryrun=args.dry_run, ask=args.ask)
 	# describe
 	elif args.cmd == "describe":
 		dataset = db.get(args.name)

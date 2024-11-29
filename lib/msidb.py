@@ -23,6 +23,7 @@
 import os
 import re
 import json
+import shutil
 from time import sleep
 from dataclasses import dataclass
 from dataclasses import asdict
@@ -123,6 +124,29 @@ def dirsize(path, allnames = False):
 			size += os.path.getsize(file)
 	return size
 
+def as_bytes(x, units = "bytes"):
+	"""
+	Convert a size to bytes
+	:param x: A positive number
+	:param units: The units for x (KB, MB, GB, etc.)
+	:returns: The number of bytes
+	"""
+	if units in ("bytes", "B"):
+		pass
+	elif units == "KB":
+		x *= 1000
+	elif units == "MB":
+		x *= 1000 ** 2
+	elif units == "GB":
+		x *= 1000 ** 3
+	elif units == "TB":
+		x *= 1000 ** 4
+	elif units == "PB":
+		x *= 1000 ** 5
+	else:
+		raise ValueError(f"invalid units: {units}")
+	return x
+
 def format_bytes(x, units = "auto"):
 	"""
 	Format bytes
@@ -143,7 +167,9 @@ def format_bytes(x, units = "auto"):
 			units = "KB"
 		else:
 			units = "bytes"
-	if units == "KB":
+	if units in ("bytes", "B"):
+		pass
+	elif units == "KB":
 		x /= 1000
 	elif units == "MB":
 		x /= 1000 ** 2
@@ -153,6 +179,8 @@ def format_bytes(x, units = "auto"):
 		x /= 1000 ** 4
 	elif units == "PB":
 		x /= 1000 ** 5
+	else:
+		raise ValueError(f"invalid units: {units}")
 	x = round(x, ndigits=2)
 	return f"{x} {units}"
 
@@ -164,24 +192,29 @@ def print_bytes(x, units = "auto"):
 	"""
 	print(format_bytes(x, units))
 
-def format_datasets(iterable):
+def format_datasets(iterable, names_only = False):
 	"""
 	Format an iterable of datasets
 	:param iterable: An iterable of datasets
 	:return: A formatted string
 	"""
-	sl = [f"['{dataset.name}']\n{dataset}" 
-		for dataset 
-		in iterable]
+	if names_only:
+		sl = [f"['{dataset.name}']" 
+			for dataset 
+			in iterable]
+	else:
+		sl = [f"['{dataset.name}']\n{dataset}" 
+			for dataset 
+			in iterable]
 	sl = [f"#### {len(sl)} datasets ####\n"] + sl
 	return "\n".join(sl)
 
-def print_datasets(iterable):
+def print_datasets(iterable, names_only = False):
 	"""
 	Print an iterable of datasets
 	:param iterable: An iterable of datasets
 	"""
-	print(format_datasets(iterable))
+	print(format_datasets(iterable, names_only))
 
 @dataclass
 class msidata:
@@ -711,6 +744,58 @@ class msidb:
 				if result is not None:
 					hits.append(result)
 		return hits
+	
+	def prune_cache(self, limit, units, strategy = "lru", dryrun = False, ask = False):
+		"""
+		List cached datasets by name
+		:param limit: Maximum size of the cache
+		:param units: Size units (B, KB, MB, GB, TB, etc.)
+		:param strategy: One of "lru", "mru", "big", "small"
+		:param dryrun: Show what would be done without doing it?
+		:param ask: Confirm before deleting?
+		"""
+		limit = as_bytes(limit, units)
+		cache = self.ls_cache(details=True)
+		strategy = strategy.casefold()
+		if strategy == "lru".casefold():
+			cache.sort(key=lambda x: x.atime)
+		elif strategy == "mru".casefold():
+			cache.sort(key=lambda x: x.atime)
+			cache.reverse()
+		elif strategy == "big".casefold():
+			cache.sort(key=lambda x: x.size)
+			cache.reverse()
+		elif strategy == "small".casefold():
+			cache.sort(key=lambda x: x.size)
+		else:
+			raise ValueError(f"invalid strategy: {strategy}")
+		sizes = [x.size for x in cache]
+		totsize = sum(sizes)
+		delsize = []
+		for i in range(len(sizes)):
+			delsize.append(totsize - sum(sizes[:i]))
+		target = 0
+		while delsize[target] > limit:
+			target += 1
+		newsize = totsize - sum(sizes[:target])
+		print(f"the local cache is currently {format_bytes(totsize)}")
+		print(f"using strategy: {strategy}")
+		print("the following datasets will be deleted from the cache:")
+		print_datasets(cache[:target], names_only=True)
+		print(f"~= {format_bytes(sum(sizes[:target]))} will be freed")
+		if not target:
+			return
+		if ask and not askYesNo():
+			return
+		if not dryrun:
+			for x in cache[:target]:
+				print(f"deleting '{x.path}'")
+				try:
+					shutil.rmtree(normalizePath(x.path, mustWork=True))
+				except:
+					print(f"failed to delete '{x.path}'")
+			print(f"the local cache is now {format_bytes(newsize)}")
+		return
 	
 	def sync(self, name, force = False, ask = False):
 		"""
