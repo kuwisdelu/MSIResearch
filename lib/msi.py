@@ -54,24 +54,26 @@ def get_parser():
 		help="sync a dataset to local cache")
 	cmd_submit = subparsers.add_parser("submit", 
 		help="submit a dataset")
+	cmd_status = subparsers.add_parser("status", 
+		help="check cache versus manifest")
 	# ls subcommand
+	cmd_ls.add_argument("-l", "--details", action="store_true",
+		help="show full details")
 	cmd_ls.add_argument("-s", "--scope", action="store",
 		help="filter by scope")
 	cmd_ls.add_argument("-g", "--group", action="store",
 		help="filter by group")
-	cmd_ls.add_argument("-l", "--details", action="store_true",
-		help="show full details")
 	# ls-cache subcommand
+	cmd_ls_cache.add_argument("-l", "--details", action="store_true",
+		help="show full details")
+	cmd_ls_cache.add_argument("-r", "--reverse", action="store_true",
+		help="reverse order (only applied if sorted)")
 	cmd_ls_cache.add_argument("-s", "--scope", action="store",
 		help="filter by scope")
 	cmd_ls_cache.add_argument("-g", "--group", action="store",
 		help="filter by group")
 	cmd_ls_cache.add_argument("-o", "--sort", action="store",
 		help="sort by file attribute (atime, mtime, size)")
-	cmd_ls_cache.add_argument("-r", "--reverse", action="store_true",
-		help="reverse order (only applied if sorted)")
-	cmd_ls_cache.add_argument("-l", "--details", action="store_true",
-		help="show full details")
 	# search subcommand
 	cmd_search.add_argument("pattern", action="store",
 		help="search pattern (regex allowed)")
@@ -144,6 +146,13 @@ def get_parser():
 		help="remote database host", default=config.remote_dbhost)
 	cmd_submit.add_argument("--remote-path", action="store",
 		help="remote database path", default=config.remote_dbpath)
+	# status subcommand
+	cmd_status.add_argument("-l", "--details", action="store_true",
+		help="show full details")
+	cmd_status.add_argument("-s", "--scope", action="store",
+		help="filter by scope")
+	cmd_status.add_argument("-g", "--group", action="store",
+		help="filter by group")
 	return parser
 
 def open_db(dbpath = None):
@@ -284,6 +293,32 @@ def main(args):
 		db.submit(args.path,
 			force=args.force,
 			ask=args.ask)
+	# status
+	if args.cmd == "status":
+		synced, remoteonly, localonly = db.status(
+			scope=args.scope,
+			group=args.group,
+			details=args.details)
+		msg_synced = "\n~~~~ synced:"
+		msg_remoteonly = "\n>>>> tracked but not cached:"
+		msg_localonly = "\n<<<< cached but not tracked:"
+		if args.details:
+			print(msg_synced)
+			print_datasets(synced)
+			print(msg_remoteonly)
+			print_datasets(remoteonly)
+			print(msg_localonly)
+			print_datasets(localonly)
+		else:
+			print(msg_synced)
+			for name in synced:
+				print(f"['{name}']")
+			print(msg_remoteonly)
+			for name in remoteonly:
+				print(f"['{name}']")
+			print(msg_localonly)
+			for name in localonly:
+				print(f"['{name}']")
 	db.close()
 	sys.exit()
 

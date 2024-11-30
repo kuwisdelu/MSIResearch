@@ -192,10 +192,12 @@ def print_bytes(x, units = "auto"):
 	"""
 	print(format_bytes(x, units))
 
-def format_datasets(iterable, names_only = False):
+def format_datasets(iterable, names_only = False, header = True):
 	"""
 	Format an iterable of datasets
 	:param iterable: An iterable of datasets
+	:param names_only: Print names only?
+	:param header: Print number of datasets?
 	:return: A formatted string
 	"""
 	if names_only:
@@ -206,15 +208,18 @@ def format_datasets(iterable, names_only = False):
 		sl = [f"['{dataset.name}']\n{dataset}" 
 			for dataset 
 			in iterable]
-	sl = [f"#### {len(sl)} datasets ####\n"] + sl
+	if header:
+		sl = [f"#### {len(sl)} datasets ####\n"] + sl
 	return "\n".join(sl)
 
-def print_datasets(iterable, names_only = False):
+def print_datasets(iterable, names_only = False, header = True):
 	"""
 	Print an iterable of datasets
 	:param iterable: An iterable of datasets
+	:param names_only: Print names only?
+	:param header: Print number of datasets?
 	"""
-	print(format_datasets(iterable, names_only))
+	print(format_datasets(iterable, names_only, header))
 
 @dataclass
 class msidata:
@@ -879,6 +884,75 @@ class msidb:
 			print("a problem occured during submission")
 		finally:
 			con.close()
+	
+	def status(self, scope = None, group = None, details = False):
+		"""
+		Get status of cache versus manifest
+		:param scope: Filter by scope
+		:param group: Filter by group
+		:param details: Return names only or dataset details?
+		:returns: A tuple like (synced, remoteonly, localonly)
+		"""
+		remote = set(self.manifest.keys())
+		local = set(self.cache.keys())
+		synced = {name: dataset 
+			for name, dataset 
+			in self.cache.items()
+			if name in remote.intersection(local)}
+		remoteonly = {name: dataset 
+			for name, dataset 
+			in self.manifest.items()
+			if name in remote.difference(local)}
+		localonly = {name: dataset 
+			for name, dataset 
+			in self.cache.items()
+			if name in local.difference(remote)}
+		if scope is None and group is None:
+			if details:
+				synced_list = list(synced.values())
+				remoteonly_list = list(remoteonly.values())
+				localonly_list = list(localonly.values())
+			else:
+				synced_list = list(synced.keys())
+				remoteonly_list = list(remoteonly.keys())
+				localonly_list = list(localonly.keys())
+		else:
+			synced_list = []
+			remoteonly_list = []
+			localonly_list = []
+			for name in synced.keys():
+				ok = True
+				dataset = self.manifest.get(name)
+				if dataset is None:
+					continue
+				if scope is not None:
+					ok = ok and dataset.has_scope(scope)
+				if group is not None:
+					ok = ok and dataset.has_group(group)
+				if ok:
+					if details:
+						synced_list.append(synced.get(name))
+					else:
+						synced_list.append(name)
+			for name in remoteonly.keys():
+				ok = True
+				dataset = self.manifest.get(name)
+				if dataset is None:
+					continue
+				if scope is not None:
+					ok = ok and dataset.has_scope(scope)
+				if group is not None:
+					ok = ok and dataset.has_group(group)
+				if ok:
+					if details:
+						remoteonly_list.append(remoteonly.get(name))
+					else:
+						remoteonly_list.append(name)
+			if details:
+				localonly_list = list(localonly.values())
+			else:
+				localonly_list = list(localonly.keys())
+		return synced_list, remoteonly_list, localonly_list
 	
 	def close(self):
 		"""
