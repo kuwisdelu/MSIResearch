@@ -19,7 +19,11 @@ from time import sleep
 import config
 from rssh import *
 
-def get_parser():
+version = "0.1.0"
+revised = "29 November 2024"
+author = "Kylie A. Bemis"
+
+def create_parser():
 	"""
 	Parse arguments for the CLI
 	"""
@@ -30,6 +34,8 @@ def get_parser():
 	# argument parser
 	parser = argparse.ArgumentParser("magi",
 		description=description)
+	parser.add_argument("-v", "--version", action="store_true",
+		help="display version")
 	parser.add_argument("-m", "--readme", action="store_true",
 		help="display readme")
 	parser.add_argument("-p", "--pager", action="store",
@@ -96,7 +102,7 @@ def get_parser():
 	add_common_args(cmd_upload)
 	return parser
 
-def get_node_from_list(nodes = None):
+def resolve_host_from_nodes(nodes = None):
 	"""
 	Get Magi nodename from a list of Magi node ids
 	:param nodes: A list of nodes ('01', '02', etc.)
@@ -156,14 +162,19 @@ def main(args):
 		cmd += [file]
 		subprocess.run(cmd)
 		sys.exit()
-	# help
+	# version
+	elif args.version:
+		print(f"magi cluster cli version {version} ({revised})")
+		print(f"copyright (c) 2024 {author}")
+		sys.exit()
+	# default to help
 	elif args.cmd is None:
 		parser.print_help()
 		sys.exit()
 	# open ssh
 	else:
 		con = open_ssh(args.user,
-			node=get_node_from_list(args.nodes),
+			node=resolve_host_from_nodes(args.nodes),
 			login=args.login, server=args.server,
 			port=args.port)
 		sleep(1) # allow time to connect
@@ -196,7 +207,7 @@ def main(args):
 	sys.exit()
 
 if __name__ == "__main__":
-	parser = get_parser()
+	parser = create_parser()
 	args = parser.parse_args()
 	main(args)
 

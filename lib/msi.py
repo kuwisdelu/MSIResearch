@@ -19,7 +19,11 @@ import argparse
 import config
 from msidb import *
 
-def get_parser():
+version = "0.1.0"
+revised = "29 November 2024"
+author = "Kylie A. Bemis"
+
+def create_parser():
 	"""
 	Parse arguments for the CLI
 	"""
@@ -30,6 +34,8 @@ def get_parser():
 	# argument parser
 	parser = argparse.ArgumentParser("msi",
 		description=description)
+	parser.add_argument("-v", "--version", action="store_true",
+		help="display version")
 	parser.add_argument("-m", "--readme", action="store_true",
 		help="display readme")
 	parser.add_argument("-p", "--pager", action="store",
@@ -193,7 +199,12 @@ def main(args):
 		cmd += [file]
 		subprocess.run(cmd)
 		sys.exit()
-	# help
+	# version
+	elif args.version:
+		print(f"msi database cli version {version} ({revised})")
+		print(f"copyright (c) 2024 {author}")
+		sys.exit()
+	# default to help
 	elif args.cmd is None:
 		parser.print_help()
 		sys.exit()
@@ -323,7 +334,7 @@ def main(args):
 	sys.exit()
 
 if __name__ == "__main__":
-	parser = get_parser()
+	parser = create_parser()
 	args = parser.parse_args()
 	main(args)
 
