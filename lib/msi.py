@@ -51,7 +51,9 @@ def get_parser():
 	cmd_describe = subparsers.add_parser("describe", 
 		help="describe a dataset")
 	cmd_sync = subparsers.add_parser("sync", 
-		help="sync a dataset")
+		help="sync a dataset to local cache")
+	cmd_submit = subparsers.add_parser("submit", 
+		help="submit a dataset")
 	# ls subcommand
 	cmd_ls.add_argument("-s", "--scope", action="store",
 		help="filter by scope")
@@ -122,6 +124,25 @@ def get_parser():
 	cmd_sync.add_argument("--remote-host", action="store",
 		help="remote database host", default=config.remote_dbhost)
 	cmd_sync.add_argument("--remote-path", action="store",
+		help="remote database path", default=config.remote_dbpath)
+	# submit subcommand
+	cmd_submit.add_argument("path", action="store",
+		help="the path to the data directory")
+	cmd_submit.add_argument("-a", "--ask", action="store_true",
+		help="ask to confirm before submitting?")
+	cmd_submit.add_argument("-f", "--force", action="store_true",
+		help="force re-submission if already tracked")
+	cmd_submit.add_argument("-p", "--port", action="store",
+		help="port forwarding", default=config.port)
+	cmd_submit.add_argument("-u", "--user", action="store",
+		help="remote database user", default=config.username)
+	cmd_submit.add_argument("-L", "--login", action="store",
+		help="gateway server user", default=config.server_username)
+	cmd_submit.add_argument("-S", "--server", action="store",
+		help="gateway server host", default=config.server)
+	cmd_submit.add_argument("--remote-host", action="store",
+		help="remote database host", default=config.remote_dbhost)
+	cmd_submit.add_argument("--remote-path", action="store",
 		help="remote database path", default=config.remote_dbpath)
 	return parser
 
@@ -239,8 +260,7 @@ def main(args):
 	# sync
 	elif args.cmd == "sync":
 		if args.name in db.cache and not args.force:
-			print("msi sync: dataset is already cached; use --force to re-sync")
-			sys.exit()
+			sys.exit("msi sync: dataset is already cached; use --force to re-sync")
 		db.username = args.user
 		db.remote_dbhost = args.remote_host
 		db.remote_dbpath = args.remote_path
@@ -248,6 +268,20 @@ def main(args):
 		db.server_username = args.login
 		db.port = args.port
 		db.sync(args.name,
+			force=args.force,
+			ask=args.ask)
+	# submit
+	elif args.cmd == "submit":
+		name = os.path.basename(args.path)
+		if name in db.manifest and not args.force:
+			sys.exit("msi submit: dataset is already tracked; use --force to re-submit")
+		db.username = args.user
+		db.remote_dbhost = args.remote_host
+		db.remote_dbpath = args.remote_path
+		db.server = args.server
+		db.server_username = args.login
+		db.port = args.port
+		db.submit(args.path,
 			force=args.force,
 			ask=args.ask)
 	db.close()

@@ -554,6 +554,49 @@ class msidb:
 		else:
 			return {ki: self.manifest[ki] for ki in key}
 	
+	def isopen(self):
+		"""
+		Check if the database is ready
+		"""
+		return self._manifest is not None or self._cache is not None
+	
+	def open(self):
+		"""
+		Ready the connection to the database
+		"""
+		self.open_manifest()
+		self.open_cache()
+	
+	def open_manifest(self):
+		"""
+		Refresh the database manifest
+		"""
+		path = os.path.join(self.dbpath, "MSIResearch", "manifest.json")
+		path = normalizePath(path, mustWork=True)
+		if self.verbose:
+			print(f"parsing '{path}'")
+		with open(path) as file:
+			manifest = json.load(file)
+			manifest = {name: msidata(name, entry) 
+				for name, entry in manifest.items()}
+			self._manifest = manifest
+		if self.verbose:
+			print(f"manifest is searchable")
+	
+	def open_cache(self):
+		"""
+		Refresh the cache metadata
+		"""
+		if self.verbose:
+			print("detecting cached datasets")
+		cache = []
+		cache.extend(self.get_cached_scope("Private"))
+		cache.extend(self.get_cached_scope("Protected"))
+		cache.extend(self.get_cached_scope("Public"))
+		self._cache = {dataset.name: dataset for dataset in cache}
+		if self.verbose:
+			print(f"{len(cache)} datasets available locally")
+	
 	def get_cached_dataset(self, scope, group, dataset):
 		"""
 		Get cached dataset metadata
@@ -597,49 +640,6 @@ class msidb:
 			for group in listfiles(path):
 				groups.extend(self.get_cached_group(scope, group))
 		return groups
-	
-	def isopen(self):
-		"""
-		Check if the database is ready
-		"""
-		return self._manifest is not None or self._cache is not None
-	
-	def open(self):
-		"""
-		Ready the connection to the database
-		"""
-		self.open_manifest()
-		self.open_cache()
-	
-	def open_manifest(self):
-		"""
-		Refresh the database manifest
-		"""
-		path = os.path.join(self.dbpath, "MSIResearch", "manifest.json")
-		path = normalizePath(path, mustWork=True)
-		if self.verbose:
-			print(f"parsing '{path}'")
-		with open(path) as file:
-			manifest = json.load(file)
-			manifest = {name: msidata(name, entry) 
-				for name, entry in manifest.items()}
-			self._manifest = manifest
-		if self.verbose:
-			print(f"manifest is searchable")
-	
-	def open_cache(self):
-		"""
-		Refresh the cache metadata
-		"""
-		if self.verbose:
-			print("detecting cached datasets")
-		cache = []
-		cache.extend(self.get_cached_scope("Private"))
-		cache.extend(self.get_cached_scope("Protected"))
-		cache.extend(self.get_cached_scope("Public"))
-		self._cache = {dataset.name: dataset for dataset in cache}
-		if self.verbose:
-			print(f"{len(cache)} datasets available locally")
 	
 	def ls(self, scope = None, group = None, details = False):
 		"""
@@ -810,9 +810,9 @@ class msidb:
 			print("dataset is already cached; use force=True to re-sync")
 			return
 		if self.remote_dbhost is None:
-			raise ConnectionError("remote host is None")
+			raise IOError("remote host is None")
 		if self.remote_dbpath is None:
-			raise ConnectionError("remote path is None")
+			raise IOError("remote path is None")
 		dataset = self.get(name)
 		scope = dataset.scope
 		group = dataset.group
@@ -838,6 +838,45 @@ class msidb:
 				self.open_cache()
 		except:
 			print("a problem occured during syncing")
+		finally:
+			con.close()
+	
+	def submit(self, path, force = False, ask = False):
+		"""
+		Submit a dataset to the database maintainer(s)
+		:param path: The path to the data directory
+		:param force: Should the dataset be re-submitted if already tracked?
+		:param ask: Confirm before uploading?
+		"""
+		path = normalizePath(path, mustWork=False)
+		name = os.path.basename(path)
+		if name in self.manifest and not force:
+			print("dataset is already tracked; use force=True to re-submit")
+			return
+		if self.remote_dbhost is None:
+			raise IOError("remote host is None")
+		if self.remote_dbpath is None:
+			raise IOError("remote path is None")
+		if not os.path.isdir(path):
+			raise NotADirectoryError("path must be a directory")
+		if path[-1] != "/":
+			src = path + "/"
+		else:
+			src = path
+		dest = os.path.join(self.dbpath, "Xfer", name)
+		dest = dest + "/"
+		try:
+			con = rssh(self.username,
+				destination=self.remote_dbhost,
+				server=self.server,
+				server_username=self.server_username,
+				port=self.port,
+				destination_port=self.remote_port)
+			sleep(1) # allow time to connect
+			con.upload(src, dest, ask=ask)
+			print("submission complete")
+		except:
+			print("a problem occured during submission")
 		finally:
 			con.close()
 	

@@ -269,7 +269,10 @@ class rssh:
 		"""
 		truesrc = f"{self.username}@{self.hostname}:{src}"
 		showsrc = f"{self.username}@{self.destination}:{src}"
+		has_trailing_slash = dest[-1] == "/"
 		dest = normalizePath(dest, mustWork=False)
+		if dest[-1] != "/" and has_trailing_slash:
+			dest += "/"
 		print(f"data will be downloaded from: '{showsrc}'")
 		print(f"data will be downloaded to: '{dest}'")
 		if ask and not askYesNo():
@@ -293,9 +296,12 @@ class rssh:
 		:param dryrun: Show what would be done without doing it?
 		:param ask: Confirm before uploading?
 		"""
-		src = normalizePath(src, mustWork=True)
 		truedest = f"{self.username}@{self.hostname}:{dest}"
 		showdest = f"{self.username}@{self.destination}:{dest}"
+		has_trailing_slash = src[-1] == "/"
+		src = normalizePath(src, mustWork=True)
+		if src[-1] != "/" and has_trailing_slash:
+			src += "/"
 		print(f"data will be uploaded from: '{src}'")
 		print(f"data will be uploaded to: '{showdest}'")
 		if ask and not askYesNo():
