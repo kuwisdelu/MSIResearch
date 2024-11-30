@@ -120,6 +120,8 @@ The following subcommands are provided:
     + sync a dataset to local cache
 - `msi submit`
     + submit a dataset
+- `msi status`
+    + check cache versus manifest
 
 You can see positional arguments and options for subcommand with the `--help` or `-h` flags.
 
