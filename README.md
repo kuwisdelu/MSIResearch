@@ -112,10 +112,14 @@ The following subcommands are provided:
     + search all datasets
 - `msi search-cache`
     + search cached datasets
+- `msi prune-cache`
+    + remove cached datasets
 - `msi describe`
     + describe a dataset
 - `msi sync`
-    + sync a dataset to local storage
+    + sync a dataset to local cache
+- `msi submit`
+    + submit a dataset
 
 You can see positional arguments and options for subcommand with the `--help` or `-h` flags.
 

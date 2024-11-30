@@ -31,7 +31,7 @@ def get_parser():
 	parser = argparse.ArgumentParser("msi",
 		description=description)
 	parser.add_argument("-m", "--readme", action="store_true",
-		help="display readme file")
+		help="display readme")
 	parser.add_argument("-p", "--pager", action="store",
 		help="program to display readme (default 'glow')")
 	parser.add_argument("-w", "--width", action="store",
