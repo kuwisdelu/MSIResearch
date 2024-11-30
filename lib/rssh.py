@@ -18,6 +18,8 @@
 # 
 
 import subprocess
+import socket
+import random
 import os
 
 def askYesNo(msg = "Continue? (yes/no): "):
@@ -66,6 +68,29 @@ def rmfile(path):
 	path = normalizePath(path, mustWork=False)
 	if os.path.exists(path):
 		os.remove(path)
+
+def checkport(port):
+	"""
+	Check if a port is open (i.e., if it is in use)
+	:param port: The port to check
+	:returns: 0 if open, an error code otherwise
+	"""
+	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	result = sock.connect_ex(("localhost", port))
+	sock.close()
+	return result
+
+def findport(attempts = 10):
+	"""
+	Find an available port (for SSH forwarding)
+	:param attempts: How many random ports to attempt
+	:returns: The port number
+	"""
+	for i in range(attempts):
+		port = random.randint(1024, 65535)
+		if checkport(port) != 0:
+			return port
+	raise IOError("couldn't find an available port")
 
 class rssh:
 	"""
@@ -288,7 +313,7 @@ class rssh:
 	
 	def rsync(self, src, dest, target = None, dryrun = False, ask = False):
 		"""
-		Sync file(s) using rsync from destination machine
+		Sync file(s) by running rsync on the destination machine
 		:param src: The source path on the destination machine
 		:param dest: The destination path on the target machine
 		:param target: The target machine (if different from destination)

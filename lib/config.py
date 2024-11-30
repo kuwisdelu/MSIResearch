@@ -2,6 +2,8 @@
 import os
 import platform
 
+import rssh
+
 # Shell environment variables:
 # $MSI_DBPATH = /path/to/database
 # $MAGI_LOGIN = <khoury-username>
@@ -15,6 +17,9 @@ known_hosts = [host.casefold() for host in known_hosts]
 dbpath = os.getenv("MSI_DBPATH", default="/Volumes/Datasets/")
 localhost = platform.node().replace(".local", "")
 localuser = os.getlogin()
+port = rssh.findport()
+
+# check if running on a Magi node
 is_Magi = localhost.casefold() in known_hosts
 
 # set up defaults
@@ -25,7 +30,6 @@ if is_Magi:
 	remote_dbpath = "/Volumes/Datasets"
 	server = None
 	server_username = None
-	port = 8080
 else:
 	# remote client defaults
 	username = os.getenv("MAGI_USER", default="viteklab")
@@ -33,4 +37,3 @@ else:
 	remote_dbpath = "/Volumes/Datasets"
 	server = "login.khoury.northeastern.edu"
 	server_username = os.getenv("MAGI_LOGIN", default=None)
-	port = 8080
