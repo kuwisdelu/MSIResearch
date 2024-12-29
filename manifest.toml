@@ -1,0 +1,885 @@
+
+### TEMPLATE ###
+# [Dataset-ID]
+# scope = "Public"
+# group = "Name of research group or data repository"
+# title = "This is a short title"
+# description = """\
+# 	This is a description of the experiment or study, \
+# 	including the purpose why the data was collected, \
+# 	and the overall goals of the research project.\
+# 	"""
+# sample-processing = """\
+# 	This section describes the sample preparation and \
+# 	the data collection protocol.\
+# 	"""
+# data-processing = """\
+# 	This section describes any computational processing \
+# 	applied to the data or files.\
+# 	"""
+# contact = [
+# 	{name = "Person", email = "person@url.domain"}
+# ]
+# url.doi = "digital.object/identifier"
+# url.pub = "publication.site.domain/article"
+# date.created = 1970-01-01
+# date.received = 1970-01-01
+# formats = ["csv", "png", "Excel"]
+# keywords = ["documentation"]
+# notes = [
+# 	"Fields 'scope', 'group', 'title', 'description' are required",
+# 	"Everything else is optional (but strongly recommended)."]
+
+[Example_Continuous_imzML]
+scope = "Public"
+group = "Examples"
+title = "Example 1: imzML example data (3×3 pixels) in continuous and processed format"
+description = ""
+contact = []
+date.created = 2010-05-10
+keywords = ["example"]
+
+[Example_Processed_imzML]
+scope = "Public"
+group = "Examples"
+title = "Example 1: imzML example data (3×3 pixels) in continuous and processed format"
+description = ""
+contact = []
+date.created = 2010-05-10
+keywords = ["example"]
+
+[S043_Processed_imzML]
+scope = "Public"
+group = "Examples"
+title = "Example 2: MS imaging data set of a urinary bladder in imzML (processed)"
+description = ""
+contact = []
+date.created = 2010-05-10
+keywords = ["example"]
+
+[S042_Continuous_imzML]
+scope = "Public"
+group = "Examples"
+title = "Example 3: MS imaging data set of a urinary bladder in imzML (processed and continuous)"
+description = ""
+contact = []
+date.created = 2010-05-10
+keywords = ["example"]
+
+[S042_Processed_imzML]
+scope = "Public"
+group = "Examples"
+title = "Example 3: MS imaging data set of a urinary bladder in imzML (processed and continuous)"
+description = ""
+contact = []
+date.created = 2010-05-10
+keywords = ["example"]
+
+["Lipid Comp Study"]
+scope = "Protected"
+group = "Agar Lab"
+title = "Lipid comparison study"
+description = ""
+contact = [
+	{name = "Jeffrey Agar", email = "j.agar@northeastern.edu"},
+	{name = "Catherine Rawlins"},
+]
+date.created = 2018-05-02
+date.received = 2018-05-02
+
+["Lipid Pilot Study"]
+scope = "Protected"
+group = "Agar Lab"
+title = "Lipid comparison pilot study"
+description = ""
+contact = [
+	{name = "Jeffrey Agar", email = "j.agar@northeastern.edu"},
+	{name = "Catherine Rawlins"},
+]
+date.created = 2018-05-03
+date.received = 2018-05-03
+
+["Ovarian Tissue"]
+scope = "Protected"
+group = "Agar Lab"
+title = "Ovarian tissue"
+description = ""
+contact = [
+	{name = "Jeffrey Agar", email = "j.agar@northeastern.edu"},
+	{name = "Catherine Rawlins"},
+]
+date.created = 2013-01-29
+
+[Pituitary]
+scope = "Protected"
+group = "Agar Lab"
+title = "Pituitary tissue"
+description = ""
+contact = [
+	{name = "Jeffrey Agar", email = "j.agar@northeastern.edu"},
+	{name = "Catherine Rawlins"},
+]
+date.created = 2016-03-15
+
+[SOD1Mouse]
+scope = "Protected"
+group = "Agar Lab"
+title = "SOD1 variants in a mouse model of familial ALS"
+description = ""
+contact = [
+	{name = "Jeffrey Agar", email = "j.agar@northeastern.edu"},
+	{name = "Catherine Rawlins"},
+]
+date.created = 2019-01-23
+date.received = 2019-01-23
+
+[BOV_5_Livia]
+scope = "Protected"
+group = "Aston Labs"
+title = "Bovine tissue"
+description = ""
+contact = [
+	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
+	{name = "Livia Eberlin"},
+]
+date.created = 2013-06-04
+date.received = 2013-06-04
+
+[Bierbaum_demo_]
+scope = "Protected"
+group = "Aston Labs"
+title = "Cardinal painting"
+description = "DESI imaging of a cardinal painting on a slide"
+contact = [
+	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
+	{name = "Livia Eberlin"},
+	{name = "Christina Ferreira"},
+]
+date.created = 2013-10-08
+date.received = 2013-10-08
+keywords = ["painting"]
+
+[Bladder_Normal]
+scope = "Protected"
+group = "Aston Labs"
+title = "Bladder tissue (normal)"
+description = ""
+contact = [
+	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
+	{name = "Livia Eberlin"},
+]
+date.created = 2011-06-20
+date.received = 2011-06-20
+
+[Bladder_Tumor]
+scope = "Protected"
+group = "Aston Labs"
+title = "Bladder tissue (cancer)"
+description = ""
+contact = [
+	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
+	{name = "Livia Eberlin"},
+]
+date.created = 2011-06-20
+date.received = 2011-06-20
+
+[PIGII_206]
+scope = "Protected"
+group = "Aston Labs"
+title = "Pig fetus cross-section"
+description = ""
+contact = [
+	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
+	{name = "Livia Eberlin"},
+]
+date.created = 2013-11-19
+date.received = 2013-11-19
+keywords = ["swine"]
+
+[PIGII_3D]
+scope = "Protected"
+group = "Aston Labs"
+title = "Serial sections of a pig fetus"
+description = ""
+contact = [
+	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
+	{name = "Livia Eberlin"},
+]
+date.created = 2013-09-12
+date.received = 2013-09-12
+keywords = ["swine", "3D"]
+
+[PIGII_3D]
+scope = "Protected"
+group = "Aston Labs"
+title = "Serial sections of a pig fetus"
+description = ""
+contact = [
+	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
+	{name = "Livia Eberlin"},
+]
+date.created = 2013-09-12
+date.received = 2013-09-12
+keywords = ["swine", "3D"]
+
+["RCC (Cedric)"]
+scope = "Protected"
+group = "Aston Labs"
+title = "Renal cell carcinoma dataset"
+description = ""
+contact = [
+	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
+	{name = "Cedric D'Hue"},
+]
+date.created = 2013-11-11
+date.received = 2013-11-11
+
+["RCC (Kevin)"]
+scope = "Protected"
+group = "Aston Labs"
+title = "Renal cell carcinoma dataset"
+description = ""
+contact = [
+	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
+	{name = "Kevin Kerian"},
+]
+date.created = 2013-11-08
+date.received = 2013-11-08
+
+["RCC (Livia)"]
+scope = "Protected"
+group = "Aston Labs"
+title = "Renal cell carcinoma dataset"
+description = ""
+contact = [
+	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
+	{name = "Livia Eberlin"},
+]
+date.created = 2013-11-15
+date.received = 2013-11-15
+
+["UH0210_13 bladder 10 um DMFEtOH"]
+scope = "Protected"
+group = "Aston Labs"
+title = ""
+description = ""
+contact = [
+	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
+	{name = "Livia Eberlin"},
+]
+date.created = 2013-06-04
+date.received = 2013-06-04
+
+[UH0210_13_bladder_10um_ACNH2O]
+scope = "Protected"
+group = "Aston Labs"
+title = ""
+description = ""
+contact = [
+	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
+	{name = "Livia Eberlin"},
+]
+date.created = 2013-06-04
+date.received = 2013-06-04
+
+[brain-stepsizes]
+scope = "Protected"
+group = "Aston Labs"
+title = "Pixel size comparison in DESI imaging of brain"
+description = ""
+contact = [
+	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
+	{name = "Livia Eberlin"},
+]
+date.created = 2013-11-13
+date.received = 2013-11-13
+
+[farm_house17]
+scope = "Protected"
+group = "Aston Labs"
+title = "Farm house painting"
+description = "DESI imaging of a farm house painting on a slide"
+sample-processing = """\
+	In the oil painting on paper each color has a unique chemical composition, representing a component of the image. The painting was affixed to a glass slide. A DESI-MSI experiment with an LTQ linear ion trap mass spectrometer (Thermo Finnigan) acquired mass spectra from 12,600 locations, with m/z range 100–1000, and produced 10,800 m/z features.
+	"""
+contact = [
+	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
+	{name = "Livia Eberlin"},
+	{name = "Christina Ferreira"},
+]
+date.created = 2013-09-30
+date.received = 2013-09-30
+keywords = ["painting"]
+
+[Brain]
+scope = "Protected"
+group = "Canary Center"
+title = "MALDI mouse brain dataset from AB Sciex TOF/TOF"
+description = "DESI imaging of a farm house painting on a slide"
+sample-processing = """\
+	This dataset features a high degree of experimental noise. Mass spectra were acquired using an AB Sciex MALDI TOF/TOF 5800 System over the 4,000 to 20,000 m/z range. The images were cropped to remove noninformative spectra. The cropped dataset consisted of 4,923 mass spectra with 22,667 spectral features.
+	"""
+contact = [
+	{name = "Mark Stolowitz"},
+	{name = "Stephanie Van de Ven"},
+]
+date.created = 2013-10-01
+date.received = 2013-10-01
+
+[OVCA]
+scope = "Protected"
+group = "Canary Center"
+title = ""
+description = ""
+contact = [
+	{name = "Mark Stolowitz"},
+	{name = "Stephanie Van de Ven"},
+]
+date.created = 2013-03-10
+date.received = 2013-03-10
+
+[Shapes]
+scope = "Protected"
+group = "Canary Center"
+title = ""
+description = ""
+contact = [
+	{name = "Mark Stolowitz"},
+	{name = "Stephanie Van de Ven"},
+]
+date.created = 2013-09-28
+date.received = 2013-09-28
+
+["Shapes II"]
+scope = "Protected"
+group = "Canary Center"
+title = ""
+description = ""
+contact = [
+	{name = "Mark Stolowitz"},
+	{name = "Stephanie Van de Ven"},
+]
+date.created = 2013-11-02
+date.received = 2013-11-02
+
+[CRC_MSI_raw_data]
+scope = "Protected"
+group = "Foell Lab"
+title = ""
+description = ""
+contact = [
+	{name = "Melanie Föll", email = "melanie.foell@uniklinik-freiburg.de"},
+]
+date.created = 2022-08-15
+date.received = 2022-08-15
+
+[Harnblase_TMAs]
+scope = "Protected"
+group = "Foell Lab"
+title = ""
+description = ""
+contact = [
+	{name = "Melanie Föll", email = "melanie.foell@uniklinik-freiburg.de"},
+]
+date.created = 2022-08-16
+date.received = 2022-08-16
+
+[ICC_TMAs]
+scope = "Protected"
+group = "Foell Lab"
+title = ""
+description = ""
+contact = [
+	{name = "Melanie Föll", email = "melanie.foell@uniklinik-freiburg.de"},
+]
+date.created = 2023-10-06
+date.received = 2023-10-06
+
+["Ovarian Cancer"]
+scope = "Protected"
+group = "Foell Lab"
+title = ""
+description = ""
+contact = [
+	{name = "Melanie Föll", email = "melanie.foell@uniklinik-freiburg.de"},
+]
+date.created = 2022-08-16
+date.received = 2022-08-16
+
+[PDAC_Timstof]
+scope = "Protected"
+group = "Foell Lab"
+title = ""
+description = ""
+contact = [
+	{name = "Melanie Föll", email = "melanie.foell@uniklinik-freiburg.de"},
+]
+date.created = 2023-07-24
+date.received = 2023-07-24
+
+[PDAC_peptide_MALDI]
+scope = "Protected"
+group = "Foell Lab"
+title = ""
+description = ""
+contact = [
+	{name = "Melanie Föll", email = "melanie.foell@uniklinik-freiburg.de"},
+]
+date.created = 2022-08-16
+date.received = 2022-08-16
+
+[POPF]
+scope = "Protected"
+group = "Foell Lab"
+title = ""
+description = ""
+contact = [
+	{name = "Melanie Föll", email = "melanie.foell@uniklinik-freiburg.de"},
+]
+date.created = 2023-08-24
+date.received = 2023-08-24
+
+[Prostate_whole_slide_MSI]
+scope = "Protected"
+group = "Foell Lab"
+title = ""
+description = ""
+contact = [
+	{name = "Melanie Föll", email = "melanie.foell@uniklinik-freiburg.de"},
+]
+date.created = 2022-08-17
+date.received = 2022-08-17
+
+[Schilddruese]
+scope = "Protected"
+group = "Foell Lab"
+title = ""
+description = ""
+contact = [
+	{name = "Melanie Föll", email = "melanie.foell@uniklinik-freiburg.de"},
+]
+date.created = 2022-06-11
+date.received = 2022-06-11
+
+[cytological_dataset]
+scope = "Protected"
+group = "Foell Lab"
+title = ""
+description = ""
+contact = [
+	{name = "Melanie Föll", email = "melanie.foell@uniklinik-freiburg.de"},
+]
+date.created = 2022-08-16
+date.received = 2022-08-16
+
+[earthworm_dataset]
+scope = "Protected"
+group = "Foell Lab"
+title = ""
+description = ""
+contact = [
+	{name = "Melanie Föll", email = "melanie.foell@uniklinik-freiburg.de"},
+]
+date.created = 2022-08-16
+date.received = 2022-08-16
+
+[histological_dataset]
+scope = "Protected"
+group = "Foell Lab"
+title = ""
+description = ""
+contact = [
+	{name = "Melanie Föll", email = "melanie.foell@uniklinik-freiburg.de"},
+]
+date.created = 2022-08-16
+date.received = 2022-08-16
+
+[Arthritis-project]
+scope = "Private"
+group = "Schilling Lab"
+title = ""
+description = ""
+contact = [
+	{name = "Birgit Schilling", email = "bschilling@buckinstitute.org"},
+]
+date.received = 2023-10-12
+keywords = ["arthritis"]
+
+[PTSD-study]
+scope = "Private"
+group = "Seeley Lab"
+title = ""
+description = ""
+contact = [
+	{name = "Erin Seeley", email = "erin.seeley@utexas.edu"},
+	{name = "Keith Young", email = "kayoung@tamu.edu"},
+]
+date.received = 2023-10-12
+keywords = ["ptsd"]
+
+[20210921_vc_rugose_tims_gordon]
+scope = "Private"
+group = "Unknown"
+title = "Example ion mobility data from Bruker timsTOF"
+description = ""
+contact = [
+	{name = "Gordon Luu", email = "gtluu912@gmail.com"},
+]
+date.received = 2024-06-21
+keywords = ["mobility"]
+
+["EDRN-PCa Image Analysis"]
+scope = "Private"
+group = "Unknown"
+title = ""
+description = ""
+contact = []
+date.received = 2013-09-03
+
+[M329_cen_withmob]
+scope = "Private"
+group = "Unknown"
+title = "Example ion mobility data from Bruker timsTOF"
+description = ""
+contact = [
+	{name = "Gordon Luu", email = "gtluu912@gmail.com"},
+]
+date.received = 2024-09-16
+keywords = ["mobility"]
+
+[RK0102]
+scope = "Private"
+group = "Unknown"
+title = "Data from spatially-aware clustering paper"
+description = ""
+contact = []
+date.received = 2014-08-08
+
+[RatBrain_TA_JProtRes2010]
+scope = "Private"
+group = "Unknown"
+title = "Data from spatially-aware clustering paper"
+description = "Rat brain dataset"
+sample-processing = """\
+	Mass spectra were acquired on a Bruker Autoflex III MALDI-TOF mass spectrometer over the 2,500 to 25,000 m/z range. The images were cropped to remove noninformative spectra, and only the 2,500 to 10,000 m/z range was used. The reduced dataset consisted of 20,185 mass spectra with 3,045 spectral features. The mass spectra were normalized to a common total ion current, and baseline correction was performed using ClinProTools.
+	"""
+contact = []
+date.received = 2013-09-29
+
+[Single-Cell]
+scope = "Private"
+group = "Unknown"
+title = ""
+description = ""
+contact = []
+date.received = 2019-01-23
+
+[Brain_test_1p7]
+scope = "Private"
+group = "Waters"
+title = "Example ion mobility data from Waters"
+description = ""
+contact = [
+	{name = "Bindesh Shrestha", email = "Bindesh_Shrestha@Waters.com"}
+]
+date.received = 2024-09-16
+keywords = ["mobility"]
+
+[Rat-Brain-SYNAPT-MALDI]
+scope = "Private"
+group = "Waters"
+title = "Example 3D MSI data from Waters"
+description = ""
+contact = [
+	{name = "Bindesh Shrestha", email = "Bindesh_Shrestha@Waters.com"}
+]
+date.received = 2016-02-23
+keywords = ["3D"]
+
+[3DMouseKidney]
+scope = "Public"
+group = "GigaGB"
+title = "3D MALDI imaging MS dataset of a mouse kidney"
+description = ""
+contact = [
+	{name = "Theodore Alexandrov", email = "theodore.alexandrov@embl.de"},
+	{name = "Janina Oetjen"},
+]
+date.created = 2015-02-16
+date.received = 2015-10-18
+keywords = ["3D"]
+
+[3D_Mouse_Pancreas]
+scope = "Public"
+group = "GigaGB"
+title = "3D MALDI imaging MS dataset of a mouse pancreas"
+description = ""
+contact = [
+	{name = "Theodore Alexandrov", email = "theodore.alexandrov@embl.de"},
+	{name = "Janina Oetjen"},
+]
+date.created = 2015-02-16
+date.received = 2015-10-18
+keywords = ["3D"]
+
+[3D_OSCC]
+scope = "Public"
+group = "GigaGB"
+title = "3D MALDI imaging MS dataset of a human oral squamous cell carcinoma"
+description = ""
+contact = [
+	{name = "Theodore Alexandrov", email = "theodore.alexandrov@embl.de"},
+	{name = "Janina Oetjen"},
+]
+date.created = 2015-02-16
+date.received = 2015-10-18
+keywords = ["3D"]
+
+[3D_Timecourse]
+scope = "Public"
+group = "GigaGB"
+title = "3D MALDI imaging MS datasets of cultured microbial colonies in a time course experiment"
+description = ""
+contact = [
+	{name = "Theodore Alexandrov", email = "theodore.alexandrov@embl.de"},
+	{name = "Janina Oetjen"},
+]
+date.created = 2015-02-16
+date.received = 2015-10-18
+keywords = ["3D"]
+
+[ColAd_Individual]
+scope = "Public"
+group = "GigaGB"
+title = "3D DESI-imaging MS dataset of a human colorectal adenocarcinoma"
+description = ""
+contact = [
+	{name = "Theodore Alexandrov", email = "theodore.alexandrov@embl.de"},
+	{name = "Janina Oetjen"},
+]
+date.created = 2015-02-16
+date.received = 2015-10-18
+keywords = ["3D"]
+
+[PXD001283]
+scope = "Public"
+group = "PRIDE"
+title = "Mass spectrometry imaging of phospholipids in mouse urinary bladder (imzML dataset)"
+description = """\
+	The spatial distribution of phospholipids in a tissue section of mouse urinary bladder was analyzed by MALDI MS imaging at 10 micrometer pixel size with high mass resolution (using an LTQ Orbitrap mass spectrometer).
+	"""
+sample-processing = """\
+	All the experiments were performed with a AP-SMALDI imaging source. The laser was focused by a centrally bored objective lens to a diameter of 5 to 10 micrometer. Controller software and hardware for the scanning procedure were developed in-house. The imaging source was attached to a linear ion trap/Fourier transform orbital trapping MS (LTQ Orbitrap Discovery, Thermo Scientific GmbH, Bremen, Germany) with a mass resolving power of 30 000 at m/z 400 in positive-ion mode. This setup offers atmospheric pressure compatibility, MSn capability, and sub-ppm mass accuracy. A UV laser with a repetition rate of 60 Hz (LTB MNL-106, LTB, Berlin, Germany) was used for desorption/ionization. The mass range was m/z 100-1000 for measurements of phospholipids. Tissue sections (20 micrometer thickness) were coated with DHB (2,5-dihydroxybenzoic acid) matrix using a pneumatic sprayer. Assignments of lipids were confirmed by MS/MS analysis directly from tissue (isolation window dm/z 3). All images were generated with a bin width of dm/z 0.01. Details of sample preparation, data acquisition and data processing are described in: Rompp, A., S. Guenther, Y. Schober, O. Schulz, Z. Takats, W. Kummer and B. Spengler (2010). Angewandte Chemie International Edition 49(22): 3834-3838.
+	"""
+data-processing = """\
+	MS imaging data (Thermo RAW format) was converted to imzML (www.imzml.org) using the 'RAW to imzML' converter. For more information see: Schramm, T., A. Hester, I. Klinkert, J.-P. Both, R. M. A. Heeren, A. Brunelle, O. Laprevote, N. Desbenoit, M.-F. Robbe, M. Stoeckli, B. Spengler and A. Rompp (2012). Journal of Proteomics 75(16): 5106-5110. Selected ion images were generated using the software package MIRION developed at JLU Giessen. The imaging software imports raw data files as stored by the LTQ Orbitrap instrument software during image acquisition and couples this mass spectrometric information with additional scanning metadata, stored in separate data files by our ion source control program. This metadata includes the number of lines and columns of the image and the pixel size. The imaging software is able to create ion images from any of the detected mass-to-charge values with any selected mass window (bin width). A fast image browser of the MIRION software assists in selecting of images. In this work ion images of selected mass-to-charge values were created from the FT MS data set with a bin width of dm/z = 0.01. Up to three different ion images were overlayed in RGB images by the software to display different ion species in parallel. No other postprocessing steps such as interpolation or normalization to matrix signals were applied to the images.
+	"""
+contact = [
+	{name = "Andreas Römpp", email = "andreas.roempp@anorg.chemie.uni-giessen.de"},
+	{name = "Bernhard Spengler", email = "bernhard.spengler@anorg.chemie.uni-giessen.de"},
+]
+date.created = 2014-09-15
+date.received = 2019-10-09
+keywords = ["mouse", "bladder"]
+
+[PXD003172]
+scope = "Public"
+group = "PRIDE"
+title = "MS imaging of tryptic peptides in mouse brain measured at 50 µm pixel size"
+description = """\
+	A coronal mouse brain section that was measured at 50µm pixel size revealed detailed histological structures such as the ependyma (consisting of one to two cell layers, which was confirmed by HE staining).
+	"""
+sample-processing = """\
+	A series of washing steps was applied to tissue sections for fixation and to remove salts and lipids. After two times in 70% ethanol for 30s and 100% ethanol for 15s the sample was washed in a solution of 90% ethanol, 9% glacial acid and 1% water. To remove the acid the glass slide was dipped in water for 2s to obtain optimal conditions for the trypsin application [40]. Trypsin (0.05 µg/µL in 10 mM NH4HCO3) was deposited with a home built spraying device. 15 cycles à 2 µL (flow rate 12 µL/min) for mouse brain and 15 cycles à 15 µL (flow rate 30 µL/min) for the whole mouse body were sprayed. Between spraying cycles the tissue section was placed for 10 min in a cell culture incubator (37°C, 100% relative humidity) and after the last spraying step it was incubated overnight. After tryptic digestion matrix (30 mg/mL 2,5-DHB in Acetone:Water 1:1 + 0.1% TFA) was applied with an homebuilt pneumatic spraying device. Homogeneity and crystal size (5-15 µm) of the matrix were checked with a microscope. In case of the whole body mouse section the SunCollect (SunChrome, Friedrichsdorf, Germany) sprayer was used with 10 µL/min and 17 cycles.MALDI MS imaging experiments were performed with 25 or 50 µm pixel size using an atmospheric pressure imaging ion source (AP-SMALDI10, TransMIT GmbH, Giessen, Germany) attached to an orbital trapping mass spectrometer (Q Exactive, Thermo Fisher Scientific GmbH, Bremen, Germany) [41][42]. The ion source was equipped with a nitrogen laser with a wavelength of λ=337 nm. The mass spectrometer was operated in positive ion mode at a mass resolution of 35,000-140,000 at m/z = 200 over a mass range of m/z = 600-1200 or m/z = 400-1600. Internal calibration was performed using m/z = 993.11210, a matrix cluster signal, as a lock mass, resulting in mass accuracy of better than 3 ppm.
+	"""
+data-processing = """\
+	Selected ion images of known peptide masses were generated using the in-house developed software package MIRION [43] or MSI Reader [44] with a bin width of Δm/z = 0.01. Intensity values in the ion images were normalized to the highest intensity measured for each ion species separately. Apart from that images represent raw data without pixel-wise normalization, spatial interpolation or smoothing.
+	"""
+contact = [
+	{name = "Andreas Römpp", email = "andreas.roempp@anorg.chemie.uni-giessen.de"},
+]
+date.created = 2014-09-15
+date.received = 2019-10-09
+keywords = ["mouse", "brain"]
+
+[PXD009808]
+scope = "Public"
+group = "PRIDE"
+title = "Raw N-glycan MALDI mass spectrometry imaging data on formalin-fixed mouse kidney"
+description = """\
+	The N-glycome was mapped and visualised on formalin-fixed mouse kidney tissue using an ultrafleXtreme MALDI-ToF/ToF MS instrument (Bruker Daltonics).
+	"""
+sample-processing = """\
+	The formalin-fixed mouse kidney tissue was sectioned onto ITO slides, antigen retrieved and PNGase F treated by droplet deposition using a Chemical InkJet Printer 1000 (ChIP-1000) instrument (Shimadzu). Following overnight incubation to allow N-glycan enzymatic cleave, the tissue sections were overlaid with 2,5-dihydroxybenzoic acid (DHB) in 1 mM Sodium Chloride (NaCl) and 0.1% trifluoroacetic acid (TFA) using a capillary nebulized spray delivered via a TM-sprayer instrument (Shimadzu). MS data was acquired using an ultrafleXtreme MALDI-ToF/ToF MS instrument (Bruker Daltonics). Instrument-specific settings were as follows: 800–4500 m/z range, 700 Da matrix suppression, 2 kHz laser repetition rate, and 2.5 GS/s. Method-specific settings were as follows: 75 % laser power and 2698 V detector gain. A total of 1000 shots were acquired at each position with no walk. Data was acquired by oversampling from an arbitrary array with center to center acquisition distance of 100 μm overlaid onto the 250 μm PNGase F array.
+	"""
+data-processing = """\
+	The raw MS data for the regions of interest (ROI), labelled cal (calibrant region), control (control region), png1 (PNGase F-treated region 1) and png2 (PNGase F-treated region 2), were converted to imzML (www.imzml.org) using SCiLS Lab (version 2015b, SCiLS GmbH, Bruker Daltonics).
+	"""
+contact = [
+	{name = "Matthew Briggs", email = "matthew.briggs@unisa.edu.au"},
+	{name = "Peter Hoffman", email = "peter.hoffmann@unisa.edu.au"},
+]
+date.created = 2018-05-17
+date.received = 2019-10-09
+formats = ["tiff"]
+
+[PXD010990]
+scope = "Public"
+group = "PRIDE"
+title = "Real-time molecular diagnosis of tumors using water-assisted laser desorption/ionization mass spectrometry technology"
+description = """\
+	This dataset contains MS imaging raw data as well as the SCiLS file used to confirm the regions in dog sarcoma biopsies classified by the SpiderMass system after analysis of the consecutive tissue section. All the tissues were gathered during dog sarcoma surgeries, snap-frozen and analysed later in the lab. The images were acquired on a MALDI LTQ orbitrap XL hybrid instrument.
+	"""
+sample-processing = """\
+	After removal, the fresh biopsies were immediately snap-frozen in liquid nitrogen and stored at -80 °C until use. When possible, distant healthy tissues and tumor margins were sampled as well. The tissues were warmed up to -20 °C in a cryostat (Leica Microsystems, Nanterre, France) before preparation, and, using a metallic tissue cutting matrix (Ted Pella. Redding, California, USA) as a guide to obtain a neat surface, the tissues were cut into two halves and one was kept frozen in case further experiments would be needed. On the other half, a 1 mm thick slice was cut to be used for the SpiderMass analysis. The remaining tissue was cut at 10 µm with the cryotome. Two sections were deposited onto polylysine-coated slides by finger-thawing. One was used for Mass Spectrometry Imaging (MSI) analysis while the other was stained with HPS and served as morphological control. This workflow was designed to ensure that the tissue used for MSI reflects the true composition of the tissue surface analyzed by SpiderMass and of the morphological control. For MALDI-MSI experiments, slides were taken out of storage, immediately dehydrated under vacuum at room temperature for 30 min, and scanned using a slide scanner (Nikon, Tokyo, Japan). DHB matrix (20 mg/mL in 7:3 (v/v) MeOH/0.1% TFA in water) was manually sprayed using a syringe pump connected to an electrospray nebulizer operating at a 300 µL/h flow rate with compressed nitrogen flow pressure maintained at 1.1 bar. The nebulizer was moved uniformly throughout the entire tissue for 10 to 12 min according to tissue size. The homogeneity of the crystals was examined under a light microscope after spraying. The tissues were then analyzed using a MALDI LTQ Orbitrap XL mass spectrometer (Thermo Fisher Scientific, Bremen, Germany) equipped with an N2 laser (model MNL-100; LTB Lasertechnik, Berlin GmbH) which has a maximum repetition rate of 60 Hz. The maximum energy per pulse was set to 10 µJ and acquisition was performed in positive mode at 30,000 mass resolution (centered at m/z 400). Each spectrum was generated using one microscan at one microscan per step. The automatic gain control (AGC) feature was turned off and the number of laser shots was set to 10. The raster step size was set to 70 μm.
+	"""
+data-processing = """\
+	The generated images were then converted to imzML format using the manufacturer software ImageQuest and exported to SCiLS. Spectral normalization was performed using the DHB peak at m/z 177. Medium edge-preserving spatial denoising, peak picking using orthogonal matching pursuit (OMP), and peak alignment by centroid matching to the mean spectrum were applied to generate the set of peaks used in subsequent analysis.
+	"""
+contact = [
+	{name = "Jusal Quanico", email = "jusal.quanico@univ-lille1.fr"},
+	{name = "Michel Salzet", email = "michel.salzet@univ-lille.fr"},
+]
+date.created = 2018-09-03
+date.received = 2019-10-09
+
+[PXD011104]
+scope = "Public"
+group = "PRIDE"
+title = "Tissue protease activity with MALDI MSI"
+description = """\
+	Aberrant protease activity has been implicated in the etiology of various prevalent diseases including neurodegeneration and cancer, in particular metastasis. Matrix-assisted laser desorption/ionization (MALDI) mass spectrometry imaging (MSI) has recently been established as a key technology for bioanalysis of multiple biomolecular classes such as proteins, lipids, and glycans. However, it has not yet been systematically explored for investigation of a tissue’s endogenous protease activity. In this study, we demonstrate that different tissues, spray-coated with substance P as a tracer, digest this peptide with different time-course profiles. Furthermore, we reveal that distinct cleavage products originating from substance P are generated transiently and that proteolysis can be attenuated by protease inhibitors in a concentration-dependent manner. To show the translational potential of the method, we analyzed protease activity of gastric carcinoma in mice. Our MSI and quantitative proteomics results reveal differential distribution of protease activity – with strongest activity being observed in mouse tumor tissue, suggesting the general applicability of the workflow in animal pharmacology and clinical studies.Aberrant protease activity has been implicated in the etiology of various prevalent diseases including neurodegeneration and cancer, in particular metastasis. Matrix-assisted laser desorption/ionization (MALDI) mass spectrometry imaging (MSI) has recently been established as a key technology for bioanalysis of multiple biomolecular classes such as proteins, lipids, and glycans. However, it has not yet been systematically explored for investigation of a tissue’s endogenous protease activity. In this study, we demonstrate that different tissues, spray-coated with substance P as a tracer, digest this peptide with different time-course profiles. Furthermore, we reveal that distinct cleavage products originating from substance P are generated transiently and that proteolysis can be attenuated by protease inhibitors in a concentration-dependent manner. To show the translational potential of the method, we analyzed protease activity of gastric carcinoma in mice. Our MSI and quantitative proteomics results reveal differential distribution of protease activity – with strongest activity being observed in mouse tumor tissue, suggesting the general applicability of the workflow in animal pharmacology and clinical studies.
+	"""
+sample-processing = """\
+	Sample preparation for protease activity assessment by MALDI MSI For MALDI MSI analysis, frozen tissue was cut into 10 μm slices on a CM1950 cryostat (Leica Biosystems, Nussloch, Germany) at a temperature of -17 °C and thaw-mounted onto ITO-slides. In washing experiments, slices were rinsed with 2 x 1 mL 50 mM ammonium formiate (pH 7 and pH 3). The tissue was vacuum-dried for 15 min at 4 °C. To assess proteolytic in-situ activity, one “digest” slide and one “no digest” control slide were prepared per tissue type. For assessment of time-dependent endogenous protease activity on porcine tissue (5 time-points x 5 organs x 2 conditions, i.e. “digest” and “no digest” for a total of 50 MSI datasets), 4x1 μL protease inhibitor mix (PIM; 1x) consisting of 2 mM 4-(2-aminoethyl)benzenesulfonyl fluoride hydrochloride (AEBSF), 0.3 μM aprotinin, 116 μM bestatin hydrochloride, 14 μM E-64, 1 mM ethylenediaminetetraacetic acid (EDTA) and 1 μM leupeptin was applied to each tissue. Additionally, 1x1 μL ddH2O was pipetted on each tissue as solvent control. For studies of inhibitor concentration-dependent protease activity on porcine tissue, a dilution series (0x, 0.1x, 0.25x, 0.5x, 1x, 2.5x, 10x) of PIM was prepared in H2O, and one μl of each dilution was spotted onto tissue at arbitrarily chosen positions (n=2). Slides were kept on ice at all times. In experiments using mouse tumor samples, an additional tissue slice was covered with PIM, using the SunCollect (pump system, SunChrom, Friedrichsdorf) and the following conditions: 3x15 μL/min, Y-distance 25.5 mm, Speed in X= Low 4, Speed in Y=Medium 1. The final amount of PIM on tissue was 0.2 μL/mm2. After drying under vacuum for 3 min at room temperature (RT), porcine or mouse tissues on the “digest” slide (Fig. 1) were covered with the tracer protease substrate substance P (20 pmol/μL in ddH2O) using the SunCollect spray system as described for PIM above for a coating with 3.5 pmol/mm2 substance P. During the spray process, the slide was kept on a cool pad. After spraying, the slide was dried in desiccator for 3 min at RT. Both slides (“digest” and “no digest”) were incubated simultaneously at 37 °C and 95 % humidity in the SunDigest device (SunChrom) for 15 min, 30 min, 45 min, 60 min, 120 min or 360 min in time-course experiments and for 60 min in inhibitor-concentration-dependence experiments (porcine tissues). Mouse tissue was incubated for 30 min at 37 °C instead, as protease activity was apparently higher in snap-frozen mouse tissue than in slaughterhouse tissue, but otherwise treated as porcine tissue. Homogeneity of the substance P coating on “no digest” slides was evaluated, and experiment with inhomogeneous coatings were rejected. MALDI-TOF and MALDI-FT-ICR mass spectrometry imaging MALDI-TOF MSI with DHB matrix was performed as outlined(14). Porcine tissues were analyzed using an ultrafleXtreme MALDI-TOF/TOF instrument (Bruker Daltonik) in reflector positive mode and a mass range of m/z 500-2500. Tissues were measured at a lateral resolution of 200 μm, summing up 300 shots per pixel. External quadratic calibration using peptide standard II was performed for all MS instruments. Data was acquired and processed using flexControl V3.4 and flexImaging V4.1 software (Bruker Daltonik). For mouse samples, a rapifleX MALDI-TOF instrument (and flexImaging V5.1 (Bruker Daltonik) was used at a lateral resolution of 50 μm (20 μm for the replicate experiment), summing up 400 shots per pixel. After MALDI-TOF data acquisition, the same slides were analyzed using a 7T solariX XR MALDI FT-ICR (Bruker Daltonik). For imaging, the instrument was used in positive ion mode in an m/z range of m/z 100-3000 with a raster width of 20 μm and 15 laser shots/pixel. The following parameters were used: Ion transfer (Funnel 1 150 V, Skimmer 1 15 V, Funnel RF Amplitude 70 Vpp); Octopole (Frequency 5 MHz, RF Amplitude 350 Vpp); Collision Cell (RF Frequency 2 MHz, RF Amplitude 1200 Vpp); Transfer Optics (Time of Flight 1.5 ms, Frequency 4 MHz, FR Amplitude 350 Vpp); Quadrupole (Q1 Mass 350 m/z); Excitation Mode (Sweep Excitation, Sweep Step time 15 μs). Spectra of mouse tumor stomach were recorded using 512k (FID 0.2447 s) data point transient, corresponding to an estimated resolving power of 33,000 at m/z 400 resulting in a manageable data size of 22 GB. The average detected mass resolution at m/z 1347.73 was 23,000. Internal calibration was done using a lock mass of m/z 780.551 [PC(34:2)+Na]+. Data acquisition was performed using ftmsControl (Bruker Daltonik); ion images were obtained from flexImaging 4.1. For verification of substance P and its peptide products, CID fragmentation was used. Data analysis was performed using Biotools 3.2 and Sequence Editor 3.2 software (Bruker Daltonik).
+	"""
+data-processing = """\
+	Processing of mass spectra and statistical analysis To export mean intensities, we manually drew regions-of-interest (ROI) on tissue around spots with inhibitor (+inhibitor) or without inhibitor (-inhibitor) on “digest”- and “no digest” control slides, respectively. Mean spectra of those ROIs were exported into mMass (V5.5.0(20)) for baseline-subtraction and peak picking (S/N > 5). Intensities of the m/zvalues of interest were exported into Excel (Microsoft). Non-linear regression analysis was performed in Prism 5.0 software (Graphpad Software). For statistical analysis of the mouse tumor tissue, TOF data sets were converted into imzML file format(21) using the flexImaging converter (resampled to 80,000 data points), while the centroided FT-ICR datasets were read directly by an in-house conversion tool. Subsequently, the datasets were imported into R 3.3.1 (R Foundation for Statistical Computing, Vienna, Austria)(22, 23) using MALDIquant and MALDIquantForeign packages(24). The segmentation was performed using spatially aware shrunken centroid clustering(25) (r=2,k=2,s=3) as implemented in Cardinal(26). The variable r=2 to distinguish between tumor and non-tumor. The segmentation was performed based on the m/z segment of 798.54 ± 5 and 798.54 ± 0.05 for the TOF and FT-ICR datasets, respectively. In that mass range, the lipid PC(34:1)+K+ with m/z 798.54, known to be enriched in gastric tumor in this mouse model, is present(14). No pre-processing was performed on the imported raw data. Intensities for Substance P and its peptide cleavage products were exported and grouped into tumorous- and non-tumorous segment.
+	"""
+contact = [
+	{name = "Katrin Erich", email = "katrin.erich89@gmail.com"},
+	{name = "Carsten Hopf", email = "c.hopf@hs-mannheim.de"},
+]
+date.created = 2020-08-06
+date.received = 2019-10-09
+formats = ["tiff"]
+
+[PXD011262]
+scope = "Public"
+group = "PRIDE"
+title = "Temporally & Spatially-Resolved Microproteomics and MALDI MSI Lipidomic Analysis for Traumatic Brain Injury"
+description = """\
+	Using an experimental TBI rat model of mild/moderate Controlled Cortical Impact (CCI) injury, we combined large-scale proteomics identification and relative quantification using Spatially-Resolved Microproteomics with MALDI MS Imaging of Lipids. Spatially by studying different regions in the brain post injury in a coronal view, with main focus on the injury site itself. Temporally by studying the acute and subacute phase post injury, including injured rat brains at 1 day, 3 days, 7 days, and 10 days post injury. Direct on-tissue micro-digestion followed by micoextraction from 1 mm2 surface area within the injured cortical tissue were subjected to LC-MS & MS/MS analysis using HR MS. In addition, several identified potential biomarkers within our study were used to stimulate dorsal root ganglion (DRG), astrocyte, and macrophage cell lines to obtain a better understanding of their role and contribution in the injury.
+	"""
+sample-processing = """\
+	Microproteomics: After subjecting tissue sections to several washing steps to deplete lipids, LysC trypsin was spotted on the injured cortical tissue using a piezoelectric microspotter chemical inkjet printer. Using Liquid Extraction Surface Analysis (LESA), the digested peptides within the injured cortical tissue were extracted. The extracted digests were then subjected to LC-MS/MS. Stimulated cell line proteomics: Protein extraction was performed on DRG, astrocyte, and macrophage cell lines using sodium dodecyl sulfate buffer (SDS). 50 µl of extraction buffer was added to each tube and samples were then heated for 15 min at 95 °C then sonicated for 15 min. After, a centrifugation step was performed at 16,000 g for 10 min at 20 °C. The supernatant containing the tryptic peptides, was collected and its total protein content was estimated using the Bradford quantification method. All sample concentrations were normalized to obtain a final concentration of 1.5 µg/µl per sample and further experimentation, including digestion, was carried out using filter-aided sample preparation (FASP) method with a mass cut-off threshold of 30 KDa. An alkylation step was performed in the dark by adding Iodoacetamide (IAA) solution and samples were then digested overnight at an incubation temperature of 37°C by adding LysC/trypsin. Desalting and enrichment of the samples was carried out using ZipTip C-18 (Millipore) just before processing using LC-MS/MS. LC-MS/MS analysis of both microproteomics and stimulated cell line extracts: MS analysis was performed using nanoAcquity UPLC system (Waters) coupled to a Q-Exactive mass spectrometer equipped with a nano-electrospray ionization source. The peptides were separated using a reverse phase analytical column by applying a linear gradient of acetonitrile for 2 hours at a flow rate of 300 nL/min. Full MS scans were performed with a resolution of 70,000 FWHM, a m/z mass range between 300-1600, an AGC of 3e6 ions and a maximum injection time of 120 ms. Data-dependent MS/MS scans were performed by subjecting the 10 most intense ionsto high energy collision dissociation (HCD). With regard to the MS/MS fragmentation parameters, the resolution was set at 17,500 FWHM, a m/z range between 200-2000, an AGC of 5e4 ions, and a maximum injection time of 60 ms. The isolation window was set at 4.0 m/z. MALDI MSI: After tissue sections were completely dried, DHB matrix was manually sprayed for 12 min onto the tissue using a nebulizer which was constructed in-house. Images were acquired using a MALDI LTQ Orbitrap XL operated using Xcalibur software version 2.0.7. The MALDI LTQ Orbitrap XL is equipped with a commercial N2 laser (LTB Laser Technik, Berlin, Germany) operating at λ = 337 nm with a maximum repetition rate of 60 Hz. Spectra were obtained in positive ion mode at a spectral mass resolution of 30000 (centered at m/z 200) in the mass range of 300−1000 Da. Each spectrum was acquired by averaging 10 scans with 1 microscan per step with a raster step size of 70 μm. External calibration in the normal mass range (m/z 150−2000) was performed before every acquired image using the ProteoMass MALDI calibration kit.
+	"""
+data-processing = """\
+	Proteomic data processing: All raw data were analyzed by MaxQuant software version 1.5.8.3. Proteins were identified by comparing all raw spectra with a proteome reference database of Rattus norvegicus (Uniprot, release 20180712, 8027 entries for the cell line stimulated protein identifications, and release 20180302, 8022 entries for the on-tissue microproteomics identifications). The parameters chosen for the identification include: digestion enzyme used was trypsin LysC and maximum number of missed cleavages allowed was two. Oxidation of methionine and N-terminal protein acetylation were chosen as variable modifications. As for fixed modifications, carbamidomethylation of cysteine was set for the identification of proteins in the cell line stimulation case, and this modification was removed for the microproteomics approach. Proteins were identified based on a minimum of 2 peptides per protein, in which 1 was unique. As for initial mass tolerance, 6 ppm was selected for MS mode, and 20 ppm was set for fragmentation data with regard to MS/MS tolerance. The false discovery rate (FDR) was specified to 1% for both protein and peptide. The label-free quantification (LFQ) was performed by keeping the default parameters of MaxQuant. MALDI data processing: All images were converted to vendor-neutral *.imzML format using the plug-in available in ImageQuest software version 1.1.0 build S4 (Thermo Fisher Scientific). SCiLS lab MVS software, version 2018b Premium 3D release 6.01.10194 (Bruker Daltonics, Bremen, Germany) was then used to process the uploaded vendor-neutral files. With this version of SCiLS Lab, the baseline removal option is not available, and the peaks are automatically imported. Normalization was performed based on the total ion count (TIC) method and m/z intervals were automatically set at ± 24.967 mDa.
+	"""
+contact = [
+	{name = "Jusal Quanico", email = "jusal.quanico@univ-lille1.fr"},
+	{name = "Michel Salzet", email = "michel.salzet@univ-lille.fr"},
+]
+date.created = 2018-11-10
+date.received = 2019-10-07
+
+[PXD013069]
+scope = "Public"
+group = "PRIDE"
+title = "Spheroids treated with and without Drug"
+description = """\
+	MALDI MSI for monitoring of drug response in primary cancer spheroids
+	"""
+sample-processing = """\
+	The spheroids were embedded in matrigel and fixed with formalin before sectioning them for MALDI MSI.
+	"""
+data-processing = """\
+	Data was processed using SCiLS lab 2016b. data was normalised and baseline was corrected using TIC.
+	"""
+contact = [
+	{name = "Parul Mittal", email = "parul.mittal@adelaide.edu.au"},
+	{name = "Peter Hoffman", email = "peter.hoffmann@unisa.edu.au"},
+]
+date.created = 2019-08-19
+date.received = 2019-10-03
+
+[PXD013860]
+scope = "Public"
+group = "PRIDE"
+title = "Alterations in lipid profile of the aging kidney identified by MALDI imaging mass spectrometry"
+description = """\
+	During aging, the kidney undergoes functional and physiological changes that are closely affiliated with chronic kidney disease (CKD). There is increasing evidence supporting the role of lipid or lipid-derived mediators in the pathogenesis of CKD and other aging-related diseases. To understand the role of lipids in various metabolic processes during kidney aging, we conducted MALDI imaging mass spectrometry (MALDI-IMS) analysis in kidneys harvested from young (2 months old, n=3) and old mice (24 months old, n=3). MALDI-IMS analysis showed an increase in ceramide level and a decrease in sphingomyelin (SM) and phosphatidylcholine (PC) levels in kidneys of old mice. The increased expression of cPLA2 and SMPD1 protein in aged kidney was confirmed by immunohistochemistry and western blot analysis. Our MALDI-IMS data showed the altered distribution of lipids in aged kidney as indicative of aging-related functional changes of the kidney. Combined analysis of MALDI-IMS and IHC confirmed lipidomic changes and expression levels of responsible enzymes as well as morphological changes.
+	"""
+sample-processing = """\
+	The frozen tissue sections were thaw-mounted on glass slides coated with indium tin oxide (ITO) (Bruker Daltonics, Bremen, Germany). The prepared slides were dried in a desiccator for approximately 20 min and stored at -80°C until use. A PS270 (Mr. Procon Boy FWA Platinum Airbrush, 0.2mm) combined with PS313 (Mr. Linear Compressor L5/Regulator Set with Pressure Gauge) and PS282 (Drain and Dust Catcher for Air Brush) was used to spray a total of 3 ml of the binary matrix solution for 50 μm resolution IMS and DHB or 9AA solution for high resolution IMS onto each tissue section. After matrix application, the homogeneity of the matrix on the tissue was assessed using the Chip-1000 (Shimadzu Biotech, Kyoto, Japan) scanning image. The MTP slide adaptor (Bruker Daltonics, Bremen, Germany) mounted with the tissue section ITO glass slide was directly transferred to the MALDI mass spectrometer and analyzed
+	"""
+data-processing = """\
+	SCiLS lab software (Bruker Daltonics, Bremen, Germany, Version was SCiLS Lab 2018b Core) was used for data analysis. The spectra from the whole kidney sections of young and old mice were compared with total ion count (TIC) normalization to obtain a list of lipids that showed significant differences in distribution. The regions of interest (ROIs) were set for the cortex and medulla compartmental structures with TIC normalization. For the additional high-resolution IMS study (5 µm resolution), the kidney sections of young and old mice were prepared and analyzed as described above. Differences in intensity between young and old mouse kidney were assessed by t-test (P<0.05) with molecular ion peaks.
+	"""
+contact = [
+	{name = "Joon Won Lee", email = "leejw85@khu.ac.kr"},
+	{name = "Kwang Pyo Kim", email = "kimkp@khu.ac.kr"},
+]
+date.created = 2019-05-15
+date.received = 2019-10-07
+
+[PXD016146]
+scope = "Public"
+group = "PRIDE"
+title = "MALDI rat liver anticancer drug spiked-in dataset (imzML)"
+description = """\
+	For the MALDI-MSI experiment, we selected 12 different drugs. The drugs were purchased from the LC Laboratories (Woburn, MA; CAS numbers: dabrafenib: 1195765-45-7, dasatinib: 302962-49-8, erlotinib: 183321-74-6, gefitinib: 184475-35-2, imatinib: 152459-95-5, lapatinib: 388082-78-8, pazopanib: 444731-52-6, sorafenib: 284461-73-0, sunitinib: 557795-19-4, trametinib: 871700-17-3, vatalanib: 212141-54-3) and from SelleckChem (Munich, Germany; CAS numbers: ipratropium: 60205-81-4) with >99% purity and were dissolved in methanol (MeOH, (Chromasolv Plus for HPLC) (Sigma-Aldrich, Steinheim, Germany) at 10 mg/mL concentration. These stock solutions were further diluted with 50% MeOH and five mixtures were generated, each containing four different drug compounds. The spreadsheet in Supporting Information summarizes the composition of the five drug mixtures. A 5 mg/mL solution of α-cyano-4-hydroxycinnamic acid (CHCA, Sigma-Aldrich) dissolved in 50% MeOH containing 0.1% trifluoroacetic acid (TFA, Sigma-Aldrich, Steinheim, Germany) was used as matrix solution.
+	"""
+sample-processing = """\
+	For MALDI-MSI, a 10 μm section was cut from frozen rat liver tissue using a cryotome and placed on a glass slide. Then 0.3 μL from each drug mixture was pipetted on the tissue section at predefined positions. After drying of the tissue, CHCA matrix solution was deposited on the tissue surface by an automated pneumatic sprayer (TM-Sprayer, HTX Technologies). The nozzle distance was 46 mm, and the spraying temperature was set to 35 ◦C, the matrix was sprayed (19 passes) over the tissue section at a linear velocity of 750 mm/min with a flow rate set to 0.1 mL/min and a nitrogen pressure set at 10 psi. After each pass, a drying time of 30 s was set on the spraying machine to give time for the sample to dry completely before the next pass. The frozen rat liver tissue was provided by Prof. Roland Andersson (Dept. Clinical Sciences Lund (Surgery), Skane University Hospital, Lund University). Animals were housed and bred according to regulations for the protection of laboratory animals.
+	"""
+data-processing = """\
+	Dataset peak picking was performed using the method described in https://doi.org/10.1021/acs.analchem.9b02637
+	"""
+contact = [
+	{name = "Jonatan Erikkson", email = "jonatan.eriksson@bme.lth.se"},
+	{name = "Peter Horvatovich", email = "p.l.horvatovich@rug.nl"},
+]
+date.created = 2019-11-05
+date.received = 2024-09-07
+
+[PXD037763]
+scope = "Public"
+group = "PRIDE"
+title = "Comprehensive evaluation of Ubiquinol-supplemented diet effects in the 3xTg AD mice using MALDI-MSI"
+description = """\
+	Alzheimer's disease (AD) is a chronic neurodegenerative disorder, accounting for up to 75 % of all dementia cases. Although the basis of AD etiology remains unknown, oxidative stress constitutes a major driver given its intimate association, specially at prodromic stages of the disease. In this line, Ubiquinol, the reduced form of coenzyme Q10, is a well-known neuroprotective antioxidant and has demonstrated significant effects in oxidative responses of β-Amyloid aggregation, internalization, and apoptosis-induced neurodegeneration. However, full extent of Ubiquinol effects in the context of AD is not yet known in detail. In this study, we designed a new methodology based on MALDI MSI for evaluating the peptide profile of the 3xTg-AD mice model fed a Ubiquinol-supplemented diet. By adopting functional analysis tools, we observed differential functional profile in hippocampus and cortex levels after 4- or 10-m o supplementation. Therefore, we also identified ACAD9, XPO1 and EIF3A as potential protein references for the diagnosis of AD at early/late stages.
+	"""
+sample-processing = """\
+	At the conclusion of the diet supplementation, animals were anesthetized with a mixture of ketamine hydrochloride (Ketolar, 1.5 ml/kg, 75 mg/kg; Parke-Oavis, Madrid, Spain) and xylazine (Xilagesic, 0.5 ml/kg, 10 mg/kg; Calier, Barcelona, Spain), and perfused with saline solution followed by 4% w/v paraformaldehyde in 0.1 M sodium phosphate buffer (pH 7.2). The whole brains were post-fixed in 4% w/v paraformaldehyde for 24 h, dehydrated and then embedded in paraffin blocks. 5 μm sections were deparaffinized in xylene and rehydrated in a graded series of ethanol and deionized water. Paraffined tissues were cut at 5 µm of thickness and mounted onto an indium tin oxide slide (ITO, Sigma Aldrich, Steiheim, Germany) previously coated with poly-L-lysine (P1274-25mg, Sigma Aldrich, Steiheim, Germany) with a custom protocol (0,1mg/ml poly L-Lys, 37ºC, 1hour). Mounted samples were heated for 1 hr at 65ºC to increase tissue fixation on ITO slide. Then, sections were deparaffined in xylene and rehydrated in a graded series of ethanol and deionized water. Antigen retrieval steps were performed by heating the rehydrated samples in 10mM sodium citrate pH6 (AD7-950-270-0500, Enzo, Farmingdale, NY, USA) at 98ºC for 30 min. After cooling the samples at room temperature until 40ºC, we performed a two washing steps with NH4HCO3 10mM buffer and a drying step in vacuum for 30 min. prior tissue digestion.
+	"""
+data-processing = """\
+	Analysis of samples was performed using an AB 5800 TOF/TOF (ABSciex, Darmstadt, Germany). A positive reflector mode was used for all samples performing double internal calibration of the spectra using for first instance trypsin autolysis peak a 842.508 [M+H] + and secondly Glu-Fibrinopetide peak at 1570.677 [M+H] +. The m/z range for all samples was defined from 650 to 1800 because 80% of visualized peptides from these samples were in this range (data not shown). The following parameters were fixed as default for all samples: laser intensity at 3200, delay extraction set to 450 ns and the number of shots per pixel over the sample to 150. 20 first shots were discarded to avoid sample background noise. Deflectors parameters were adjusted for each sample to ensure a resolution (FWHW) >15000 at GluFib mass. Acquisition of MSI datasets was made using TOF/TOF Imaging Acquisition Software (ABSciex) in a fixed spatial resolution of 150 μm for all samples. Spectra data were loaded into the R statistical software (R Foundation for Statistical Computing). Cardinal MSI package was used for data processing. Reduction of data dimensionality was performed with a resampling method that consisted in a linear interpolation at m/z unit using the two closest m/z points at which intensities were measured. Basic tools from R programming language were used to obtain an average resampled spectrum of each ROI for subsequent classification and to perform, when indicated, a correlation analysis. Signal intensities were extracted and uploaded to MetaboAnalyst 4.0 (Chong et al. 2018) for statistical analysis. Datasets were previously filtered by Interquartile range (IQR) and, to make the assumptions fit better, data logarithmic transformation and auto-scaling were performed. Univariate analyses such as fold-change analysis and t-test were performed to compute summary level-statistics for each feature and individual study. As a supervised learning method, Partial Least Squares for Discriminant Analysis (PLS-DA) was employed to represent the separation between both groups.
+	"""
+contact = [
+	{name = "Emilio Llanos González", email = "emilio.llanos@uclm.es"},
+	{name = "Mario Durán Prado", email = "mario.duran@uclm.es"},
+]
+date.created = 2022-10-27
+date.received = 2024-08-11
+
+[PXD039398]
+scope = "Public"
+group = "PRIDE"
+title = "Spatial Proteomics of a Human Brain Tumour"
+description = """\
+	The spatial organisation of Cellular protein expression profiles within tissues determines cellular function and are key to understanding disease pathology. To define molecular phenotypes in the spatial context of tissue, there is a need for unbiased, quantitative technology capable of mapping proteomes within tissue structures. Here, we present a workflow for spatially resolved, quantitative proteomics of tissue that generates maps of protein expression across a tissue slice derived from a human atypical teratoid-rhabdoid tumour (AT/RT). We employ spatially-aware statistical methods that do not require prior knowledge of the fine tissue structure to detect proteins and pathways with varying spatial abundance patterns. We identified PYGL, ASPH and CD45 as spatial markers for tumour boundary and reveal immune response driven, spatially organized protein networks of the extracellular tumour matrix. Overall, this work informs on methods for spatially resolved deep proteo-phenotyping of tissue heterogeneity, which will push the boundaries of understanding tissue biology and pathology at the molecular level.
+	"""
+sample-processing = """\
+	LC-MS/MS: Proteomic sample processing Samples were thawed, incubated at room temperature for 30 minutes and briefly centrifuged. Caps were rinsed with 20 µL of RIPA buffer (#89900, Pierce) containing 25 units of Benzonase (E1014, Merck) to collect any remaining tissue and briefly centrifuged, followed by incubation at room temperature for 30 minutes to degrade DNA and RNA. Proteins were reduced by adding DTT to 5 mM and incubated at room temperature for 30 minutes, followed by the addition of iodoacetamide to 20 mM and incubation at room temperature for 30 minutes. Paramagnetic SP3 beads (GE45152105050250 & GE65152105050250, Cytiva) were prepared as described by Hughes et al. and processed by a modified SP3 protocol 29,70,71. Three µL of SP3 beads were mixed with the samples, and acetonitrile added to a final concentration of 70 % (v/v). Samples were mixed with 1000 rpm orbital shaking for 18 minutes, followed by bead immobilisation on a magnet for 2 minutes. The supernatant was discarded, and beads were washed twice with 70 % (v/v) ethanol in water and once with 100 % acetonitrile without removal from the magnet. Beads were resuspended in 50 mM ammonium bicarbonate containing 25 ng of Trypsin (V5111, Promega) and digested overnight at 37 °C. After digestion, the beads were resuspended by bath sonication. Acetonitrile was added to the samples to 95 % (v/v) and shaken at 1000 rpm for 18 minutes. Beads were immobilised on a magnet for 2 minutes, and the supernatant discarded. Beads were resuspended in 2 % acetonitrile and immobilised on a magnet for 5 minutes. Peptides were transferred to glass LC-MS vials or 96-well PCR plates containing formic acid in water, resulting in a final formic acid concentration of 0.1 %. Peptides from 350 µm resolution samples were analysed by nano-UPLC-MS/MS using a Dionex Ultimate 3000 coupled to an Orbitrap Fusion Lumos (Thermo Scientific) using a 75 µm x 500 mm C18 EASY-Spray Columns with 2 µm particles (Thermo Scientific) at a flow rate of 250 nL/min. A 60-minute linear gradient from 2 % buffer B to 35 % buffer B (A: 5 % DMSO, 0.1 % formic acid in water. B: 5 % DMSO, 0.1 % formic acid in acetonitrile). MS1 scans were acquired in the Orbitrap between 400 and 1500 m/z with a resolution of 120,000 and an AGC target of 4 x 105. Precursor ions between charge state 2+ and 7+ and above the intensity threshold of 5 x 103 were selected for HCD fragmentation at a normalised collision energy of 28 %, an AGC target of 4 x 103, a maximum injection time of 80 ms and a dynamic exclusion window of 30 s. MS/MS spectra were acquired in the ion trap using the rapid scan mode. MALDI: Vacuum dried sections were scanned with a TissueScout scanner at 3200 dpi (Bruker) to generate a reference image for later position teaching. Dihydroxybenzoic acid (DHB) was dissolved at a concentration of 15 mg/ml in 90 % ACN, 0.1 % TFA and sprayed on top of the AT/RT sections using a TM-sprayer (HTX Technologies). The matrix was applied in a criss-cross pattern with 3 mm track spacing at a 1200 mm/min nozzle velocity. Fourteen layers were sprayed at a 0.125 ml/ml flow rate using 50 % ACN as the liquid phase at 10 psi pressure. The nozzle temperature was set to 60 °C and the distance of the nozzle to the section was 40 mm. All imaging data were acquired on a timsTOF fleX instrument (Bruker) which is equipped with a dual ESI and MALDI source in positive Q-TOF mode. External calibration was performed using red phosphorous which was spotted next to the section. The laser was operated in beam scan mode, ablating an area of 15x15 µm resulting in a pixel size of 20 µm. The repetition rate of the laser was set to 10 kHz and 400 laser shots were acquired per pixel. Data were acquired in the mass range 300-1400 m/z.
+	"""
+data-processing = """\
+	LC-MS/MS: Raw data files were searched against the Uniprot human database (Retrieved 17/01/2017, 92527 sequences) using MaxQuant version 1.6.14.0, allowing for tryptic specificity with up to 2 missed cleavages. Cysteine carbamidomethylation was set as a fixed modification. Methionine oxidation and protein N-terminal acetylation were set as variable modifications and the “match between runs (MBR)” option was used (MBR was not used for tissue titration data). All other settings were left as default. Label-free quantification was performed using the MaxLFQ algorithm within MaxQuant73,74. Protein and peptide false discovery rate (FDR) levels were set to 1 %. MALDI: The software SCiLS Lab (version 2020a; Bruker) was used for MALDI Imaging data analysis. All data were root-mean-square (RMS) normalised. After importing the data, an unsupervised segmentation was calculated using the bisecting k-means algorithm and a peak list containing 302 m/z-intervals with correlation used as a distance metric. The resulting segmentation map was split into several clusters that resemble the histopathology of the tumour section.
+	"""
+contact = [
+	{name = "Simon Davis", email = "simon.davis2@ndm.ox.ac.uk"},
+	{name = "Roman Fischer", email = "roman.fischer@ndm.ox.ac.uk"},
+]
+date.created = 2023-01-13
+date.received = 2024-08-11
