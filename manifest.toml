@@ -52,7 +52,15 @@ keywords = ["example"]
 scope = "Protected"
 group = "Foell Lab"
 title = ""
-description = ""
+description = """\
+	TODO
+	"""
+sample-processing = """\
+	TODO
+	"""
+data-processing = """\
+	TODO
+	"""
 contact = [
 	{name = "Melanie Föll", email = "melanie.foell@uniklinik-freiburg.de"},
 ]
@@ -63,7 +71,9 @@ date.received = 2022-08-15
 scope = "Protected"
 group = "Foell Lab"
 title = ""
-description = ""
+description = """\
+	TODO
+	"""
 sample-processing = """\
 	TODO
 	"""
@@ -80,7 +90,9 @@ date.received = 2022-08-16
 scope = "Protected"
 group = "Foell Lab"
 title = ""
-description = ""
+description = """\
+	TODO
+	"""
 sample-processing = """\
 	TODO
 	"""
@@ -97,7 +109,9 @@ date.received = 2023-10-06
 scope = "Protected"
 group = "Foell Lab"
 title = ""
-description = ""
+description = """\
+	TODO
+	"""
 sample-processing = """\
 	TODO
 	"""
@@ -114,7 +128,9 @@ date.received = 2022-08-16
 scope = "Protected"
 group = "Foell Lab"
 title = ""
-description = ""
+description = """\
+	TODO
+	"""
 sample-processing = """\
 	TODO
 	"""
@@ -131,7 +147,9 @@ date.received = 2023-07-24
 scope = "Protected"
 group = "Foell Lab"
 title = ""
-description = ""
+description = """\
+	TODO
+	"""
 sample-processing = """\
 	TODO
 	"""
@@ -148,7 +166,9 @@ date.received = 2022-08-16
 scope = "Protected"
 group = "Foell Lab"
 title = ""
-description = ""
+description = """\
+	TODO
+	"""
 sample-processing = """\
 	TODO
 	"""
@@ -165,7 +185,9 @@ date.received = 2023-08-24
 scope = "Protected"
 group = "Foell Lab"
 title = ""
-description = ""
+description = """\
+	TODO
+	"""
 sample-processing = """\
 	TODO
 	"""
@@ -182,7 +204,9 @@ date.received = 2022-08-17
 scope = "Protected"
 group = "Foell Lab"
 title = ""
-description = ""
+description = """\
+	TODO
+	"""
 sample-processing = """\
 	TODO
 	"""
@@ -199,7 +223,9 @@ date.received = 2022-06-11
 scope = "Protected"
 group = "Foell Lab"
 title = ""
-description = ""
+description = """\
+	TODO
+	"""
 sample-processing = """\
 	TODO
 	"""
@@ -216,7 +242,9 @@ date.received = 2022-08-16
 scope = "Protected"
 group = "Foell Lab"
 title = ""
-description = ""
+description = """\
+	TODO
+	"""
 sample-processing = """\
 	TODO
 	"""
@@ -233,7 +261,9 @@ date.received = 2022-08-16
 scope = "Protected"
 group = "Foell Lab"
 title = ""
-description = ""
+description = """\
+	TODO
+	"""
 sample-processing = """\
 	TODO
 	"""
@@ -250,7 +280,9 @@ date.received = 2022-08-16
 scope = "Private"
 group = "Schilling Lab"
 title = ""
-description = ""
+description = """\
+	TODO
+	"""
 sample-processing = """\
 	TODO
 	"""
