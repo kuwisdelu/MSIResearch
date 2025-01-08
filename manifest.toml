@@ -449,18 +449,18 @@ date.created = 2013-09-12
 date.received = 2013-09-12
 keywords = ["swine", "3D"]
 
-[PIGII_3D]
+[PIG_116]
 scope = "Protected"
 group = "Aston Labs"
-title = "Serial sections of a pig fetus"
+title = "Pig fetus cross-section"
 description = ""
 contact = [
 	{name = "R. Graham Cooks", email = "cooks@purdue.edu"},
 	{name = "Livia Eberlin"},
 ]
-date.created = 2013-09-12
-date.received = 2013-09-12
-keywords = ["swine", "3D"]
+date.created = 2013-06-04
+date.received = 2013-06-04
+keywords = ["swine"]
 
 ["RCC (Cedric)"]
 scope = "Protected"
