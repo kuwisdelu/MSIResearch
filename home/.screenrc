@@ -1,4 +1,0 @@
-
-startup_message off
-autodetach on
-hardstatus alwayslastline "%{= bG}%H  %{+ C}[%w]  %{+ w}[%Y/%m/%d %0C:%s%a]"

@@ -1,1 +1,0 @@
-options(menu.graphics=FALSE)
