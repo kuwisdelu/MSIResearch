@@ -279,9 +279,9 @@ date.received = 2022-08-16
 [Arthritis-project]
 scope = "Private"
 group = "Schilling Lab"
-title = ""
+title = "Subchondral Bone in Osteoarthritis Reveals Tissue Remodeling of Extracellular Matrix Proteins that Precede Cartilage Loss"
 description = """\
-	TODO
+	Osteoarthritis (OA) of the knee is a degenerative condition of the skeletal extracellular matrix (ECM) marked by the loss of articular cartilage and subchondral bone homeostasis. Treatments for OA in the knee beyond full joint replacement are lacking primarily due to gaps in molecular knowledge of the biological drivers of disease. Here, Mass Spectrometry Imaging (MSI) enabled molecular spatial mapping of the proteomic landscape of human knee tissues. Histologic sections of human tibial plateaus from OA patients and cadaveric controls were treated with collagenase III to target ECM proteins prior to imaging using a timsTOF fleX mass spectrometer (Bruker) for matrix-assisted laser desorption ionization (MALDI)-MSI of bone and cartilage proteins in human knees. Spatial MSI data of the knee, using sections of the tibial plateau from non-arthritic, cadaveric donors or from knee replacement patients with medial OA were processed and automatically segmented identifying distinct areas of joint damage. ECM peptide markers compared either OA to cadaveric tissues or OA medial to OA lateral. Not only did candidate peptides distinguish OA relative to intact cartilage, but also emphasized a significant spatial difference between OA and intact subchondral bone (AUROC >0.85). Overall, 31 peptide candidates from ECM proteins, including COL1A1, COL3A1, and unanticipated detection of collagens COL6A1 and COL6A3 in adult bone, exhibited significantly elevated abundance in diseased tissue. Highly specific hydroxyproline-containing collagens dominated OA subchondral bone directly under regions of lost cartilage revealing dramatic tissue remodeling providing molecular details on the progression of joint degeneration in OA. The identification of specific spatial markers for the progression of subchondral bone degeneration in OA advances our molecular understanding of coupled deterioration of joint tissues.
 	"""
 sample-processing = """\
 	TODO
@@ -292,6 +292,7 @@ data-processing = """\
 contact = [
 	{name = "Birgit Schilling", email = "bschilling@buckinstitute.org"},
 ]
+url.pre = "https://www.biorxiv.org/content/10.1101/2024.08.03.606482v1"
 date.received = 2023-10-12
 keywords = ["arthritis"]
 
@@ -313,7 +314,7 @@ contact = [
 	{name = "Keith Young", email = "kayoung@tamu.edu"},
 ]
 date.received = 2023-10-12
-keywords = ["ptsd"]
+keywords = ["ptsd", "brain", "mobility"]
 
 ["Lipid Comp Study"]
 scope = "Protected"
