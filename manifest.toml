@@ -37,6 +37,7 @@ title = "Example 1: imzML example data (3×3 pixels) in continuous and processed
 description = ""
 contact = []
 date.created = 2010-05-10
+formats = ["imzML"]
 keywords = ["example"]
 
 [Example_Processed_imzML]
@@ -46,6 +47,7 @@ title = "Example 1: imzML example data (3×3 pixels) in continuous and processed
 description = ""
 contact = []
 date.created = 2010-05-10
+formats = ["imzML"]
 keywords = ["example"]
 
 [CRC_MSI_raw_data]
@@ -767,6 +769,7 @@ contact = [
 date.created = 2014-09-15
 date.received = 2019-10-09
 keywords = ["mouse", "bladder"]
+formats = ["imzML"]
 
 [PXD003172]
 scope = "Public"
@@ -787,6 +790,7 @@ contact = [
 date.created = 2014-09-15
 date.received = 2019-10-09
 keywords = ["mouse", "brain"]
+formats = ["imzML"]
 
 [PXD009808]
 scope = "Public"
@@ -807,7 +811,7 @@ contact = [
 ]
 date.created = 2018-05-17
 date.received = 2019-10-09
-formats = ["tiff"]
+formats = ["imzML", "tiff"]
 
 [PXD010990]
 scope = "Public"
@@ -828,6 +832,7 @@ contact = [
 ]
 date.created = 2018-09-03
 date.received = 2019-10-09
+formats = ["imzML"]
 
 [PXD011104]
 scope = "Public"
@@ -848,7 +853,7 @@ contact = [
 ]
 date.created = 2020-08-06
 date.received = 2019-10-09
-formats = ["tiff"]
+formats = ["imzML", "tiff"]
 
 [PXD011262]
 scope = "Public"
@@ -869,6 +874,7 @@ contact = [
 ]
 date.created = 2018-11-10
 date.received = 2019-10-07
+formats = ["imzML"]
 
 [PXD013069]
 scope = "Public"
@@ -889,6 +895,7 @@ contact = [
 ]
 date.created = 2019-08-19
 date.received = 2019-10-03
+formats = ["imzML"]
 
 [PXD013860]
 scope = "Public"
@@ -909,6 +916,7 @@ contact = [
 ]
 date.created = 2019-05-15
 date.received = 2019-10-07
+formats = ["imzML"]
 
 [PXD016146]
 scope = "Public"
@@ -929,6 +937,7 @@ contact = [
 ]
 date.created = 2019-11-05
 date.received = 2024-09-07
+formats = ["imzML"]
 
 [PXD037763]
 scope = "Public"
@@ -949,6 +958,7 @@ contact = [
 ]
 date.created = 2022-10-27
 date.received = 2024-08-11
+formats = ["imzML"]
 
 [PXD039398]
 scope = "Public"
@@ -969,6 +979,7 @@ contact = [
 ]
 date.created = 2023-01-13
 date.received = 2024-08-11
+formats = ["imzML"]
 
 [S043_Processed_imzML]
 scope = "Public"
@@ -978,6 +989,7 @@ description = ""
 contact = []
 date.created = 2010-05-10
 keywords = ["example"]
+formats = ["imzML"]
 
 [S042_Continuous_imzML]
 scope = "Public"
@@ -987,6 +999,7 @@ description = ""
 contact = []
 date.created = 2010-05-10
 keywords = ["example"]
+formats = ["imzML"]
 
 [S042_Processed_imzML]
 scope = "Public"
@@ -996,3 +1009,4 @@ description = ""
 contact = []
 date.created = 2010-05-10
 keywords = ["example"]
+formats = ["imzML"]
