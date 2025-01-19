@@ -16,9 +16,7 @@ Jump to a section:
 
 This repository tracks experimental metadata for lab-curated MSI datasets stored on the MSI group's Magi servers.
 
-The metadata is saved in `manifest.json` in JavaScript Object Notation (JSON) format. Each record in the manifest describes an MSI dataset. The records can be updated by any lab member by editing `manifest.json` and commiting the changes to this Github repository.
-
-Before committing changes to this repository, please make sure the manifest can be parsed without errors using either `json.load` (in Python) or `jsonlite::fromJSON` (in R).
+The metadata is saved in `manifest.toml` in TOML format. Each record in the manifest describes an MSI dataset. The records can be updated by any lab member by editing `manifest.toml` and commiting the changes to this Github repository.
 
 Please consider using an existing field before adding new fields. Some fields including `contact`, `keywords`, and `notes` allow multiple entries and can be extended as necessary.
 
@@ -60,25 +58,20 @@ Datasets described in this repository can be downloaded and cached locally.
 The following directory structure is assumed:
 
 ```
-/<$MSI_DBPATH>
-    /MSIResearch
-    /Protected
-        /...
-            /<Dataset>
-    /Public
-        /...
-            /<Dataset>
+/$MAGI_DBPATH
+    /MSI
+        /MSIResearch
+        /Protected
+            /...
+                /<Dataset>
+        /Public
+            /...
+                /<Dataset>
 ```
 
 where `...` contain group directories which contain dataset directories.
 
-Recommended usage is to set an environment variable `$MSI_DBPATH` in your shell to the directory where `MSIResearch` is cloned and where locally cached datasets should be stored.
-
-For example, in your `.zshrc` or `.bashrc`:
-
-```
-export MSI_DBPATH="path/to/database/"
-```
+Recommended usage is to set an environment variable `$MAGI_DBPATH` in your shell to the directory containing the database.
 
 The appropriate directory structure will be created automatically when datasets are downloaded.
 
@@ -88,12 +81,25 @@ The appropriate directory structure will be created automatically when datasets 
 
 The `msi` command line utility provides functionality for searching and downloading the data. It assumes you are running in a UNIX-alike environment that includes `ssh` and `rsync` command line programs.
 
-Recommended usage is to set an alias `msi` in your shell to the command `python3 $MSI_DBPATH/MSIResearch/lib/msi.py`.
-
-For example, in your `.zshrc` or `.bashrc`:
+To use the `msi` command, begin by cloning the `MagiSys` git repository, and then running the `install.sh`:
 
 ```
-alias msi="python3 $MSI_DBPATH/MSIResearch/lib/msi.py"
+git clone git@github.com:kuwisdelu/MagiSys.git
+./MagiSys/scripts/install.sh
+```
+
+You will then need to update your `.zshrc` or `.bashrc` with the following:
+
+```
+export MAGI_DBPATH="/path/to/Datasets"
+export MAGI_SYSPATH="/path/to/MagiSys"
+source "$MAGI_SYSPATH/scripts/activate.sh"
+```
+
+Finally, run the following to clone the database manifest to `$MAGI_DBPATH`:
+
+```
+./MagiSys/scripts/install-data.sh
 ```
 
 You can then see the command help with:
