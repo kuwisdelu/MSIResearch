@@ -1,55 +1,3 @@
-## TEMPLATE ##
-##
-# [Dataset-ID]
-# scope = "Public"
-# group = "Name of research group or data repository"
-# title = "This is a short title"
-# description = """\
-# 	This is a description of the experiment or study, \
-# 	including the purpose why the data was collected, \
-# 	and the overall goals of the research project.\
-# 	"""
-# sample-processing = """\
-# 	This section describes the sample preparation and \
-# 	the data collection protocol.\
-# 	"""
-# data-processing = """\
-# 	This section describes any computational processing \
-# 	applied to the data or files.\
-# 	"""
-# contact = [
-# 	{name = "Person", email = "person@url.domain"}
-# ]
-# url.doi = "digital.object/identifier"
-# url.pub = "publication.site.domain/article"
-# date.created = 1970-01-01
-# date.received = 1970-01-01
-# formats = ["csv", "png", "Excel"]
-# keywords = ["documentation"]
-# notes = [
-# 	"Fields 'scope', 'group', 'title', 'description' are required",
-# 	"Everything else is optional (but strongly recommended)."]
-
-[Example_Continuous_imzML]
-scope = "Public"
-group = "Examples"
-title = "Example 1: imzML example data (3×3 pixels) in continuous and processed format"
-description = ""
-contact = []
-date.created = 2010-05-10
-formats = ["imzML"]
-keywords = ["example"]
-
-[Example_Processed_imzML]
-scope = "Public"
-group = "Examples"
-title = "Example 1: imzML example data (3×3 pixels) in continuous and processed format"
-description = ""
-contact = []
-date.created = 2010-05-10
-formats = ["imzML"]
-keywords = ["example"]
-
 [CRC_MSI_raw_data]
 scope = "Protected"
 group = "Foell Lab"
@@ -684,6 +632,56 @@ contact = [
 date.received = 2016-02-23
 keywords = ["3D"]
 
+[Example_Continuous_imzML]
+scope = "Public"
+group = "Examples"
+title = "Example 1: imzML example data (3×3 pixels) in continuous and processed format"
+description = ""
+contact = []
+date.created = 2010-05-10
+formats = ["imzML"]
+keywords = ["example"]
+
+[Example_Processed_imzML]
+scope = "Public"
+group = "Examples"
+title = "Example 1: imzML example data (3×3 pixels) in continuous and processed format"
+description = ""
+contact = []
+date.created = 2010-05-10
+formats = ["imzML"]
+keywords = ["example"]
+
+[S043_Processed_imzML]
+scope = "Public"
+group = "Examples"
+title = "Example 2: MS imaging data set of a urinary bladder in imzML (processed)"
+description = ""
+contact = []
+date.created = 2010-05-10
+keywords = ["example"]
+formats = ["imzML"]
+
+[S042_Continuous_imzML]
+scope = "Public"
+group = "Examples"
+title = "Example 3: MS imaging data set of a urinary bladder in imzML (processed and continuous)"
+description = ""
+contact = []
+date.created = 2010-05-10
+keywords = ["example"]
+formats = ["imzML"]
+
+[S042_Processed_imzML]
+scope = "Public"
+group = "Examples"
+title = "Example 3: MS imaging data set of a urinary bladder in imzML (processed and continuous)"
+description = ""
+contact = []
+date.created = 2010-05-10
+keywords = ["example"]
+formats = ["imzML"]
+
 [3DMouseKidney]
 scope = "Public"
 group = "GigaGB"
@@ -979,34 +977,4 @@ contact = [
 ]
 date.created = 2023-01-13
 date.received = 2024-08-11
-formats = ["imzML"]
-
-[S043_Processed_imzML]
-scope = "Public"
-group = "Examples"
-title = "Example 2: MS imaging data set of a urinary bladder in imzML (processed)"
-description = ""
-contact = []
-date.created = 2010-05-10
-keywords = ["example"]
-formats = ["imzML"]
-
-[S042_Continuous_imzML]
-scope = "Public"
-group = "Examples"
-title = "Example 3: MS imaging data set of a urinary bladder in imzML (processed and continuous)"
-description = ""
-contact = []
-date.created = 2010-05-10
-keywords = ["example"]
-formats = ["imzML"]
-
-[S042_Processed_imzML]
-scope = "Public"
-group = "Examples"
-title = "Example 3: MS imaging data set of a urinary bladder in imzML (processed and continuous)"
-description = ""
-contact = []
-date.created = 2010-05-10
-keywords = ["example"]
 formats = ["imzML"]
