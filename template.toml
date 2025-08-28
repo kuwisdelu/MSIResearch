@@ -1,0 +1,29 @@
+[Dataset-ID]
+scope = "Public"
+group = "Name of research group or data repository"
+title = "This is a short title"
+description = """\
+	This is a description of the experiment or study, \
+	including the purpose why the data was collected, \
+	and the overall goals of the research project.\
+	"""
+sample-processing = """\
+	This section describes the sample preparation and \
+	the data collection protocol.\
+	"""
+data-processing = """\
+	This section describes any computational processing \
+	applied to the data or files.\
+	"""
+contact = [
+	{name = "Person", email = "person@url.domain"}
+]
+url.doi = "digital.object/identifier"
+url.pub = "publication.site.domain/article"
+date.created = 1970-01-01
+date.received = 1970-01-01
+formats = ["csv", "png", "Excel"]
+keywords = ["documentation"]
+notes = [
+	"Fields 'scope', 'group', 'title', 'description' are required",
+	"Everything else is optional (but strongly recommended)."]
